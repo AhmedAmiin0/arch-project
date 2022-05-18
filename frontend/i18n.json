@@ -1,0 +1,11 @@
+{
+  "locales": [
+    "en",
+    "ar"
+  ],
+  "defaultLocale": "en",
+  "pages": {
+    "*": ["common"],
+    "/about": ["common", "about"]
+  }
+}
