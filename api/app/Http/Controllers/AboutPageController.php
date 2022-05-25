@@ -18,25 +18,21 @@ class AboutPageController extends Controller
      */
     public function index()
     {
-        $aboutPage = AboutPage::find(1);
-        if($aboutPage != null) {
-            $aboutPage->load('media');
+        $about = AboutPage::find(1);
+        if ($about != null) {
+            $about->first_section_image = [
+                'src' => $about->getFirstMediaUrl('first_section_image') ?? '',
+                'alt' => $about->getFirstMedia('first_section_image')->name ?? '',
+                'id' => $about->getFirstMedia('first_section_image')->id ?? '',
+            ];
+            $about->video_background = [
+                'src' => $about->getFirstMediaUrl('video_background') ?? '',
+                'alt' => $about->getFirstMedia('video_background')->name ?? '',
+                'id' => $about->getFirstMedia('video_background')->id ?? '',
+            ];
         }
-        return new AboutPageResource($aboutPage);
-
-
-        // $aboutPage->first_section_image = [
-        //     'src' => $aboutPage->getFirstMediaUrl('first_section_image') ?? '',
-        //     'alt' => $aboutPage->getFirstMedia('first_section_image')->name ?? '',
-        //     'id' => $aboutPage->getFirstMedia('first_section_image')->id ?? null
-        // ] ?? null;
-        // $aboutPage->video_background = [
-        //     'src' => $aboutPage->getFirstMediaUrl('video_background') ?? '',
-        //     'alt' => $aboutPage->getFirstMedia('video_background')->name ?? '',
-        //     'id' => $aboutPage->getFirstMedia('video_background')->id ?? null
-        // ] ?? null;
-        // unset($aboutPage->media);
-        // return $aboutPage;
+        // return $about;
+        return new AboutPageResource($about);
     }
 
     /**
@@ -48,24 +44,8 @@ class AboutPageController extends Controller
     public
     function store(Request $request)
     {
-        // return $request->all();
         try {
             $aboutPage = AboutPage::first();
-            // $request->validate([
-            //     'title' => 'required|max:255',
-            //     'subtitle' => 'nullable|max:255',
-            //     'description' => 'nullable|max:255',
-            //     'keywords' => 'nullable|max:255',
-            //     'sentence_title' => 'nullable|max:255',
-            //     'sentence_subtitle' => 'nullable|max:255',
-            //     'sentence_description' => 'nullable|max:255',
-            //     'video_url' => 'nullable|max:255',
-            //     'first_section_title' => 'nullable|max:255',
-            //     'first_section_subtitle' => 'nullable|max:255',
-            //     'first_section_description' => 'nullable|max:255',
-            //     'first_section_image' => 'nullable|image|max:2048',
-            //     'video_background' => 'nullable|image|max:2048',
-            // ]);
             $data = [
                 'title' => $request->title ?? '',
                 'subtitle' => $request->subtitle ?? '',
@@ -86,10 +66,10 @@ class AboutPageController extends Controller
                 $aboutPage->update($data);
             }
             if ($request->hasFile('video_background')) {
-                $aboutPage->addMediaFromRequest('video_background')->toMediaCollection('video_background');
+                $aboutPage->addMedia($request->file('video_background'))->toMediaCollection('video_background');
             }
             if ($request->hasFile('first_section_image')) {
-                $aboutPage->addMediaFromRequest('first_section_image')->toMediaCollection('first_section_image');
+                $aboutPage->addMedia($request->file('first_section_image'))->toMediaCollection('first_section_image');
             }
             return response()->json(['message' => 'success'], 201);
         } catch (\Exception $e) {

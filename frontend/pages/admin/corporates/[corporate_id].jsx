@@ -135,7 +135,5 @@ export async function getServerSideProps({ params, locale }) {
   const corporate = await axios.get('/corporates/' + corporate_id, {
     headers: { 'Accept-Language': locale }
   }).then(res => res.data.data) ?? {};
-  return {
-    props: { corporate }
-  }
+  return { props: { corporate } }
 }

@@ -18,12 +18,19 @@ class ContactPageController extends Controller
      */
     public function index()
     {
-        $contactPage = ContactPage::first();
-        $contactPage->image = [
-            'src' => $contactPage->getFirstMediaUrl('contact_page_image'),
-            'alt' => $contactPage->getFirstMedia('contact_page_image')->name,
-        ];
+        $contactPage =  ContactPage::find(1);
+
         return $contactPage;
+        // if ($contactPage != null) {
+        //     $contactPage->home_images = $contactPage->getMedia('contact_page_image')->map(function ($item) {
+        //         return [
+        //             'src' => $item->getFullUrl(),
+        //             'alt' => $item->name,
+        //             'id' => $item->id,
+        //         ];
+        //     });
+        //     unset($contactPage->media);
+        // }
     }
 
     /**
@@ -35,11 +42,39 @@ class ContactPageController extends Controller
     public function store(Request $request)
     {
         try {
+            $contactPage = ContactPage::find(1);
+            $contactPage == null ? ContactPage::create([
+                'title' => [
+                    'en' => $request->title['en'] ?? '',
+                    'ar' => $request->title['ar']  ?? '',
+                ],
+                'subtitle' => [
+                    'en' => $request->subtitle['en'] ?? '',
+                    'ar' => $request->subtitle['ar']  ?? '',
+                ],
+                'contact_details' => [
+                    'en' => $request->contact_details['en'] ?? '',
+                    'ar' => $request->contact_details['ar']  ?? '',
+                ],
+                'location' => $request->location,
+            ]) : $contactPage->update([
+                'title' => [
+                    'en' => $request->title['en'] ?? '',
+                    'ar' => $request->title['ar']  ?? '',
+                ],
+                'subtitle' => [
+                    'en' => $request->subtitle['en'] ?? '',
+                    'ar' => $request->subtitle['ar']  ?? '',
+                ],
+                'contact_details' => [
+                    'en' => $request->contact_details['en'] ?? '',
+                    'ar' => $request->contact_details['ar']  ?? '',
+                ],
+                'location' => $request->location,
+            ]);
 
-            $contactPage = ContactPage::first();
-            $contactPage == null ? ContactPage::create($request->all()) : $contactPage->update($request->all());
             if ($request->has('contact_page_image')) {
-                $contactPage->addMediaFromRequest('contact_page_image')->each(fn($media) => $media->toMediaCollection('contact_page_image'));
+                $contactPage->addMediaFromRequest('contact_page_image')->each(fn ($media) => $media->toMediaCollection('contact_page_image'));
             }
             return response()->json(['message' => 'Contact page updated successfully.'], 200);
         } catch (\Exception $e) {
@@ -57,7 +92,7 @@ class ContactPageController extends Controller
                 'message' => 'nullable',
             ]);
             Mail::to('ahmedamin1925@gmail.com')->send(new NotifiMail());
-//            SendMailsJob::dispatch($mailModel, $request->all());
+            //            SendMailsJob::dispatch($mailModel, $request->all());
             // check if email is already in the database
             Email::where('email', $request->email)->first() ?? Email::create($request->only('email'));
             return response()->json(['message' => 'Message sent successfully.'], 200);

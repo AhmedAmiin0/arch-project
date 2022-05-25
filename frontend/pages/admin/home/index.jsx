@@ -17,10 +17,6 @@ import {
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from "formik";
-// import { homeSchemaHomePage } from "../../../components/dashboard/schemas/homeSchema";
-// import { useRouter } from "next/router";
-// import Link from "next/link";
-// import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "../../../config/axios";
 import { useRef, useState } from "react";
 import { GalleryModal } from "../../../components/dashboard/GalleryModel/GalleryModal";

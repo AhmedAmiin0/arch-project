@@ -29,6 +29,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
+import CollectionsIcon from '@mui/icons-material/Collections';
 // import TreeItem from '@mui/lab/TreeItem';
 // import TreeView from '@mui/lab/TreeView';
 
@@ -184,7 +185,18 @@ export default function Sidebar({ mode, setMode, visable }) {
               </ListItemButton>
             </ListItem>
           </Link>
-          <ListItem disablePadding>
+          <Link href={'/admin/banners'}>
+            <ListItem disablePadding>
+              <ListItemButton
+              >
+                <ListItemIcon>
+                  <CollectionsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Banners" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          {/* <ListItem disablePadding>
             <ListItemButton
             >
               <ListItemIcon>
@@ -192,7 +204,7 @@ export default function Sidebar({ mode, setMode, visable }) {
               </ListItemIcon>
               <Switch />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
       </SideBarBox>
     </Box>

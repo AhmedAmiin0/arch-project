@@ -13,7 +13,6 @@ export const Navbar = () => {
 	const transparentNavbar = [
 		"",
 		"about",
-		"contact",
 		"projects",
 		"services",
 		"blog",

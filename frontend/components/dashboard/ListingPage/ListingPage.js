@@ -21,6 +21,7 @@ const ListingComponent = ({
   api_url = page_title_plural,
   url = page_title_plural,
   HasSentence = false,
+  rowHeight=100,
   // sentence_url = null
 }) => {
   const router = useRouter();
@@ -59,7 +60,9 @@ const ListingComponent = ({
       filterable: false,
       width: 140,
       renderCell: (params) => (
-        <Stack direction={"row"} display={"flex"}>
+        <Stack direction={"row"} display={"flex"} 
+        justifyContent={"center"} alignItems={"center"}>
+        >
           <Button
             sx={{ borderRadius: "50%", padding: "10px", minWidth: "unset" }}
             color="warning"
@@ -80,54 +83,57 @@ const ListingComponent = ({
   ];
   return (
     <Box>
-      <Stack mb={4} direction={{
-        md: "row",
-        xs: "column",
-      }} justifyContent={{
-        md: "space-between",
-        xs: "center",
-      }}
+      <Stack
+        mb={4}
+        direction={{
+          md: "row",
+          xs: "column",
+        }}
+        justifyContent={{
+          md: "space-between",
+          xs: "center",
+        }}
         alignItems={{
           md: "center",
           xs: "center",
         }}
       >
-        <Stack direction={"column"}
-          height={"100%"} spacing={2} flex={2} my={2}>
+        <Stack direction={"column"} height={"100%"} spacing={2} flex={2} my={2}>
           <Typography variant={"h4"} fontWeight={"bolder"}>
             {page_title_plural[0]?.toUpperCase() + page_title_plural.slice(1)}
           </Typography>
           <LocaleSwitch location={router.asPath} lang={locale} />
         </Stack>
-        <Stack pr={2} pl={2}
+        <Stack
+          pr={2}
+          pl={2}
           direction={{
             md: "row",
             xs: "column",
           }}
           spacing={2}
         >
-          {HasSentence &&
+          {HasSentence && (
             <Link href={`/admin/${api_url}/sentence`}>
-              <Button
-                variant="outlined"
-                color="primary"
-              >
-                {page_title_plural[0]?.toUpperCase() + page_title_plural.slice(1)} Sentence
+              <Button variant="outlined" color="primary">
+                {page_title_plural[0]?.toUpperCase() +
+                  page_title_plural.slice(1)}{" "}
+                Sentence
               </Button>
             </Link>
-          }
+          )}
           <Link href={"/admin/" + api_url + "/create"}>
             <Button
               color={"therdary"}
               variant={"contained"}
               startIcon={<AddIcon />}
             >
-              Add {page_title_single[0].toUpperCase() + page_title_single.slice(1)}
+              Add{" "}
+              {page_title_single[0].toUpperCase() + page_title_single.slice(1)}
             </Button>
           </Link>
-
         </Stack>
-      </Stack >
+      </Stack>
       <Box bgcolor="background.paper">
         <Stack
           p={2}
@@ -151,9 +157,10 @@ const ListingComponent = ({
           rowsState={rowsState}
           rowCount={rowCountState}
           setRowsState={setRowsState}
+          rowHeight={rowHeight}
         />
       </Box>
-    </Box >
+    </Box>
   );
 };
 export default ListingComponent;

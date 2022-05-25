@@ -16,12 +16,8 @@ return new class extends Migration {
             $table->id();
             $table->string('title')->nullable();
             $table->string('subtitle')->nullable();
-            $table->text('description')->nullable();
-            $table->text('keywords')->nullable();
-            $table->string('slug')->nullable();
-            $table->string('sentence_title')->nullable();
-            $table->string('sentence_subtitle')->nullable();
-            $table->text('sentence_description')->nullable();
+            $table->text('contact_details')->nullable();
+            $table->text('location')->nullable();
             $table->timestamps();
         });
     }

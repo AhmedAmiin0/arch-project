@@ -2,53 +2,73 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BannerResource;
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BannerController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        return Banner::with('media')->get()->map(function ($banner) {
-            $banner->src = $banner->getFirstMediaUrl('banner');
-            $banner->alt = $banner->getFirstMedia('banner')->name;
-            unset($banner->media);
-            return $banner;
-        });
+        $limit = $request->limit ?? 10;
+        $banner = Banner::search($request->q)
+            ->paginate($limit);
+        return BannerResource::collection($banner);
     }
 
     public function store(Request $request)
     {
-        $banner = Banner::create([
-            'model_type' => $request->model_type ?? 'App\Models\Home',
-            'model_id' => $request->model_id ?? 1,
-            'title' => $request->title,
-            'subtitle' => $request->subtitle,
-            'slug' => $request->slug,
-        ]);
-        $banner->addMediaFromRequest('banner')->toMediaCollection('banner');
-        return response()->json(['message' => 'Banner created successfully.'], 201);
+        // return $request->all();
+        try {
+
+            $request->validate([
+                'title_ar' => 'nullable',
+                'title_en' => 'nullable',
+                'subtitle_ar' => 'nullable',
+                'subtitle_en' => 'nullable',
+                'url' => 'required',
+                'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $banner = Banner::create([
+                'title' => [
+                    'en' => $request->title_en ?? '',
+                    'ar' =>  $request->title_ar ?? '',
+                ],
+                'subtitle' => [
+                    'en' => $request->subtitle_en ?? '',
+                    'ar' => $request->subtitle_ar  ?? '',
+                ],
+                'url' => $request->url,
+            ]);
+            $banner->addMediaFromRequest('banner')->toMediaCollection('banner');
+            return response()->json(['message' => 'Banner created successfully.', 'banner_id' => $banner->id], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
 
     public function show(Banner $banner)
     {
-        $banner->src = $banner->getFirstMediaUrl('banner');
-        $banner->alt = $banner->getFirstMedia('banner')->name;
-        return $banner;
-
+        return  BannerResource::make($banner);
     }
 
     public function update(Request $request, Banner $banner)
     {
+        $request->validate([
+            'title' => 'nullable',
+            'subtitle' => 'nullable',
+            'url' => 'required',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
         $banner->update([
-            'model_type' => $request->model_type ?? 'App\Models\Home',
-            'model_id' => $request->model_id ?? 1,
             'title' => $request->title,
             'subtitle' => $request->subtitle,
-            'slug' => $request->slug,
+            'url' => $request->url,
         ]);
-        $banner->addMediaFromRequest('banner')->toMediaCollection('banner');
+        if ($request->hasFile('banner')) $banner->addMediaFromRequest('banner')->toMediaCollection('banner');
         return response()->json(['message' => 'Banner updated successfully.'], 200);
     }
 

@@ -27,6 +27,7 @@ import { GalleryModal } from "../../../components/dashboard/GalleryModel/Gallery
 import { useRouter } from "next/router";
 import { LangSwitch, LocaleSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { useCreate } from "../../../hooks/useCRUD";
+import Image from 'next/image';
 
 
 const AboutPage = ({ about }) => {
@@ -49,7 +50,7 @@ const AboutPage = ({ about }) => {
       first_section_description: about?.first_section_description || '',
       first_section_subtitle: about?.first_section_subtitle || '',
       first_section_image: about?.first_section_image || '',
-      video_background: about?.video_background || '',
+      // video_background: about?.video_background || '',
       video_url: about?.video_url || '',
 
     },
@@ -58,9 +59,9 @@ const AboutPage = ({ about }) => {
       if (values.first_section_image && typeof values.first_section_image === 'object' && values.first_section_image.size > 0) {
         formData.append('first_section_image', values.first_section_image);
       }
-      if (values.video_background && typeof values.video_background === 'object' && values.video_background.size > 0) {
-        formData.append('video_background', values.video_background);
-      }
+      // if (values.video_background && typeof values.video_background === 'object' && values.video_background.size > 0) {
+      //   formData.append('video_background', values.video_background);
+      // }
       let res = await createItem(formData);
       console.log(res);
     },
@@ -177,7 +178,7 @@ const AboutPage = ({ about }) => {
         >
           Upload Image
         </Typography>
-        <Box flex={3} justifyContent={'center'} alignItems={'center'}>
+        <Box flex={3} justifyContent={'center'} alignItems={'center'} >
           <TextField
             id='first_section_title'
             label='First Section Title'
@@ -213,6 +214,10 @@ const AboutPage = ({ about }) => {
             multiline={true}
             rows={6}
           />
+          {formik.values.first_section_image && <Image
+            src={formik.values.first_section_image.src ?? URL.createObjectURL(formik.values.first_section_image)}
+            alt="" title="" width="100%" height="100%" layout="responsive" objectFit="contain" />}
+
 
           <label htmlFor="contained-button-file" style={{
             display: 'flex',
@@ -228,8 +233,9 @@ const AboutPage = ({ about }) => {
               {formik.values.first_section_image ?
                 <span>Image was Chosen</span> : 'Upload Thumbnail'}
             </Button>
-
           </label>
+
+
         </Box>
       </ContentPageFlexBox>
       <ContentPageFlexBox>
@@ -250,6 +256,9 @@ const AboutPage = ({ about }) => {
             fullWidth
             sx={{ my: 2 }}
           />
+          {/* {formik.values.video_background && <img
+            src={formik.values.video_background.src ?? URL.createObjectURL(formik.values.video_background)}
+            alt={'video_background'} width={'100%'} />}
           <label htmlFor="contained-button-file" style={{
             display: 'flex',
             justifyContent: 'center',
@@ -264,7 +273,7 @@ const AboutPage = ({ about }) => {
               {formik.values.video_background ?
                 <span>Image was Chosen</span> : 'Upload Thumbnail'}
             </Button>
-          </label>
+          </label> */}
         </Box>
 
 

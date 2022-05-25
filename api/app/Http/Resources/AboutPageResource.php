@@ -30,16 +30,8 @@ class AboutPageResource extends JsonResource
             'first_section_subtitle' => $this->first_section_subtitle ?? '',
             'first_section_description' => $this->first_section_description ?? '',
             'video_url' => $this->video_url ?? '',
-            'first_section_image' => $this->when($this != null, fn () => [
-                'src' => $this->getFirstMediaUrl('first_section_image'),
-                'alt' => $this->getFirstMedia('first_section_image')->name ?? '',
-                'id' => $this->getFirstMedia('first_section_image')->id ?? null,
-            ], []),
-            'video_background' => $this->when($this != null, fn () => [
-                'src' => $this->getFirstMediaUrl('video_background'),
-                'alt' => $this->getFirstMedia('video_background')->name ?? '',
-                'id' => $this->getFirstMedia('video_background')->id ?? null,
-            ], []),
+            'first_section_image' => $this->first_section_image ?? [],
+            'video_background' => $this->video_background ?? [],
         ];
     }
 }
