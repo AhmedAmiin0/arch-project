@@ -20,7 +20,7 @@ class ContactPageController extends Controller
     {
         $contactPage =  ContactPage::find(1);
 
-        return $contactPage;
+        return $contactPage ? $contactPage : [];
         // if ($contactPage != null) {
         //     $contactPage->home_images = $contactPage->getMedia('contact_page_image')->map(function ($item) {
         //         return [

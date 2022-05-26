@@ -62,7 +62,7 @@ const ListingComponent = ({
       renderCell: (params) => (
         <Stack direction={"row"} display={"flex"} 
         justifyContent={"center"} alignItems={"center"}>
-        >
+
           <Button
             sx={{ borderRadius: "50%", padding: "10px", minWidth: "unset" }}
             color="warning"

@@ -1,4 +1,4 @@
-import { Home, ModeNight } from '@mui/icons-material'
+import {Home, ModeNight} from '@mui/icons-material'
 import {
   Box,
   List,
@@ -32,17 +32,18 @@ import InfoIcon from '@mui/icons-material/Info';
 import CollectionsIcon from '@mui/icons-material/Collections';
 // import TreeItem from '@mui/lab/TreeItem';
 // import TreeView from '@mui/lab/TreeView';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 
 
-export const Hr = styled('hr')(({ theme }) => ({
+export const Hr = styled('hr')(({theme}) => ({
   margin: '24px 0px',
   flexShrink: 0,
   borderWidth: '0px 0px thin',
   borderStyle: 'solid',
   borderColor: theme.palette.secondary.main
 }))
-export default function Sidebar({ mode, setMode, visable }) {
-  const SideBarBox = styled(Box)(({ theme }) => ({
+export default function Sidebar({mode, setMode, visable}) {
+  const SideBarBox = styled(Box)(({theme}) => ({
     transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
     boxShadow: 'none',
     overflowY: ' auto',
@@ -66,7 +67,7 @@ export default function Sidebar({ mode, setMode, visable }) {
       left: '0px',
     }
   }))
-  const SideBarAgencyNameBox = styled('div')(({ theme }) => ({
+  const SideBarAgencyNameBox = styled('div')(({theme}) => ({
     textAlign: 'start',
     margin: '0px',
     padding: '11px 24px',
@@ -88,7 +89,7 @@ export default function Sidebar({ mode, setMode, visable }) {
                 width: '64px',
                 cursor: 'pointer',
               }}>
-                <Image src={'/logo.png'} width='100%' height={'100%'} />
+                <Image src={'/logo.png'} width='100%' height={'100%'}/>
               </div>
             </Box>
             <Box sx={{
@@ -106,16 +107,16 @@ export default function Sidebar({ mode, setMode, visable }) {
             </Box>
           </Stack>
         </Link>
-        <Hr />
+        <Hr/>
         <List>
           <Link href={'/admin/services'}>
             <ListItem disablePadding>
               <ListItemButton
               >
                 <ListItemIcon>
-                  <NewspaperIcon />
+                  <NewspaperIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Services" />
+                <ListItemText primary="Services"/>
               </ListItemButton>
             </ListItem>
           </Link>
@@ -124,9 +125,9 @@ export default function Sidebar({ mode, setMode, visable }) {
               <ListItemButton
               >
                 <ListItemIcon>
-                  <CategoryIcon />
+                  <CategoryIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Categories" />
+                <ListItemText primary="Categories"/>
               </ListItemButton>
             </ListItem>
           </Link>
@@ -135,9 +136,9 @@ export default function Sidebar({ mode, setMode, visable }) {
               <ListItemButton
               >
                 <ListItemIcon>
-                  <ClassIcon />
+                  <ClassIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Projects" />
+                <ListItemText primary="Projects"/>
               </ListItemButton>
             </ListItem>
           </Link>
@@ -146,9 +147,9 @@ export default function Sidebar({ mode, setMode, visable }) {
               <ListItemButton
               >
                 <ListItemIcon>
-                  <RssFeedIcon />
+                  <RssFeedIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Feedbacks" />
+                <ListItemText primary="Feedbacks"/>
               </ListItemButton>
             </ListItem>
           </Link>
@@ -157,9 +158,9 @@ export default function Sidebar({ mode, setMode, visable }) {
               <ListItemButton
               >
                 <ListItemIcon>
-                  <CorporateFareIcon />
+                  <CorporateFareIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Corporates" />
+                <ListItemText primary="Corporates"/>
               </ListItemButton>
             </ListItem>
           </Link>
@@ -168,9 +169,9 @@ export default function Sidebar({ mode, setMode, visable }) {
               <ListItemButton
               >
                 <ListItemIcon>
-                  <HomeIcon />
+                  <HomeIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Home Page" />
+                <ListItemText primary="Home Page"/>
               </ListItemButton>
             </ListItem>
           </Link>
@@ -179,20 +180,31 @@ export default function Sidebar({ mode, setMode, visable }) {
               <ListItemButton
               >
                 <ListItemIcon>
-                  <InfoIcon />
+                  <InfoIcon/>
                 </ListItemIcon>
-                <ListItemText primary="About Page" />
+                <ListItemText primary="About Page"/>
               </ListItemButton>
             </ListItem>
           </Link>
+          <Link href={'/admin/contact'}>
+          <ListItem disablePadding>
+            <ListItemButton
+            >
+              <ListItemIcon>
+                <ContactPageIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Contact Page"/>
+            </ListItemButton>
+          </ListItem>
+        </Link>
           <Link href={'/admin/banners'}>
             <ListItem disablePadding>
               <ListItemButton
               >
                 <ListItemIcon>
-                  <CollectionsIcon />
+                  <CollectionsIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Banners" />
+                <ListItemText primary="Banners"/>
               </ListItemButton>
             </ListItem>
           </Link>

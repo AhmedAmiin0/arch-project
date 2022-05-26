@@ -57,6 +57,11 @@ const EditCategory = ({categories}) => {
           Basic information
         </Typography>
         <LocaleSwitch location={'categories/' + id} lang={locale}/>
+        {formik.errors && (
+              <Typography variant={"body1"} color={"error"}>
+                {Object.values(formik.errors).join("\n")}
+              </Typography>
+            )}
       </Stack>
       <Box flex={3} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
         <form onSubmit={formik.handleSubmit}>

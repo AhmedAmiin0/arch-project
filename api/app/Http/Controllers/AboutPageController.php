@@ -21,17 +21,16 @@ class AboutPageController extends Controller
         $about = AboutPage::find(1);
         if ($about != null) {
             $about->first_section_image = [
-                'src' => $about->getFirstMediaUrl('first_section_image') ?? '',
-                'alt' => $about->getFirstMedia('first_section_image')->name ?? '',
-                'id' => $about->getFirstMedia('first_section_image')->id ?? '',
+                'src' => $about->getFirstMediaUrl('first_section_image'),
+                'alt' => $about->getFirstMedia('first_section_image')->name,
+                'id' => $about->getFirstMedia('first_section_image')->id,
             ];
-            $about->video_background = [
-                'src' => $about->getFirstMediaUrl('video_background') ?? '',
-                'alt' => $about->getFirstMedia('video_background')->name ?? '',
-                'id' => $about->getFirstMedia('video_background')->id ?? '',
-            ];
+            // $about->video_background = [
+            //     'src' => $about->getFirstMediaUrl('video_background'),
+            //     'alt' => $about->getFirstMedia('video_background')->name ?? '',
+            //     'id' => $about->getFirstMedia('video_background')->id,
+            // ];
         }
-        // return $about;
         return new AboutPageResource($about);
     }
 

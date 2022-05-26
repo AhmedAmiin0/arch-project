@@ -59,6 +59,11 @@ const CreateCorporate = () => {
           <Typography variant={'h6'}>
             Basic information
           </Typography>
+          {formik.errors && (
+              <Typography variant={"body1"} color={"error"}>
+                {Object.values(formik.errors).join("\n")}
+              </Typography>
+            )}
           {/* <Stack direction={'row'} spacing={2}>
           </Stack> */}
         </Stack>

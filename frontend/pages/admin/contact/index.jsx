@@ -1,10 +1,16 @@
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import { useRef, useState } from "react";
 import { LangSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   ContentPageContainer,
   ContentPageFlexBox,
 } from "../../../components/dashboard/layout/ContentPage/ContentPageContainer";
 import axios from "../../../config/axios";
+import { useCreate } from "../../../hooks/useCRUD";
 
 const ContactUsPage = ({ contact }) => {
   const formRef = useRef(null);
@@ -22,7 +28,7 @@ const ContactUsPage = ({ contact }) => {
         en: contact?.contact_details?.en || "",
         ar: contact?.contact_details?.ar || "",
       },
-      location: ''
+      location: "",
     },
     onSubmit: async (values) => {
       let res = await createItem(values);
@@ -42,13 +48,19 @@ const ContactUsPage = ({ contact }) => {
             <Stack direction={"row"} spacing={2}>
               <LangSwitch lang={lang} setLang={setLang} />
             </Stack>
+            {formik.errors && (
+              <Typography variant={"body1"} color={"error"}>
+                {Object.values(formik.errors).join("\n")}
+              </Typography>
+            )}
           </Stack>
-          <Box
+          <Stack
             flex={3}
             display={"flex"}
             flexDirection={"column"}
             justifyContent={"center"}
             alignItems={"center"}
+            spacing={2}
           >
             {lang == "EN" ? (
               <>
@@ -56,7 +68,13 @@ const ContactUsPage = ({ contact }) => {
                   id="title"
                   label="Title"
                   name="title"
-                  {...formik.getFieldProps("title")}
+                  value={formik.values.title.en}
+                  onChange={(e) =>
+                    formik.setFieldValue("title", {
+                      ...formik.values.title,
+                      en: e.target.value,
+                    })
+                  }
                   onBlur={formik.handleBlur}
                   variant="outlined"
                   fullWidth
@@ -65,17 +83,29 @@ const ContactUsPage = ({ contact }) => {
                   id="subtitle"
                   label="Subtitle"
                   name="subtitle"
-                  {...formik.getFieldProps("subtitle")}
+                  value={formik.values.subtitle.en}
+                  onChange={(e) =>
+                    formik.setFieldValue("subtitle", {
+                      ...formik.values.subtitle,
+                      en: e.target.value,
+                    })
+                  }
                   onBlur={formik.handleBlur}
                   variant="outlined"
                   fullWidth
                 />
-                
+
                 <TextField
                   id="contact_details"
                   label="Contact details"
                   name="contact_details"
-                  {...formik.getFieldProps("contact_details")}
+                  value={formik.values.contact_details.en}
+                  onChange={(e) =>
+                    formik.setFieldValue("contact_details", {
+                      ...formik.values.contact_details,
+                      en: e.target.value,
+                    })
+                  }
                   onBlur={formik.handleBlur}
                   variant="outlined"
                   fullWidth
@@ -87,7 +117,13 @@ const ContactUsPage = ({ contact }) => {
                   id="title"
                   label="Title"
                   name="title"
-                  {...formik.getFieldProps("title")}
+                  value={formik.values.title.ar}
+                  onChange={(e) =>
+                    formik.setFieldValue("title", {
+                      ...formik.values.title,
+                      ar: e.target.value,
+                    })
+                  }
                   onBlur={formik.handleBlur}
                   variant="outlined"
                   fullWidth
@@ -96,7 +132,13 @@ const ContactUsPage = ({ contact }) => {
                   id="subtitle"
                   label="Subtitle"
                   name="subtitle"
-                  {...formik.getFieldProps("subtitle")}
+                  value={formik.values.subtitle.ar}
+                  onChange={(e) =>
+                    formik.setFieldValue("subtitle", {
+                      ...formik.values.subtitle,
+                      ar: e.target.value,
+                    })
+                  }
                   onBlur={formik.handleBlur}
                   variant="outlined"
                   fullWidth
@@ -105,15 +147,20 @@ const ContactUsPage = ({ contact }) => {
                   id="contact_details"
                   label="Contact details"
                   name="contact_details"
-                  {...formik.getFieldProps("contact_details")}
+                  value={formik.values.contact_details.ar}
+                  onChange={(e) =>
+                    formik.setFieldValue("contact_details", {
+                      ...formik.values.contact_details,
+                      ar: e.target.value,
+                    })
+                  }
                   onBlur={formik.handleBlur}
                   variant="outlined"
                   fullWidth
                 />
               </>
             )}
-
-          </Box>
+          </Stack>
         </ContentPageFlexBox>
         <ContentPageFlexBox>
           <Stack flex={2}>
