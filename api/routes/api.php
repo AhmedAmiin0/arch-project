@@ -21,27 +21,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'me']);
+    // Route::post('/signup', [AuthController::class, 'signup']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 Route::middleware('LocaleMiddleware')->group(function () {
     Route::apiResource('/categories', \App\Http\Controllers\CategoryController::class);
-
     Route::apiResource('/services', \App\Http\Controllers\ServiceController::class);
-
     Route::resource('/projects', \App\Http\Controllers\ProjectController::class)
         ->except(['edit']);
-
     Route::apiResource('/projects.sections', \App\Http\Controllers\ProjectSectionController::class);
-
     Route::apiResource('/feedbacks', \App\Http\Controllers\FeedbackController::class);
-
     Route::apiResource('/corporates', \App\Http\Controllers\CorporateController::class);
-
     Route::apiResource('/emails', \App\Http\Controllers\EmailController::class);
-
     Route::apiResource('/banners', \App\Http\Controllers\BannerController::class);
-
     Route::get('/about', [\App\Http\Controllers\AboutPageController::class, 'show']);
     Route::get('/home', [\App\Http\Controllers\HomePageController::class, 'show']);
     Route::post('/contact', [\App\Http\Controllers\ContactPageController::class, 'sendMessage']);
@@ -96,7 +90,6 @@ Route::middleware('LocaleMiddleware')->group(function () {
         //        Route::delete('/{category}', 'removePermanently');
         //        Route::post('/restore', 'restoreFromArchive');
         //    });
-
         Route::prefix('/projects')->controller(\App\Http\Controllers\ProjectController::class)->group(function () {
             Route::get('/', 'archived');
             Route::get('/{project}', 'showArchived');
@@ -117,7 +110,6 @@ Route::middleware('LocaleMiddleware')->group(function () {
         //    });
     });
     Route::post('/detach_image', [\App\Http\Controllers\GalleryController::class, 'detachImage']);
-
     Route::prefix('/attach_image')->group(function () {
         Route::post('/service/{service}', [\App\Http\Controllers\ServiceController::class, 'attachImage']);
         Route::post('/project/{project}', [\App\Http\Controllers\ProjectController::class, 'attachImage']);
@@ -143,7 +135,5 @@ Route::middleware('LocaleMiddleware')->group(function () {
         $res = Category::all();
         return json_encode($res); // laravel syntax
     });
-    Route::post('/signup', [UserController::class, 'signup']);
-    Route::post('/login', [UserController::class, 'login']);
-    Route::post('/logout', [UserController::class, 'logout']);
+
 });
