@@ -14,9 +14,8 @@ return new class extends Migration {
     {
         Schema::create('global_data', function (Blueprint $table) {
             $table->id();
-            $table->string('agency_name')->nullable();
-            $table->string('agency_domain')->nullable();
-            $table->text('agency_message')->nullable();
+            $table->string('name')->nullable();
+            $table->text('message')->nullable();
             $table->string('facebook_link')->nullable();
             $table->string('twitter_link')->nullable();
             $table->string('instagram_link')->nullable();
@@ -24,7 +23,7 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('map_link')->nullable();
+            $table->string('email_app_secret')->nullable();
             $table->timestamps();
         });
     }

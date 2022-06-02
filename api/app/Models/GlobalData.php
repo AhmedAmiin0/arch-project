@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 class GlobalData extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, HasTranslations;
 
     protected $fillable = [
         'facebook_link',
@@ -19,9 +20,13 @@ class GlobalData extends Model implements HasMedia
         'address',
         'phone',
         'email',
-        'map_link',
-        'agency_name',
-        'agency_message'
+        'name',
+        'message',
+        'email_app_secret'
+    ];
+    public $translatable = [
+        'message',
+        'name'
     ];
     protected $hidden = [
         'created_at',
@@ -32,10 +37,10 @@ class GlobalData extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('logo')->singleFile();
-        $this->addMediaConversion('logo')
-            ->format('png')
-            ->width(100)->height(100);
-        $this->addMediaConversion('ico')
-            ->width(32)->height(32)->format('png');
+        // $this->addMediaConversion('logo')
+        //     ->format('png')
+        //     ->width(100)->height(100);
+        // $this->addMediaConversion('ico')
+        //     ->width(32)->height(32)->format('png');
     }
 }

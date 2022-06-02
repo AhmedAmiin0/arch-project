@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ContactPageResource;
 use App\Jobs\SendMailsJob;
 use App\Mail\NotifiMail;
 use App\Models\ContactPage;
@@ -18,19 +19,8 @@ class ContactPageController extends Controller
      */
     public function index()
     {
-        $contactPage =  ContactPage::find(1);
-
-        return $contactPage ? $contactPage : [];
-        // if ($contactPage != null) {
-        //     $contactPage->home_images = $contactPage->getMedia('contact_page_image')->map(function ($item) {
-        //         return [
-        //             'src' => $item->getFullUrl(),
-        //             'alt' => $item->name,
-        //             'id' => $item->id,
-        //         ];
-        //     });
-        //     unset($contactPage->media);
-        // }
+        $contactPage = ContactPage::find(1);
+        return ContactPageResource::make($contactPage);
     }
 
     /**
@@ -41,41 +31,15 @@ class ContactPageController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         try {
+            $data = $request->only('title','subtitle','contact_details','location');
             $contactPage = ContactPage::find(1);
-            $contactPage == null ? ContactPage::create([
-                'title' => [
-                    'en' => $request->title['en'] ?? '',
-                    'ar' => $request->title['ar']  ?? '',
-                ],
-                'subtitle' => [
-                    'en' => $request->subtitle['en'] ?? '',
-                    'ar' => $request->subtitle['ar']  ?? '',
-                ],
-                'contact_details' => [
-                    'en' => $request->contact_details['en'] ?? '',
-                    'ar' => $request->contact_details['ar']  ?? '',
-                ],
-                'location' => $request->location,
-            ]) : $contactPage->update([
-                'title' => [
-                    'en' => $request->title['en'] ?? '',
-                    'ar' => $request->title['ar']  ?? '',
-                ],
-                'subtitle' => [
-                    'en' => $request->subtitle['en'] ?? '',
-                    'ar' => $request->subtitle['ar']  ?? '',
-                ],
-                'contact_details' => [
-                    'en' => $request->contact_details['en'] ?? '',
-                    'ar' => $request->contact_details['ar']  ?? '',
-                ],
-                'location' => $request->location,
-            ]);
+            $contactPage == null ? ContactPage::create($data) : $contactPage->update($data);
 
-            if ($request->has('contact_page_image')) {
-                $contactPage->addMediaFromRequest('contact_page_image')->each(fn ($media) => $media->toMediaCollection('contact_page_image'));
-            }
+            // if ($request->has('contact_page_image')) {
+            //     $contactPage->addMediaFromRequest('contact_page_image')->each(fn ($media) => $media->toMediaCollection('contact_page_image'));
+            // }
             return response()->json(['message' => 'Contact page updated successfully.'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProjectSentenceController;
+use App\Http\Controllers\UserController;
 use App\Http\Resources\CorporateResource;
 use App\Models\Category;
 use App\Models\Corporate;
@@ -20,10 +21,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 Route::middleware('LocaleMiddleware')->group(function () {
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
-    });
     Route::apiResource('/categories', \App\Http\Controllers\CategoryController::class);
 
     Route::apiResource('/services', \App\Http\Controllers\ServiceController::class);
@@ -142,4 +143,7 @@ Route::middleware('LocaleMiddleware')->group(function () {
         $res = Category::all();
         return json_encode($res); // laravel syntax
     });
+    Route::post('/signup', [UserController::class, 'signup']);
+    Route::post('/login', [UserController::class, 'login']);
+    Route::post('/logout', [UserController::class, 'logout']);
 });

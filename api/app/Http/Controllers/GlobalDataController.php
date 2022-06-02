@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\GlobalDataResource;
 use App\Models\GlobalData;
 use Illuminate\Http\Request;
 
@@ -18,14 +19,12 @@ class GlobalDataController extends Controller
     public function show()
     {
         $globalData = GlobalData::first();
-        $logo = $globalData->getFirstMedia('logo');
-        $globalData->ico = $logo->getFullUrl('ico');
-        $globalData->logo = [
-            'src' => $logo->getFullUrl('logo'),
-            'alt' => $logo->alt ?? '',
-        ];
-        unset($globalData['media']);
-        return $globalData;
+        if($globalData != null)
+            $globalData->logo = [
+                'src' => $globalData->getFirstMediaUrl('logo') ?? '',
+                'alt' => $globalData->getFirstMedia('logo')->name ?? '',
+            ];
+        return GlobalDataResource::make($globalData);
     }
 
     /**
@@ -37,17 +36,28 @@ class GlobalDataController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         try {
-            $data = $request->only('facebook_link', 'twitter_link', 'instagram_link', 'youtube_link', 'address', 'phone', 'email', 'map_link', 'agency_message', 'agency_name', 'agency_domain');
+            $data = [
+                'facebook_link' => $request->facebook_link,
+                'twitter_link' => $request->twitter_link,
+                'instagram_link' => $request->instagram_link,
+                'youtube_link' => $request->youtube_link,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'email_app_secret' => $request->email_app_secret,
+                'message' => $request->message,
+                'name' => $request->name,
+            ];
             $globalData = GlobalData::first();
             $globalData == null ? GlobalData::create($data) : $globalData->update($data);
             if ($request->hasFile('logo')) {
-                $globalData->addMedia($request->file('logo'))->toMediaCollection('logo');
+                $globalData->addMediaFromRequest('logo')->toMediaCollection('logo');
             }
             return response()->json(['success' => true], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-
 }

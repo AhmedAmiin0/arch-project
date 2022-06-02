@@ -1,4 +1,4 @@
-import {Home, ModeNight} from '@mui/icons-material'
+import { Home, ModeNight } from "@mui/icons-material";
 import {
   Box,
   List,
@@ -9,202 +9,202 @@ import {
   Stack,
   styled,
   Switch,
-  Typography
-} from '@mui/material'
-import React from 'react'
-import ArticleIcon from '@mui/icons-material/Article';
-import GroupIcon from '@mui/icons-material/Group';
-import RssFeedIcon from '@mui/icons-material/RssFeed';
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import PersonIcon from '@mui/icons-material/Person';
-import SettingsIcon from '@mui/icons-material/Settings';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import Image from 'next/image'
-import Link from 'next/link'
-import NewspaperIcon from '@mui/icons-material/Newspaper';
-import CategoryIcon from '@mui/icons-material/Category';
-import ClassIcon from '@mui/icons-material/Class';
-import CorporateFareIcon from '@mui/icons-material/CorporateFare';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
-import CollectionsIcon from '@mui/icons-material/Collections';
-// import TreeItem from '@mui/lab/TreeItem';
+  Typography,
+} from "@mui/material";
+import React from "react";
+import RssFeedIcon from "@mui/icons-material/RssFeed";
+import Image from "next/image";
+import Link from "next/link";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
+import CategoryIcon from "@mui/icons-material/Category";
+import ClassIcon from "@mui/icons-material/Class";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
+import GroupIcon from '@mui/icons-material/Group';// import TreeItem from '@mui/lab/TreeItem';
 // import TreeView from '@mui/lab/TreeView';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
 
-
-export const Hr = styled('hr')(({theme}) => ({
-  margin: '24px 0px',
+export const Hr = styled("hr")(({ theme }) => ({
+  margin: "24px 0px",
   flexShrink: 0,
-  borderWidth: '0px 0px thin',
-  borderStyle: 'solid',
-  borderColor: theme.palette.secondary.main
-}))
-export default function Sidebar({mode, setMode, visable}) {
-  const SideBarBox = styled(Box)(({theme}) => ({
+  borderWidth: "0px 0px thin",
+  borderStyle: "solid",
+  borderColor: theme.palette.secondary.main,
+}));
+export default function Sidebar({ mode, setMode, visable }) {
+  const SideBarBox = styled(Box)(({ theme }) => ({
     transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-    boxShadow: 'none',
-    overflowY: ' auto',
-    display: 'flex',
+    boxShadow: "none",
+    overflowY: " auto",
+    display: "flex",
     flexDirection: "column",
-    height: '100%',
+    height: "100%",
     flex: 1,
     zIndex: 1100,
-    position: 'fixed',
-    top: '0px',
-    outline: '0px',
+    position: "fixed",
+    top: "0px",
+    outline: "0px",
     backgroundColor: theme.palette.background.paper,
     borderRight: `1px solid ${theme.palette.secondary} `,
     color: theme.palette.text,
-    width: '280px',
-    '&::-webkit-scrollbar': {
-      width: '0em',
+    width: "280px",
+    "&::-webkit-scrollbar": {
+      width: "0em",
     },
-    left: visable && visable == true ? '0px' : '-300px',
-    [theme.breakpoints.up('md')]: {
-      left: '0px',
-    }
-  }))
-  const SideBarAgencyNameBox = styled('div')(({theme}) => ({
-    textAlign: 'start',
-    margin: '0px',
-    padding: '11px 24px',
+    left: visable && visable == true ? "0px" : "-300px",
+    [theme.breakpoints.up("md")]: {
+      left: "0px",
+    },
+  }));
+  const SideBarAgencyNameBox = styled("div")(({ theme }) => ({
+    textAlign: "start",
+    margin: "0px",
+    padding: "11px 24px",
     backgroundColor: theme.palette.background.transparent,
     borderBottom: `1px solid ${theme.palette.secondary} `,
-    borderRadius: '8px'
-  }))
+    borderRadius: "8px",
+  }));
 
   return (
-    <Box sx={{
-      flex: '0 0 auto',
-    }}>
+    <Box
+      sx={{
+        flex: "0 0 auto",
+      }}
+    >
       <SideBarBox>
-        <Link href={'/admin'}>
+        <Link href={"/admin"}>
           <Stack>
-            <Box position={'relative'} p={'24px'}>
-              <div style={{
-                height: '64px',
-                width: '64px',
-                cursor: 'pointer',
-              }}>
-                <Image src={'/logo.png'} width='100%' height={'100%'}/>
+            <Box position={"relative"} p={"24px"}>
+              <div
+                style={{
+                  height: "64px",
+                  width: "64px",
+                  cursor: "pointer",
+                }}
+              >
+                <Image src={"/logo.png"} width="100%" height={"100%"} />
               </div>
             </Box>
-            <Box sx={{
-              cursor: 'pointer',
-            }}>
-              <div style={{
-                padding: '0 16px',
-              }}>
-                <Typography variant={'h6'}>
-                  <SideBarAgencyNameBox>
-                    Hograt
-                  </SideBarAgencyNameBox>
-                </Typography>
+            <Box
+              sx={{
+                cursor: "pointer",
+              }}
+            >
+              <div
+                style={{
+                  padding: "0 16px",
+                }}
+              >
+                <Link href={"/admin/global"}>
+                  <Typography variant={"h6"}>
+                    <SideBarAgencyNameBox>Hograt</SideBarAgencyNameBox>
+                  </Typography>
+                </Link>
               </div>
             </Box>
           </Stack>
         </Link>
-        <Hr/>
+        <Hr />
         <List>
-          <Link href={'/admin/services'}>
+          <Link href={"/admin/services"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <NewspaperIcon/>
+                  <NewspaperIcon />
                 </ListItemIcon>
-                <ListItemText primary="Services"/>
+                <ListItemText primary="Services" />
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={'/admin/categories'}>
+          <Link href={"/admin/categories"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <CategoryIcon/>
+                  <CategoryIcon />
                 </ListItemIcon>
-                <ListItemText primary="Categories"/>
+                <ListItemText primary="Categories" />
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={'/admin/projects'}>
+          <Link href={"/admin/projects"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <ClassIcon/>
+                  <ClassIcon />
                 </ListItemIcon>
-                <ListItemText primary="Projects"/>
+                <ListItemText primary="Projects" />
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={'/admin/feedbacks'}>
+          <Link href={"/admin/feedbacks"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <RssFeedIcon/>
+                  <RssFeedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Feedbacks"/>
+                <ListItemText primary="Feedbacks" />
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={'/admin/corporates'}>
+          <Link href={"/admin/corporates"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <CorporateFareIcon/>
+                  <CorporateFareIcon />
                 </ListItemIcon>
-                <ListItemText primary="Corporates"/>
+                <ListItemText primary="Corporates" />
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={'/admin/home'}>
+          <Link href={"/admin/home"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <HomeIcon/>
+                  <HomeIcon />
                 </ListItemIcon>
-                <ListItemText primary="Home Page"/>
+                <ListItemText primary="Home Page" />
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={'/admin/about'}>
+          <Link href={"/admin/about"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <InfoIcon/>
+                  <InfoIcon />
                 </ListItemIcon>
-                <ListItemText primary="About Page"/>
+                <ListItemText primary="About Page" />
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={'/admin/contact'}>
-          <ListItem disablePadding>
-            <ListItemButton
-            >
-              <ListItemIcon>
-                <ContactPageIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Contact Page"/>
-            </ListItemButton>
-          </ListItem>
-        </Link>
-          <Link href={'/admin/banners'}>
+          <Link href={"/admin/contact"}>
             <ListItem disablePadding>
-              <ListItemButton
-              >
+              <ListItemButton>
                 <ListItemIcon>
-                  <CollectionsIcon/>
+                  <ContactPageIcon />
                 </ListItemIcon>
-                <ListItemText primary="Banners"/>
+                <ListItemText primary="Contact Page" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          <Link href={"/admin/banners"}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <CollectionsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Banners" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          <Link href={"/admin/users"}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText primary="Users" />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -220,5 +220,5 @@ export default function Sidebar({mode, setMode, visable}) {
         </List>
       </SideBarBox>
     </Box>
-  )
+  );
 }

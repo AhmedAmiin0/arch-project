@@ -1,40 +1,39 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
-import { LangSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
+import { useMemo, useRef, useState } from "react";
+import {
+  LangSwitch,
+  LocaleSwitch,
+} from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   ContentPageContainer,
   ContentPageFlexBox,
 } from "../../../components/dashboard/layout/ContentPage/ContentPageContainer";
 import axios from "../../../config/axios";
 import { useCreate } from "../../../hooks/useCRUD";
+import { Editor } from "../../../components/dashboard/Editor/RichEditor";
 
 const ContactUsPage = ({ contact }) => {
+  console.log(contact);
   const formRef = useRef(null);
   const router = useRouter();
-  const [lang, setLang] = useState("EN");
-  const { createItem } = useCreate(lang.toLowerCase(), "page/contact");
+  const { locale } = router;
+  const { createItem } = useCreate(locale, "page/contact");
   const formik = useFormik({
     initialValues: {
-      title: { en: contact?.title?.en || "", ar: contact?.title?.ar || "" },
-      subtitle: {
-        en: contact?.subtitle?.en || "",
-        ar: contact?.subtitle?.ar || "",
-      },
-      contact_details: {
-        en: contact?.contact_details?.en || "",
-        ar: contact?.contact_details?.ar || "",
-      },
-      location: "",
+      title: contact?.title ?? "",
+      subtitle: contact?.subtitle ?? "",
+      contact_details: contact?.contact_details ?? "",
+      location: contact?.location ?? "",
     },
     onSubmit: async (values) => {
       let res = await createItem(values);
       console.log(res);
     },
   });
+  console.log(formik.values);
 
   return (
     <ContentPageContainer>
@@ -46,7 +45,7 @@ const ContactUsPage = ({ contact }) => {
           <Stack flex={2} direction={"column"} spacing={2}>
             <Typography variant={"h6"}>Basic information</Typography>
             <Stack direction={"row"} spacing={2}>
-              <LangSwitch lang={lang} setLang={setLang} />
+              <LocaleSwitch lang={locale} />
             </Stack>
             {formik.errors && (
               <Typography variant={"body1"} color={"error"}>
@@ -62,104 +61,52 @@ const ContactUsPage = ({ contact }) => {
             alignItems={"center"}
             spacing={2}
           >
-            {lang == "EN" ? (
-              <>
-                <TextField
-                  id="title"
-                  label="Title"
-                  name="title"
-                  value={formik.values.title.en}
-                  onChange={(e) =>
-                    formik.setFieldValue("title", {
-                      ...formik.values.title,
-                      en: e.target.value,
-                    })
-                  }
-                  onBlur={formik.handleBlur}
-                  variant="outlined"
-                  fullWidth
-                />
-                <TextField
-                  id="subtitle"
-                  label="Subtitle"
-                  name="subtitle"
-                  value={formik.values.subtitle.en}
-                  onChange={(e) =>
-                    formik.setFieldValue("subtitle", {
-                      ...formik.values.subtitle,
-                      en: e.target.value,
-                    })
-                  }
-                  onBlur={formik.handleBlur}
-                  variant="outlined"
-                  fullWidth
-                />
+            <TextField
+              id="title"
+              label="Title"
+              name="title"
+              variant="outlined"
+              fullWidth
+              {...formik.getFieldProps("title")}
+            />
+            <TextField
+              id="subtitle"
+              label="Subtitle"
+              name="subtitle"
+              variant="outlined"
+              fullWidth
+              {...formik.getFieldProps("subtitle")}
+            />
 
-                <TextField
-                  id="contact_details"
-                  label="Contact details"
-                  name="contact_details"
-                  value={formik.values.contact_details.en}
-                  onChange={(e) =>
-                    formik.setFieldValue("contact_details", {
-                      ...formik.values.contact_details,
-                      en: e.target.value,
-                    })
-                  }
-                  onBlur={formik.handleBlur}
-                  variant="outlined"
-                  fullWidth
-                />
-              </>
-            ) : (
-              <>
-                <TextField
-                  id="title"
-                  label="Title"
-                  name="title"
-                  value={formik.values.title.ar}
-                  onChange={(e) =>
-                    formik.setFieldValue("title", {
-                      ...formik.values.title,
-                      ar: e.target.value,
-                    })
-                  }
-                  onBlur={formik.handleBlur}
-                  variant="outlined"
-                  fullWidth
-                />
-                <TextField
-                  id="subtitle"
-                  label="Subtitle"
-                  name="subtitle"
-                  value={formik.values.subtitle.ar}
-                  onChange={(e) =>
-                    formik.setFieldValue("subtitle", {
-                      ...formik.values.subtitle,
-                      ar: e.target.value,
-                    })
-                  }
-                  onBlur={formik.handleBlur}
-                  variant="outlined"
-                  fullWidth
-                />
-                <TextField
-                  id="contact_details"
-                  label="Contact details"
-                  name="contact_details"
-                  value={formik.values.contact_details.ar}
-                  onChange={(e) =>
-                    formik.setFieldValue("contact_details", {
-                      ...formik.values.contact_details,
-                      ar: e.target.value,
-                    })
-                  }
-                  onBlur={formik.handleBlur}
-                  variant="outlined"
-                  fullWidth
-                />
-              </>
-            )}
+            <Box
+              m={2}
+              width={"100%"}
+              height={"100%"}
+              sx={{
+                "& .ql-editor": {
+                  minHeight: "300px",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "10px",
+                },
+              }}
+            >
+              <Editor
+                value={formik.values.contact_details}
+                onChange={(value) =>
+                  formik.setFieldValue("contact_details", value)
+                }
+              />
+            </Box>
+            <TextField
+              id="location"
+              label="Location"
+              name="location"
+              {...formik.getFieldProps("location")}
+              onBlur={formik.handleBlur}
+              variant="outlined"
+              fullWidth
+            />
           </Stack>
         </ContentPageFlexBox>
         <ContentPageFlexBox>
@@ -191,11 +138,14 @@ const ContactUsPage = ({ contact }) => {
 };
 ContactUsPage.layout = "L3";
 export default ContactUsPage;
+
 export async function getServerSideProps({ locale }) {
-  let contact = await axios.get(`/page/contact`, {
-    headers: { "Accept-Language": locale },
-  });
-  contact = contact.data || {};
+  let contact =
+    (await axios
+      .get(`/page/contact`, {
+        headers: { "Accept-Language": locale },
+      })
+      .then((res) => res?.data?.data)) ?? {};
   return {
     props: {
       contact,
