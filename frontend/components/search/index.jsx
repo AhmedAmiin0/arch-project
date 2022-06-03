@@ -9,7 +9,6 @@ export function Search() {
 			<Container>
 				<Styles.SearchRow>
 					<SearchItems />
-
 					<Sidebar />
 				</Styles.SearchRow>
 			</Container>
