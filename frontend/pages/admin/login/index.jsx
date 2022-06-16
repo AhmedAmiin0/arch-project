@@ -1,85 +1,145 @@
-import {Avatar, Box, Button, InputAdornment, Stack, styled, TextField, Typography} from "@mui/material";
-import {useRouter} from "next/router";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-// import {AccountCircle} from "@mui/icons-material";
-
-const login = () => {
-    const router = useRouter();
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        router.push("/admin");
-    };
-    const FormContainer = styled(Stack)(({theme}) => ({
-        padding: '32px',
-        marginTop: '-100px',
-        boxShadow: 'rgb(0 0 0 / 24%) 0px 10px 15px',
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: '8px',
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '600px',
-        }
-    }))
-    const LoginContainer = styled(Box)(({theme}) => ({
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-    }))
-    const LoginHeader = styled(Stack)(({theme}) => ({
-        justifyContent: 'center',
-        display: 'flex',
-        alignItems: 'center',
-    }))
-    const LoginInputs = styled(TextField)(({theme}) => ({
-        marginTop: '10px',
-        width: '100%',
-        borderRadius: '8px',
-        fieldset: {
-            borderColor: 'rgb(45, 55, 72)',
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useFormik } from "formik";
+import cookies from "next-cookies";
+import { useEffect, useState } from "react";
+import Errors from "../../../components/dashboard/Errors";
+import { LoginSchema } from "../../../components/dashboard/schemas/LoginSchema";
+import { theTheme } from "../../../components/dashboard/TheTheme";
+import axios from "../../../config/axios";
+import useAuth from "../../../hooks/useAuth";
+const login = ({ data }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const { error, login, loading } = useAuth();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: async (values) => {
+      const res = await login(values);
+    },
+    validationSchema: LoginSchema,
+  });
+  return (
+    <Stack
+      sx={(theTheme) => ({
+        padding: "32px",
+        marginTop: "-100px",
+        boxShadow: "rgb(0 0 0 / 24%) 0px 10px 15px",
+        borderRadius: "8px",
+        backgroundColor: "background.paper",
+        width: "100%",
+        [theTheme.breakpoints.up("md")]: {
+          width: "600px",
         },
-        '.MuiOutlinedInput-root': {
-            borderRadius: '8px',
-        }
-    }))
-    return <LoginContainer>
-        <FormContainer>
-            <LoginHeader mb={2}>
-                <Avatar src={'/logo.png'}/>
-                <Typography id="modal-modal-title" variant="h4" component="h2" mb={1}>
-                    Log in
-                </Typography>
-                <Typography component={'span'} fontWeight={'100'}>
-                    Sign in on the internal platform
-                </Typography>
-            </LoginHeader>
-            <Stack gap={'10px'}>
-                <LoginInputs id="outlined-basic" label="Email" variant="outlined"/>
-                <LoginInputs id="outlined-basic" label="Password" variant="outlined"
-                             type={'password'}
-                             InputProps={{
-                                 endAdornment: (
-                                     <InputAdornment position="end">
-                                         <VisibilityIcon
-                                             sx={{
-                                                 color: 'text.primary',
-                                             }}
-                                         />
-                                     </InputAdornment>
-                                 ),
-                             }}
-                />
-
-                <Button sx={
-                    {
-                        marginTop: '10px',
-                        padding: '12px 16px'
-                    }
-                } variant="contained" p={5} onClick={handleSubmit} color="primary">Log In</Button>
-            </Stack>
-        </FormContainer>
-    </LoginContainer>
-}
-login.layout = 'L2'
-export default login
+      })}
+    >
+      <form onSubmit={formik.handleSubmit}>
+        <Stack
+          mb={2}
+          sx={{
+            justifyContent: "center",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Avatar src={data.src} alt={data.alt} />
+          <Typography id="modal-modal-title" variant="h4" component="h2" mb={1}>
+            Log in
+          </Typography>
+          <Typography component={"span"} fontWeight={"100"}>
+            Sign in on the internal platform
+          </Typography>
+        </Stack>
+        <Stack gap={"10px"}>
+          <TextField
+            label="Email"
+            variant="outlined"
+            fullWidth
+            name="email"
+            mt={2}
+            {...formik.getFieldProps("email")}
+            type="email"
+            error={formik.errors.email && formik.touched.email ? true : false}
+          />
+          <FormControl fullWidth variant="outlined">
+            <InputLabel
+              htmlFor="outlined-adornment-password"
+              error={formik.errors.password && formik.touched.password}
+            >
+              Password
+            </InputLabel>
+            <OutlinedInput
+              type={showPassword ? "text" : "password"}
+              {...formik.getFieldProps("password")}
+              error={formik.errors.password && formik.touched.password}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+          <Button
+            sx={{
+              marginTop: "10px",
+              padding: "12px 16px",
+            }}
+            variant="contained"
+            p={5}
+            color="primary"
+            type="submit"
+            disabled={loading ? true : false}
+          >
+            {loading ? <CircularProgress size={30} /> : "Login"}
+          </Button>
+          <Errors formik={formik} />
+          <Typography
+            variant="body1"
+            color="error"
+            display={error ? "block" : "none"}
+          >
+            {error}
+          </Typography>
+        </Stack>
+      </form>
+    </Stack>
+  );
+};
+login.layout = "L2";
+export default login;
+export const getServerSideProps = async (ctx) => {
+  let res = await axios("/global");
+  res = res.data.data.logo || {
+    src: "/logo.png",
+    alt: "logo",
+  };
+  // const { token } = cookies(ctx);
+  // if (token)
+  //   return { redirect: { destination: "/admin/" } };
+  return {
+    props: {
+      data: res,
+    },
+  };
+};

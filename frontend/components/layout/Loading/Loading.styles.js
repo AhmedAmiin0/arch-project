@@ -10,4 +10,5 @@ export const LoadingBackground = styled.div`
   z-index: 100;
   display: flex;
   justify-content: center;
-  align-items: center;`
+  align-items: center;
+  `

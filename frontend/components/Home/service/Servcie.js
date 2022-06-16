@@ -40,7 +40,7 @@ export const Services = () => {
                     return <Link href='services/service_details_overview' key={i}>
                         <ServicesCard >
                             <ServicesImageContainer>
-                                <Image src={`/${item.src}`} layout={'fill'}/>
+                                <Image src={`/${item.src}`} layout={'fill'} loading='eager'/>
                             </ServicesImageContainer>
                             <ServicesContent>
                                 <h3>{item.subtitle}</h3>

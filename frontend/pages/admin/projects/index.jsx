@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
+import cookies from "next-cookies";
 
 const ProjectList = () => {
   const router = useRouter();
@@ -71,3 +72,13 @@ const ProjectList = () => {
 };
 ProjectList.layout = "L3";
 export default ProjectList;
+export async function getServerSideProps(ctx) {
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  return {
+    props: {},
+  };
+}

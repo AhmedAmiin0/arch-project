@@ -23,7 +23,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
-import GroupIcon from '@mui/icons-material/Group';// import TreeItem from '@mui/lab/TreeItem';
+import GroupIcon from "@mui/icons-material/Group"; // import TreeItem from '@mui/lab/TreeItem';
 // import TreeView from '@mui/lab/TreeView';
 
 export const Hr = styled("hr")(({ theme }) => ({
@@ -33,7 +33,12 @@ export const Hr = styled("hr")(({ theme }) => ({
   borderStyle: "solid",
   borderColor: theme.palette.secondary.main,
 }));
-export default function Sidebar({ mode, setMode, visable }) {
+export default function Sidebar({
+  mode,
+  setMode,
+  sidebarVisible,
+  setSidebarVisible,
+}) {
   const SideBarBox = styled(Box)(({ theme }) => ({
     transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
     boxShadow: "none",
@@ -49,13 +54,14 @@ export default function Sidebar({ mode, setMode, visable }) {
     backgroundColor: theme.palette.background.paper,
     borderRight: `1px solid ${theme.palette.secondary} `,
     color: theme.palette.text,
+    transition: "left 1s cubic-bezier(0.4, 0, 0.2, 1) 0ms",
     width: "280px",
     "&::-webkit-scrollbar": {
       width: "0em",
     },
-    left: visable && visable == true ? "0px" : "-300px",
-    [theme.breakpoints.up("md")]: {
-      left: "0px",
+    left: "0px",
+    [theme.breakpoints.down("md")]: {
+      left: sidebarVisible == false ? "-280px" : "0px",
     },
   }));
   const SideBarAgencyNameBox = styled("div")(({ theme }) => ({
@@ -98,7 +104,10 @@ export default function Sidebar({ mode, setMode, visable }) {
                 }}
               >
                 <Link href={"/admin/global"}>
-                  <Typography variant={"h6"}>
+                  <Typography
+                    variant={"h6"}
+                    onClick={() => setSidebarVisible(false)}
+                  >
                     <SideBarAgencyNameBox>Hograt</SideBarAgencyNameBox>
                   </Typography>
                 </Link>
@@ -109,7 +118,7 @@ export default function Sidebar({ mode, setMode, visable }) {
         <Hr />
         <List>
           <Link href={"/admin/services"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <NewspaperIcon />
@@ -119,7 +128,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/categories"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <CategoryIcon />
@@ -129,7 +138,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/projects"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <ClassIcon />
@@ -139,7 +148,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/feedbacks"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <RssFeedIcon />
@@ -149,7 +158,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/corporates"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <CorporateFareIcon />
@@ -159,7 +168,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/home"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <HomeIcon />
@@ -169,7 +178,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/about"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <InfoIcon />
@@ -179,7 +188,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/contact"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <ContactPageIcon />
@@ -189,7 +198,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/banners"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <CollectionsIcon />
@@ -199,7 +208,7 @@ export default function Sidebar({ mode, setMode, visable }) {
             </ListItem>
           </Link>
           <Link href={"/admin/users"}>
-            <ListItem disablePadding>
+            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
                 <ListItemIcon>
                   <GroupIcon />

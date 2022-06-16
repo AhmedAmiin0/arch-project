@@ -5,13 +5,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useMemo, useState } from "react";
 import debouce from "lodash.debounce";
 import { useRouter } from "next/router";
 import { LocaleSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { useQuery } from "../../../hooks/useQuery";
 import ServerPaginationTable from "../../../components/dashboard/DataGrid/ServerSideTable";
-import styled from "@emotion/styled";
 
 const ListingComponent = ({
   cols,
@@ -21,7 +21,9 @@ const ListingComponent = ({
   api_url = page_title_plural,
   url = page_title_plural,
   HasSentence = false,
-  rowHeight=100,
+  rowHeight = 100,
+  readOnlyList = false,
+
   // sentence_url = null
 }) => {
   const router = useRouter();
@@ -60,15 +62,22 @@ const ListingComponent = ({
       filterable: false,
       width: 140,
       renderCell: (params) => (
-        <Stack direction={"row"} display={"flex"} 
-        justifyContent={"center"} alignItems={"center"}>
-
+        <Stack
+          direction={"row"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
           <Button
             sx={{ borderRadius: "50%", padding: "10px", minWidth: "unset" }}
-            color="warning"
+            color={readOnlyList ? "primary" : "warning"}
             onClick={() => router.push(`${url}/${params.id}`)}
           >
-            <EditIcon sx={{ fontSize: "1em" }} />
+            {readOnlyList ? (
+              <VisibilityIcon sx={{ fontSize: "1em" }} />
+            ) : (
+              <EditIcon sx={{ fontSize: "1em" }} />
+            )}
           </Button>
           <Button
             sx={{ borderRadius: "50%", padding: "10px", minWidth: "unset" }}
@@ -99,7 +108,7 @@ const ListingComponent = ({
         }}
       >
         <Stack direction={"column"} height={"100%"} spacing={2} flex={2} my={2}>
-          <Typography variant={"h4"} fontWeight={"bolder"}>
+          <Typography variant={"h4"} fontWeight={"bolder"} >
             {page_title_plural[0]?.toUpperCase() + page_title_plural.slice(1)}
           </Typography>
           <LocaleSwitch location={router.asPath} lang={locale} />

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectSentenceController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\CorporateResource;
@@ -22,11 +23,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'me']);
-    // Route::post('/signup', [AuthController::class, 'signup']);
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', [AuthController::class, 'me']);
+// Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/me', [AuthController::class, 'me']);
 Route::middleware('LocaleMiddleware')->group(function () {
+    Route::apiResource('/users', UserController::class);
     Route::apiResource('/categories', \App\Http\Controllers\CategoryController::class);
     Route::apiResource('/services', \App\Http\Controllers\ServiceController::class);
     Route::resource('/projects', \App\Http\Controllers\ProjectController::class)
