@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import cookies from "next-cookies";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -100,3 +101,14 @@ const Services = () => {
 
 Services.layout = "L3";
 export default Services;
+export const getServerSideProps = async (ctx) => {
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  return {
+    props: {
+    },
+  };
+};

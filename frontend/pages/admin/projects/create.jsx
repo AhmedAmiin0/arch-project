@@ -25,6 +25,7 @@ import { ProjectSchemaCreate } from "../../../components/dashboard/schemas/Proje
 import { useCreate } from "../../../hooks/useCRUD";
 import { HighlightedSectionStyles } from "../../../components/dashboard/projects/HighlightedSectionStyles";
 import { LangSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
+import cookies from "next-cookies";
 
 const Create = ({ categories_and_services }) => {
   const formRef = useRef(null);
@@ -240,8 +241,16 @@ const Create = ({ categories_and_services }) => {
                 multiline={true}
                 rows={10}
                 name={"description_ar"}
-                error={ formik.touched.description_ar && formik.errors.description_ar ? true : false }
-                helperText={ formik.touched.description_ar && formik.errors.description_ar ? formik.errors.description_ar : "" }
+                error={
+                  formik.touched.description_ar && formik.errors.description_ar
+                    ? true
+                    : false
+                }
+                helperText={
+                  formik.touched.description_ar && formik.errors.description_ar
+                    ? formik.errors.description_ar
+                    : ""
+                }
                 onChange={formik.handleChange}
                 value={formik.values.description_ar ?? ""}
                 onBlur={formik.handleBlur}
@@ -365,13 +374,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section1_title_ar &&
-                        formik.errors.project_highlights_section1_title_ar
+                      formik.errors.project_highlights_section1_title_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section1_title_ar &&
-                        formik.errors.project_highlights_section1_title_ar
+                      formik.errors.project_highlights_section1_title_ar
                         ? formik.errors.project_highlights_section1_title_ar
                         : ""
                     }
@@ -389,13 +398,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section1_title_en &&
-                        formik.errors.project_highlights_section1_title_en
+                      formik.errors.project_highlights_section1_title_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section1_title_en &&
-                        formik.errors.project_highlights_section1_title_en
+                      formik.errors.project_highlights_section1_title_en
                         ? formik.errors.project_highlights_section1_title_en
                         : ""
                     }
@@ -413,16 +422,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section1_description_ar &&
-                        formik.errors.project_highlights_section1_description_ar
+                      formik.errors.project_highlights_section1_description_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section1_description_ar &&
-                        formik.errors.project_highlights_section1_description_ar
+                      formik.errors.project_highlights_section1_description_ar
                         ? formik.errors
-                          .project_highlights_section1_description_ar
+                            .project_highlights_section1_description_ar
                         : ""
                     }
                   />
@@ -438,16 +447,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section1_description_en &&
-                        formik.errors.project_highlights_section1_description_en
+                      formik.errors.project_highlights_section1_description_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section1_description_en &&
-                        formik.errors.project_highlights_section1_description_en
+                      formik.errors.project_highlights_section1_description_en
                         ? formik.errors
-                          .project_highlights_section1_description_en
+                            .project_highlights_section1_description_en
                         : ""
                     }
                   />
@@ -470,13 +479,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section2_title_ar &&
-                        formik.errors.project_highlights_section2_title_ar
+                      formik.errors.project_highlights_section2_title_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section2_title_ar &&
-                        formik.errors.project_highlights_section2_title_ar
+                      formik.errors.project_highlights_section2_title_ar
                         ? formik.errors.project_highlights_section2_title_ar
                         : ""
                     }
@@ -492,13 +501,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section2_title_en &&
-                        formik.errors.project_highlights_section2_title_en
+                      formik.errors.project_highlights_section2_title_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section2_title_en &&
-                        formik.errors.project_highlights_section2_title_en
+                      formik.errors.project_highlights_section2_title_en
                         ? formik.errors.project_highlights_section2_title_en
                         : ""
                     }
@@ -516,16 +525,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section2_description_ar &&
-                        formik.errors.project_highlights_section2_description_ar
+                      formik.errors.project_highlights_section2_description_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section2_description_ar &&
-                        formik.errors.project_highlights_section2_description_ar
+                      formik.errors.project_highlights_section2_description_ar
                         ? formik.errors
-                          .project_highlights_section2_description_ar
+                            .project_highlights_section2_description_ar
                         : ""
                     }
                   />
@@ -541,16 +550,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section2_description_en &&
-                        formik.errors.project_highlights_section2_description_en
+                      formik.errors.project_highlights_section2_description_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section2_description_en &&
-                        formik.errors.project_highlights_section2_description_en
+                      formik.errors.project_highlights_section2_description_en
                         ? formik.errors
-                          .project_highlights_section2_description_en
+                            .project_highlights_section2_description_en
                         : ""
                     }
                   />
@@ -573,13 +582,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section3_title_ar &&
-                        formik.errors.project_highlights_section3_title_ar
+                      formik.errors.project_highlights_section3_title_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section3_title_ar &&
-                        formik.errors.project_highlights_section3_title_ar
+                      formik.errors.project_highlights_section3_title_ar
                         ? formik.errors.project_highlights_section3_title_ar
                         : ""
                     }
@@ -595,13 +604,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section3_title_en &&
-                        formik.errors.project_highlights_section3_title_en
+                      formik.errors.project_highlights_section3_title_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section3_title_en &&
-                        formik.errors.project_highlights_section3_title_en
+                      formik.errors.project_highlights_section3_title_en
                         ? formik.errors.project_highlights_section3_title_en
                         : ""
                     }
@@ -619,16 +628,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section3_description_ar &&
-                        formik.errors.project_highlights_section3_description_ar
+                      formik.errors.project_highlights_section3_description_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section3_description_ar &&
-                        formik.errors.project_highlights_section3_description_ar
+                      formik.errors.project_highlights_section3_description_ar
                         ? formik.errors
-                          .project_highlights_section3_description_ar
+                            .project_highlights_section3_description_ar
                         : ""
                     }
                   />
@@ -644,16 +653,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section3_description_en &&
-                        formik.errors.project_highlights_section3_description_en
+                      formik.errors.project_highlights_section3_description_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section3_description_en &&
-                        formik.errors.project_highlights_section3_description_en
+                      formik.errors.project_highlights_section3_description_en
                         ? formik.errors
-                          .project_highlights_section3_description_en
+                            .project_highlights_section3_description_en
                         : ""
                     }
                   />
@@ -676,13 +685,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section4_title_ar &&
-                        formik.errors.project_highlights_section4_title_ar
+                      formik.errors.project_highlights_section4_title_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section4_title_ar &&
-                        formik.errors.project_highlights_section4_title_ar
+                      formik.errors.project_highlights_section4_title_ar
                         ? formik.errors.project_highlights_section4_title_ar
                         : ""
                     }
@@ -698,13 +707,13 @@ const Create = ({ categories_and_services }) => {
                     )}
                     error={
                       formik.touched.project_highlights_section4_title_en &&
-                        formik.errors.project_highlights_section4_title_en
+                      formik.errors.project_highlights_section4_title_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched.project_highlights_section4_title_en &&
-                        formik.errors.project_highlights_section4_title_en
+                      formik.errors.project_highlights_section4_title_en
                         ? formik.errors.project_highlights_section4_title_en
                         : ""
                     }
@@ -722,16 +731,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section4_description_ar &&
-                        formik.errors.project_highlights_section4_description_ar
+                      formik.errors.project_highlights_section4_description_ar
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section4_description_ar &&
-                        formik.errors.project_highlights_section4_description_ar
+                      formik.errors.project_highlights_section4_description_ar
                         ? formik.errors
-                          .project_highlights_section4_description_ar
+                            .project_highlights_section4_description_ar
                         : ""
                     }
                   />
@@ -747,16 +756,16 @@ const Create = ({ categories_and_services }) => {
                     error={
                       formik.touched
                         .project_highlights_section4_description_en &&
-                        formik.errors.project_highlights_section4_description_en
+                      formik.errors.project_highlights_section4_description_en
                         ? true
                         : false
                     }
                     helperText={
                       formik.touched
                         .project_highlights_section4_description_en &&
-                        formik.errors.project_highlights_section4_description_en
+                      formik.errors.project_highlights_section4_description_en
                         ? formik.errors
-                          .project_highlights_section4_description_en
+                            .project_highlights_section4_description_en
                         : ""
                     }
                   />
@@ -852,13 +861,20 @@ const Create = ({ categories_and_services }) => {
 Create.layout = "L3";
 export default Create;
 
-export async function getServerSideProps({ locale }) {
+export async function getServerSideProps(context) {
+  const { locale } = context;
+  const { token } = cookies(context);
   const categories_and_services =
     (await axios
       .get("/projects/create", {
         headers: { "Accept-Language": locale },
       })
       .then((res) => res.data)) ?? {};
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+
   return {
     props: { categories_and_services },
   };

@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        if (!auth()->attempt($credentials)) return response()->json(['error' => 'Unauthorized'], 401);
-
-        return $this->responseToken(auth()->user());
+        if (! auth()->attempt($credentials)) return response()->json(['message' => 'Invalid credentials'], 401);
+        return response()->json([
+                'message' => 'Login successful',
+            ])->withCookie( cookie()->forever('token', auth('sanctum')->user()->id) );
+        ;
     }
     public function logout()
     {
@@ -22,16 +25,8 @@ class AuthController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-
-    protected function responseToken($user)
-    {
-        return response()->json([
-            'user' => $user,
-            'token' => $user->createToken('MyApp')->plainTextToken,
-        ], 200);
-    }
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth('sanctum')->user());
     }
 }
