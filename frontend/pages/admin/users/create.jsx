@@ -23,6 +23,7 @@ import Link from "next/link";
 import { useCreate } from "../../../hooks/useCRUD";
 import { UserSchemaCreate } from "../../../components/dashboard/schemas/UserSchema";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import cookies from "next-cookies";
 
 const CreateUser = () => {
   const formRef = useRef(null);

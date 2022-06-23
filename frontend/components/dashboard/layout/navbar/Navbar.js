@@ -3,12 +3,34 @@ import {
   Avatar,
   Button,
   IconButton,
+  Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-
-export default function Navbar({ theme , sidebarVisible , setSidebarVisible}) {
+import LogoutIcon from "@mui/icons-material/Logout";
+import axios from "../../../../config/axios";
+import { useRouter } from "next/router";
+import {
+  errorAlertAction,
+  notificationContext,
+} from "../../../../context/NotificationsContext";
+import { useContext } from "react";
+import { UserContext } from "../Layout";
+export default function Navbar({ theme, setSidebarVisible }) {
+  const [notify, dispatch] = useContext(notificationContext);
+  // const {user} = useContext(UserContext);
+  const router = useRouter();
+  // console.log(user)
+  const handleLogout = async () => {
+    try {
+      await axios.post("/logout");
+      router.push("/admin/login");
+    } catch (e) {
+      console.log(e);
+      dispatch(errorAlertAction("could not logout"));
+    }
+  };
   return (
     <AppBar
       position="sticky"
@@ -29,7 +51,7 @@ export default function Navbar({ theme , sidebarVisible , setSidebarVisible}) {
         }}
       >
         <IconButton
-          size="large"
+          size="small"
           edge="start"
           color="inherit"
           aria-label="menu"
@@ -44,7 +66,17 @@ export default function Navbar({ theme , sidebarVisible , setSidebarVisible}) {
         >
           <MenuIcon />
         </IconButton>
-        <Avatar alt="Cindy Baker" src="/feedback1.webp" />
+        <Stack direction={"row"} spacing={2}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="logout"
+            onClick={handleLogout}
+          >
+            <LogoutIcon fontSize={"small"} />
+          </IconButton>
+          {/* <Avatar alt={user?.avatar?.name} src={user?.avatar?.src} /> */}
+        </Stack>
       </Toolbar>
     </AppBar>
   );

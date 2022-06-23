@@ -19,8 +19,9 @@ class ContactPageController extends Controller
      */
     public function index()
     {
+
         $contactPage = ContactPage::find(1);
-        return ContactPageResource::make($contactPage);
+        return ContactPageResource::make($contactPage) ;
     }
 
     /**

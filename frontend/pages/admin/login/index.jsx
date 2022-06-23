@@ -129,14 +129,15 @@ const login = ({ data }) => {
 login.layout = "L2";
 export default login;
 export const getServerSideProps = async (ctx) => {
-  let res = await axios("/global");
-  res = res.data.data.logo || {
+  // let res = await axios("/global");
+  let res = {}
+  res =  {
     src: "/logo.png",
     alt: "logo",
   };
-  // const { token } = cookies(ctx);
-  // if (token)
-  //   return { redirect: { destination: "/admin/" } };
+  const { token } = cookies(ctx);
+  if (token)
+    return { redirect: { destination: "/admin/" } };
   return {
     props: {
       data: res,

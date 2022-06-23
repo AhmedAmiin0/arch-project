@@ -4,83 +4,79 @@ import Navbar from "./navbar/Navbar";
 import Sidebar from "./sidebar/Sidebar";
 import { SweetAlertProvider } from "../../../context/NotificationsContext";
 import NextNProgress from "nextjs-progressbar";
-import { createContext, useEffect, useState } from "react";
-import { UserProvider } from "../../../context/AuthContext";
-import useAuth from "../../../hooks/useAuth";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../../../config/axios";
 import { useRouter } from "next/router";
-
-// export const SidebarContext = createContext(true)
+export const UserContext = createContext({
+  user: "",
+  setUser: () => {},
+});
+const DashBoardContainer = styled(Box)(({ theme }) => ({
+  flex: 6,
+  [theme.breakpoints.up("md")]: { paddingLeft: "280px", paddingTop: "100px" },
+}));
 
 export default function Layout({ children }) {
   const theme = createTheme(theTheme);
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [user, setUser] = useState(null);
-  const { isLoggedIn, checkAuth } = useAuth();
   const router = useRouter();
-  const DashBoardContainer = styled(Box)(({ theme }) => ({
-    flex: 6,
-    [theme.breakpoints.up("md")]: {
-      paddingLeft: "280px",
-      paddingTop: "100px",
-    },
-  }));
-  useEffect(() => {
-    axios
-      .get("/user", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-      .then((res) => setUser(res.data));
-  }, [isLoggedIn]);
+  const [user, setUser] = useState("");
+  // useEffect(() => {
+  //   axios
+  //     .get("/user")
+  //     .then((res) => {
+  //       setUser(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       axios.post("/logout").then(() => {
+  //         router.push("/admin/login");
+  //       });
+  //     });
+  // }, []);
   return (
     <ThemeProvider theme={theme}>
-      <NextNProgress
-        color="rgb(80, 72, 229)"
-        startPosition={0.3}
-        stopDelayMs={200}
-        height={3}
-        showOnShallow={true}
-        options={{ showSpinner: false }}
-      />
-      {/* <SidebarContext.Provider value={[sidebarVisable, setSidebarVisable]}> */}
-      <SweetAlertProvider>
-        <Box bgcolor={"background.default"} color={"text.main"}>
-          <Navbar
-            theme={theme}
-            setSidebarVisible={setSidebarVisible}
-            sidebarVisible={sidebarVisible}
-          />
-          <Stack
-            direction="row"
-            display={"flex"}
-            justifyContent="space-between"
-            sx={{ height: "100vh" }}
-            // sx={{ height: "100%", }}
-          >
-            <Sidebar
+      <UserContext.Provider value={{ user, setUser }}>
+        <NextNProgress
+          color="rgb(80, 72, 229)"
+          startPosition={0.3}
+          stopDelayMs={200}
+          height={3}
+          showOnShallow={true}
+          options={{ showSpinner: false }}
+        />
+        <SweetAlertProvider>
+          <Box bgcolor={"background.default"} color={"text.main"}>
+            <Navbar
+              theme={theme}
               setSidebarVisible={setSidebarVisible}
               sidebarVisible={sidebarVisible}
             />
-            <DashBoardContainer>
-              <Box
-                sx={{
-                  padding: "0 24px",
-                  backgroundColor: "background.default",
-                  margin: "0 auto",
-                }}
-              >
-                {children}
-              </Box>
-            </DashBoardContainer>
-          </Stack>
-        </Box>
-      </SweetAlertProvider>
-      {/* </SidebarContext.Provider> */}
+            <Stack
+              direction="row"
+              display={"flex"}
+              justifyContent="space-between"
+              sx={{ height: "100vh", transition: "1s" }}
+            >
+              <Sidebar
+                setSidebarVisible={setSidebarVisible}
+                sidebarVisible={sidebarVisible}
+              />
+              <DashBoardContainer>
+                <Box
+                  sx={{
+                    padding: "0 24px",
+                    backgroundColor: "background.default",
+                    margin: "0 auto",
+                  }}
+                >
+                  {children}
+                </Box>
+              </DashBoardContainer>
+            </Stack>
+          </Box>
+        </SweetAlertProvider>
+      </UserContext.Provider>
     </ThemeProvider>
-    // </UserProvider>
   );
 }

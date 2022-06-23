@@ -13,6 +13,7 @@ import {Delete} from "@mui/icons-material";
 import DoneIcon from '@mui/icons-material/Done';
 import {useRouter} from "next/router";
 import {LocaleSwitch} from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
+import cookies from "next-cookies";
 
 const EditCategory = ({categories}) => {
   const [notify, dispatch] = useContext(notificationContext);
@@ -28,22 +29,22 @@ const EditCategory = ({categories}) => {
       dispatch(errorAlertAction("Error deleting categories"));
     }
   }
-  const formik = useFormik({
-    initialValues: {
-      name: categories?.data?.name,
-      visible: categories?.data?.visible,
-    },
-    onSubmit: async values => {
-      try {
-        await axios.put("categories/" + id, values,{headers: {'Accept-Language': locale}});
-        dispatch(successAlertAction("Category created successfully"))
-      } catch (e) {
-        console.log(e)
-        dispatch(errorAlertAction('Category creation failed'))
-      }
-    },
-    validationSchema: CategorySchemaEdit
-  })
+  // const formik = useFormik({
+  //   initialValues: {
+  //     name: categories?.data?.name,
+  //     visible: categories?.data?.visible,
+  //   },
+  //   onSubmit: async values => {
+  //     try {
+  //       await axios.put("categories/" + id, values,{headers: {'Accept-Language': locale}});
+  //       dispatch(successAlertAction("Category created successfully"))
+  //     } catch (e) {
+  //       console.log(e)
+  //       dispatch(errorAlertAction('Category creation failed'))
+  //     }
+  //   },
+  //   validationSchema: CategorySchemaEdit
+  // })
   return <ContentPageContainer>
     <Typography variant={'h4'} mb={3}>Edit Category</Typography>
     <ContentPageFlexBox>
@@ -64,7 +65,7 @@ const EditCategory = ({categories}) => {
             )}
       </Stack>
       <Box flex={3} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
-        <form onSubmit={formik.handleSubmit}>
+        {/* <form onSubmit={formik.handleSubmit}>
           <Stack
             direction={'column'}
             height={'100%'}
@@ -125,7 +126,7 @@ const EditCategory = ({categories}) => {
               </Button>
             </Box>
           </Stack>
-        </form>
+        </form> */}
       </Box>
     </ContentPageFlexBox>
   </ContentPageContainer>
@@ -133,7 +134,7 @@ const EditCategory = ({categories}) => {
 EditCategory.layout = 'L3';
 export default EditCategory;
 
-export async function getServerSideProps({params, locale}) {
+export async function getServerSideProps({params, locale} ) {
   const {id} = params;
   const categories = await axios.get('/categories/' + id, {headers: {'Accept-Language': locale}}).then(res => res.data) ?? {};
   return {props: {categories}}

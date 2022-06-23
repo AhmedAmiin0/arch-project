@@ -22,6 +22,7 @@ import Link from "next/link";
 import { useCreate } from "../../../hooks/useCRUD";
 import { LangSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { FeedbackSchemaCreate } from "../../../components/dashboard/schemas/FeedbackSchema";
+import cookies from "next-cookies";
 
 const CreateTestimonials = () => {
   const formRef = useRef(null);
@@ -200,3 +201,9 @@ const CreateTestimonials = () => {
 }
 CreateTestimonials.layout = 'L3'
 export default CreateTestimonials
+export async function getServerSideProps(ctx){
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+    redirect: { destination: "/admin/login", }
+  };
+}

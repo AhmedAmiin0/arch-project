@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import { LocaleSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import {  FeedbackSchemaEdit } from "../../../components/dashboard/schemas/FeedbackSchema";
 import { useCreate, useDelete } from "../../../hooks/useCRUD";
+import cookies from "next-cookies";
 
 
 const EditFeedBack = ({ feedback }) => {
@@ -159,8 +160,13 @@ const EditFeedBack = ({ feedback }) => {
 EditFeedBack.layout = 'L3'
 export default EditFeedBack;
 
-export async function getServerSideProps({ params, locale }) {
+export async function getServerSideProps(ctx) {
+  const { params, locale } = ctx
   const { feedback_id } = params;
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+    redirect: { destination: "/admin/login", }
+  };
   const feedback = await axios.get('/feedbacks/' + feedback_id, {
     headers: { 'Accept-Language': locale }
   }).then(res => res.data.data) ?? {};

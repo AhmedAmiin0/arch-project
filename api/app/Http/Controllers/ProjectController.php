@@ -50,8 +50,8 @@ class ProjectController extends Controller
     {
         // return $request->all();
         $request->validate([
-            'name_ar' => 'nullable|max:255',
-            'name_en' => 'nullable|max:255',
+            'name_ar' => 'nullable|max:255',            //
+            'name_en' => 'nullable|max:255 ',            //
             'description_ar' => 'nullable',
             'description_en' => 'nullable',
             'keywords' => 'nullable|max:255',
@@ -228,58 +228,6 @@ class ProjectController extends Controller
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
-    // public function archived()
-    // {
-    //     $limit = request()->get('limit', 10);
-    //     $project = Project::onlyTrashed()
-    //         ->paginate($limit);
-    //     $project->map(function ($project) {
-    //         $project->project_thumb = [
-    //                 'src' => $project->getFirstMedia('project_thumb')->getFullUrl(),
-    //                 'alt' => $project->getFirstMedia('project_thumb')->name,
-    //             ] ?? null;
-    //         unset($project['media']);
-    //         return $project;
-    //     });
-    //     return $project;
-    // }
-
-    // public function showArchived($id)
-    // {
-    //     $project = Project::onlyTrashed()->find($id)->load(['sections', 'project_creation_highlights', 'category', 'service']);
-    //     $project['project_thumb'] = [
-    //             'src' => $project->getFirstMedia('project_thumb')->getFullUrl(),
-    //             'alt' => $project->getFirstMedia('project_thumb')->name,
-    //         ] ?? null;
-    //     $project['project_images'] = $project->getMedia('project_images')->map(fn($media) => [
-    //             'src' => $media->getFullUrl(),
-    //             'alt' => $media->name,
-    //         ] ?? null);
-    //     unset($project['media']);
-    //     return $project;
-    // }
-
-    // public function restoreFromArchive(Request $request)
-    // {
-    //     try {
-    //         $project = Project::onlyTrashed()->find($request->get('id'));
-    //         $project->restore();
-    //         return response()->json(['message' => 'success'], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['message' => $e->getMessage()], 400);
-    //     }
-    // }
-
-    // public function removePermanently($id)
-    // {
-    //     $project = Project::onlyTrashed()->find($id);
-    //     try {
-    //         $project->forceDelete();
-    //         return response()->json(['message' => 'success'], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['message' => $e->getMessage()], 400);
-    //     }
-    // }
 
     /**
      * Remove the specified resource from storage.

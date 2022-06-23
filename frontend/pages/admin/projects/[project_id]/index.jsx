@@ -29,6 +29,7 @@ import { GalleryModal } from "../../../../components/dashboard/GalleryModel/Gall
 import { useCreate, useDelete } from "../../../../hooks/useCRUD";
 import { ProjectSchemaEdit } from "../../../../components/dashboard/schemas/ProjectSchema";
 import Delete from "@mui/icons-material/Delete";
+import cookies from "next-cookies";
 const EditProject = ({
   categories_and_services,
   project
@@ -517,11 +518,16 @@ const EditProject = ({
 EditProject.layout = "L3";
 export default EditProject;
 
-export async function getServerSideProps({ locale, params }) {
-  const { project_id } = params;
+export async function getServerSideProps(ctx) {
+  const { locale, params } = ctx;
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+    redirect: { destination: "/admin/login", }
+  };
   const categories_and_services = await axios.get("/projects/create", { headers: { "Accept-Language": locale } })
     .then((res) => res.data) ?? {};
   const project = await axios.get(`projects/${project_id}`, { headers: { "Accept-Language": locale } }).then((res) => res?.data?.data) ?? {};
+
   // const project = await fetch('http://localhost:8000/api/projects/17').then(res => res.json());
   return {
     props: {

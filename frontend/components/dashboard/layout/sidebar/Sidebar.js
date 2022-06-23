@@ -1,6 +1,14 @@
-import { Home, ModeNight } from "@mui/icons-material";
+import {
+  ExpandLess,
+  ExpandMore,
+  Home,
+  ModeNight,
+  StarBorder,
+} from "@mui/icons-material";
 import {
   Box,
+  Button,
+  Collapse,
   List,
   ListItem,
   ListItemButton,
@@ -11,7 +19,7 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,8 +32,8 @@ import InfoIcon from "@mui/icons-material/Info";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import GroupIcon from "@mui/icons-material/Group"; // import TreeItem from '@mui/lab/TreeItem';
-// import TreeView from '@mui/lab/TreeView';
-
+import CloseIcon from "@mui/icons-material/Close";
+import InboxIcon from "@mui/icons-material/Inbox";
 export const Hr = styled("hr")(({ theme }) => ({
   margin: "24px 0px",
   flexShrink: 0,
@@ -54,7 +62,7 @@ export default function Sidebar({
     backgroundColor: theme.palette.background.paper,
     borderRight: `1px solid ${theme.palette.secondary} `,
     color: theme.palette.text,
-    transition: "left 1s cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+    transition: " 1s ",
     width: "280px",
     "&::-webkit-scrollbar": {
       width: "0em",
@@ -72,49 +80,70 @@ export default function Sidebar({
     borderBottom: `1px solid ${theme.palette.secondary} `,
     borderRadius: "8px",
   }));
-
+  const [open, setOpen] = useState(false);
+  const handleClick = () => setOpen(!open);
   return (
-    <Box
-      sx={{
-        flex: "0 0 auto",
-      }}
-    >
+    <Box sx={{ flex: "0 0 auto" }}>
       <SideBarBox>
-        <Link href={"/admin"}>
-          <Stack>
-            <Box position={"relative"} p={"24px"}>
-              <div
-                style={{
-                  height: "64px",
-                  width: "64px",
-                  cursor: "pointer",
-                }}
-              >
-                <Image src={"/logo.png"} width="100%" height={"100%"} />
-              </div>
-            </Box>
+        <Stack>
+          <Stack
+            justifyContent="space-between"
+            alignItems={"center"}
+            direction={"row"}
+            spacing={2}
+          >
+            <Link href={"/admin"}>
+              <Box position={"relative"} p={"24px"}>
+                <div
+                  style={{
+                    height: "64px",
+                    width: "64px",
+                    cursor: "pointer",
+                    display: "flex",
+                  }}
+                >
+                  <Image src={"/logo.png"} width="100%" height={"100%"} />
+                </div>
+              </Box>
+            </Link>
+
             <Box
-              sx={{
-                cursor: "pointer",
-              }}
+              sx={(theme) => ({
+                display: "none",
+                [theme.breakpoints.down("md")]: {
+                  display: "flex",
+                },
+              })}
             >
-              <div
-                style={{
-                  padding: "0 16px",
-                }}
+              <Button
+                onClick={() => setSidebarVisible(!sidebarVisible)}
+                color="text"
               >
-                <Link href={"/admin/global"}>
-                  <Typography
-                    variant={"h6"}
-                    onClick={() => setSidebarVisible(false)}
-                  >
-                    <SideBarAgencyNameBox>Hograt</SideBarAgencyNameBox>
-                  </Typography>
-                </Link>
-              </div>
+                <CloseIcon />
+              </Button>
             </Box>
           </Stack>
-        </Link>
+          <Box
+            sx={{
+              cursor: "pointer",
+            }}
+          >
+            <Stack
+              sx={{
+                padding: "0 16px",
+              }}
+            >
+              <Link href={"/admin/global"}>
+                <Typography
+                  variant={"h6"}
+                  onClick={() => setSidebarVisible(false)}
+                >
+                  <SideBarAgencyNameBox>Hograt</SideBarAgencyNameBox>
+                </Typography>
+              </Link>
+            </Stack>
+          </Box>
+        </Stack>
         <Hr />
         <List>
           <Link href={"/admin/services"}>
@@ -167,36 +196,6 @@ export default function Sidebar({
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link href={"/admin/home"}>
-            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home Page" />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link href={"/admin/about"}>
-            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <InfoIcon />
-                </ListItemIcon>
-                <ListItemText primary="About Page" />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link href={"/admin/contact"}>
-            <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <ContactPageIcon />
-                </ListItemIcon>
-                <ListItemText primary="Contact Page" />
-              </ListItemButton>
-            </ListItem>
-          </Link>
           <Link href={"/admin/banners"}>
             <ListItem disablePadding onClick={() => setSidebarVisible(false)}>
               <ListItemButton>
@@ -217,15 +216,44 @@ export default function Sidebar({
               </ListItemButton>
             </ListItem>
           </Link>
-          {/* <ListItem disablePadding>
-            <ListItemButton
-            >
-              <ListItemIcon>
-                <ModeNight />
-              </ListItemIcon>
-              <Switch />
-            </ListItemButton>
-          </ListItem> */}
+          <ListItemButton onClick={handleClick}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Inbox" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" easing="ease-in-out"
+          
+                
+          >
+            <List component="div" disablePadding>
+              <Link href={"/admin/contact"}   onClick={() => setSidebarVisible(false)}>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <ContactPageIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Contact" />
+                </ListItemButton>
+              </Link>
+              <Link href={"/admin/about"}  onClick={() => setSidebarVisible(false)}>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <InfoIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="About" />
+                </ListItemButton>
+              </Link>
+              <Link href={"/admin/home"}  onClick={() => setSidebarVisible(false)}>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Home" />
+                </ListItemButton>
+              </Link>
+            </List>
+          </Collapse>
         </List>
       </SideBarBox>
     </Box>

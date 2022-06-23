@@ -10,6 +10,7 @@ import { useCreate } from "../../../../../hooks/useCRUD";
 import { useRef, useState } from "react";
 import { LangSwitch } from "../../../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { ProjectSectionSchemaCreate } from "../../../../../components/dashboard/schemas/ProjectSectionSchema";
+import cookies from "next-cookies";
 const CreateSection = () => {
   const router = useRouter();
   const [lang, setLang] = useState("AR");
@@ -188,3 +189,9 @@ const CreateSection = () => {
 }
 CreateSection.layout = 'L3';
 export default CreateSection;
+export async function getServerSideProps(ctx){
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+      redirect: { destination: "/admin/login", }
+    };
+}

@@ -130,12 +130,17 @@ const EditSection = ({ section }) => {
 EditSection.layout = 'L3'
 export default EditSection;
 
-export async function getServerSideProps({ params, locale }) {
+export async function getServerSideProps(ctx) {
   // get locale from context
+  const {params, locale} = ctx
   const { section_id, project_id } = params;
   const section = await axios.get('/projects/' + project_id + '/sections/' + section_id, {
     headers: { 'Accept-Language': locale }
   }).then(res => res.data.data) ?? {};
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+      redirect: { destination: "/admin/login", }
+    };
   return {
     props: { section }
   }

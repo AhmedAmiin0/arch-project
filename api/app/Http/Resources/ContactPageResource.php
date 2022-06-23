@@ -15,10 +15,10 @@ class ContactPageResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'title' => $this->title,
-            'subtitle' => $this->subtitle,
-            'contact_details' => $this->contact_details,
-            'location' => $this->location,
+            'title' => $this->title ?? '',
+            'subtitle' => $this->subtitle ?? '',
+            'contact_details' => $this->contact_details ??'',
+            'location' => $this->location ??'',
         ];
     }
 }

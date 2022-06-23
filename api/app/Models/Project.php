@@ -13,9 +13,9 @@ class Project extends Model implements HasMedia
 {
     use HasFactory,HasTranslations ,InteractsWithMedia,Searchable;
 
-    protected $fillable = [
-    'name', 'slug', 'description',
-    'keywords',
+    protected $fillable =
+    [
+    'name', 'slug', 'description', 'keywords',
     'project_highlights_section1_title',
     'project_highlights_section1_description',
     'project_highlights_section2_title',
@@ -24,9 +24,12 @@ class Project extends Model implements HasMedia
     'project_highlights_section3_description',
     'project_highlights_section4_title',
     'project_highlights_section4_description',
-    'visible', 'is_featured', 'category_id', 'service_id'];
+    'visible', 'is_featured', 'category_id', 'service_id'
+  ];
 
-    public $translatable = ['name', 'slug', 'description', 'keywords',
+    public $translatable =
+    [
+    'name', 'slug', 'description', 'keywords',
     'project_highlights_section1_title',
     'project_highlights_section1_description',
     'project_highlights_section2_title',
@@ -35,7 +38,7 @@ class Project extends Model implements HasMedia
     'project_highlights_section3_description',
     'project_highlights_section4_title',
     'project_highlights_section4_description'
-];
+    ];
 
     public function registerMediaCollections(): void
     {
@@ -51,11 +54,6 @@ class Project extends Model implements HasMedia
     {
         return $this->hasMany(ProjectSection::class);
     }
-
-//    public function getRouteKeyName()
-//    {
-//        return 'slug';
-//    }
 
     public function service()
     {

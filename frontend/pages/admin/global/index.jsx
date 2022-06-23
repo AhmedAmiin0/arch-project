@@ -11,6 +11,7 @@ import {
 import axios from "../../../config/axios";
 import { useCreate } from "../../../hooks/useCRUD";
 import Image from "next/image";
+import cookies from "next-cookies";
 
 const GlobalData = ({ data }) => {
   console.log(data);
@@ -249,11 +250,17 @@ const GlobalData = ({ data }) => {
 };
 GlobalData.layout = "L3";
 export default GlobalData;
-export async function getServerSideProps({ locale }) {
+export async function getServerSideProps(ctx) {
+  const { locale } = ctx
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+    redirect: { destination: "/admin/login", }
+  };
   const data =
     (await axios
       .get(`/global`, { headers: { "Accept-Language": locale } })
       .then((res) => res?.data.data)) || {};
+      const { locale, params } = ctx;
   return {
     props: { data },
   };

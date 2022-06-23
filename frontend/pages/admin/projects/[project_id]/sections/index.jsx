@@ -2,6 +2,7 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import ListingComponent from "../../../../../components/dashboard/ListingPage/ListingPage";
 import Image from 'next/image';
+import cookies from "next-cookies";
 
 const Sections = () => {
   const router = useRouter();
@@ -70,3 +71,10 @@ const Sections = () => {
 };
 Sections.layout = "L3";
 export default Sections
+export async function getServerSideProps(ctx){
+  const { locale, params } = ctx;
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+    redirect: { destination: "/admin/login", }
+  };
+}

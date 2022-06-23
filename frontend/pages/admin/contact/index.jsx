@@ -1,7 +1,7 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   LangSwitch,
   LocaleSwitch,
@@ -14,6 +14,7 @@ import {
 import axios from "../../../config/axios";
 import { useCreate } from "../../../hooks/useCRUD";
 import { Editor } from "../../../components/dashboard/Editor/RichEditor";
+import cookies from "next-cookies";
 
 const ContactUsPage = ({ contact }) => {
   console.log(contact);
@@ -139,8 +140,14 @@ const ContactUsPage = ({ contact }) => {
 ContactUsPage.layout = "L3";
 export default ContactUsPage;
 
-export async function getServerSideProps({ locale }) {
-  let contact =
+export async function getServerSideProps(ctx) {
+  const { locale } = ctx;
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  const contact =
     (await axios
       .get(`/page/contact`, {
         headers: { "Accept-Language": locale },

@@ -135,8 +135,13 @@ const EditCorporate = ({ corporate }) => {
 EditCorporate.layout = 'L3'
 export default EditCorporate;
 
-export async function getServerSideProps({ params, locale }) {
+export async function getServerSideProps(ctx) {
+  const { params, locale } = ctx
   const { corporate_id } = params;
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+    redirect: { destination: "/admin/login", }
+  };
   const corporate = await axios.get('/corporates/' + corporate_id, {
     headers: { 'Accept-Language': locale }
   }).then(res => res.data.data) ?? {};

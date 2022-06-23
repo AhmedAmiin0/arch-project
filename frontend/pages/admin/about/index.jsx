@@ -25,7 +25,7 @@ import { useFormik } from "formik";
 // import Link from "next/link";
 // import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "../../../config/axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GalleryModal } from "../../../components/dashboard/GalleryModel/GalleryModal";
 import { useRouter } from "next/router";
 import {
@@ -33,15 +33,13 @@ import {
   LocaleSwitch,
 } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { useCreate } from "../../../hooks/useCRUD";
-import Image from "next/image";
+import cookies from "next-cookies";
 
 const AboutPage = ({ about }) => {
   const formRef = useRef(null);
   const router = useRouter();
-  // const [lang, setLang] = useState("EN");
   const { locale } = router;
-  const { createItem } = useCreate(locale, "page/about");
-  console.log(about);
+  const { createItem } = useCreate(locale, "/page/about");
   const formik = useFormik({
     initialValues: {
       title: about?.title || "",
@@ -71,10 +69,8 @@ const AboutPage = ({ about }) => {
       //   formData.append('video_background', values.video_background);
       // }
       let res = await createItem(formData);
-      console.log(res);
     },
   });
-  console.log(formik.values);
   return (
     <ContentPageContainer>
       <form onSubmit={formik.handleSubmit} ref={formRef}>
@@ -220,7 +216,6 @@ const AboutPage = ({ about }) => {
               multiline={true}
               rows={6}
             />
-
             {formik.values.first_section_image && (
               <Box position={"relative"} p={2}>
                 <img
@@ -238,7 +233,6 @@ const AboutPage = ({ about }) => {
                 />
               </Box>
             )}
-
             <label
               htmlFor="contained-button-file"
               style={{
@@ -285,26 +279,25 @@ const AboutPage = ({ about }) => {
               sx={{ my: 2 }}
             />
             {/* {formik.values.video_background && <img
-            src={formik.values.video_background.src ?? URL.createObjectURL(formik.values.video_background)}
-            alt={'video_background'} width={'100%'} />}
-          <label htmlFor="contained-button-file" style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column'
-          }}>
-            <Input accept="image/*" id="contained-button-file" type="file" sx={{ display: 'none', }}
-              name={'video_background'}
-              onChange={(e) => formik.setFieldValue('video_background', e.target.files[0])}
-            />
-            <Button variant="contained" component="div" my={2}>
-              {formik.values.video_background ?
-                <span>Image was Chosen</span> : 'Upload Thumbnail'}
-            </Button>
-          </label> */}
+        src={formik.values.video_background.src ?? URL.createObjectURL(formik.values.video_background)}
+        alt={'video_background'} width={'100%'} />}
+      <label htmlFor="contained-button-file" style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
+      }}>
+        <Input accept="image/*" id="contained-button-file" type="file" sx={{ display: 'none', }}
+          name={'video_background'}
+          onChange={(e) => formik.setFieldValue('video_background', e.target.files[0])}
+        />
+        <Button variant="contained" component="div" my={2}>
+          {formik.values.video_background ?
+            <span>Image was Chosen</span> : 'Upload Thumbnail'}
+        </Button>
+      </label> */}
           </Box>
         </ContentPageFlexBox>
-
         <ContentPageFlexBox>
           <Stack flex={2}>
             <Typography variant={"h6"} my={2}>
@@ -334,15 +327,14 @@ const AboutPage = ({ about }) => {
 };
 AboutPage.layout = "L3";
 export default AboutPage;
-
-export async function getServerSideProps({ locale }) {
-  const about =
-    (await axios
-      .get("page/about/", {
-        headers: { "Accept-Language": locale },
-      })
-      .then((res) => res.data?.data)) ?? {};
+export const getServerSideProps = async (ctx) => {
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  let about = axios.get('/page/about');
   return {
-    props: { about },
+    props: {about},
   };
-}
+};

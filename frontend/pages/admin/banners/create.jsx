@@ -24,6 +24,7 @@ import Link from "next/link";
 import { LangSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { useCreate } from "../../../hooks/useCRUD";
 import { BannerSchemaCreate } from "../../../components/dashboard/schemas/BannerSchema";
+import cookies from "next-cookies";
 
 const CreateBanner = () => {
   const formRef = useRef(null);
@@ -197,3 +198,15 @@ const CreateBanner = () => {
 };
 CreateBanner.layout = "L3";
 export default CreateBanner;
+export async function getServerSideProps(ctx){
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+    return{
+      props:{}
+    }
+}
+
+

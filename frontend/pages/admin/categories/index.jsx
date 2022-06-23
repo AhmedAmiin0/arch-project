@@ -1,5 +1,16 @@
+import cookies from "next-cookies";
 import { useRouter } from "next/router";
 import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
+export async function getServerSideProps(ctx) {
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+    return {
+      props: {}
+    }
+}
 
 const Category = () => {
   const router = useRouter();

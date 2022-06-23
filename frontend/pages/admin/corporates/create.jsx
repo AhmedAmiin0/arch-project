@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useCreate } from "../../../hooks/useCRUD";
 import { LangSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
+import cookies from "next-cookies";
 
 const CreateCorporate = () => {
   const formRef = useRef(null);
@@ -127,3 +128,9 @@ const CreateCorporate = () => {
 }
 CreateCorporate.layout = 'L3'
 export default CreateCorporate
+export async function getServerSideProps(ctx) {
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null) return {
+    redirect: { destination: "/admin/login", }
+  };
+}

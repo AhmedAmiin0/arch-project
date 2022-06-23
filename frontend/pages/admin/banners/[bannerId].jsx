@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import { LocaleSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { useDelete } from "../../../hooks/useCRUD";
 import Image from "next/image";
+import cookies from "next-cookies";
 
 const EditBanner = ({ banners }) => {
   const router = useRouter();

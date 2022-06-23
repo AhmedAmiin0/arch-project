@@ -24,6 +24,7 @@ import {
 } from "../../../context/NotificationsContext";
 import { useContext } from "react";
 import { useRouter } from "next/router";
+import cookies from "next-cookies";
 
 const Create = () => {
   const [notify, dispatch] = useContext(notificationContext);
@@ -148,3 +149,13 @@ const Create = () => {
 };
 Create.layout = "L3";
 export default Create;
+export async function getServerSideProps(ctx){
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+    return {
+      props:{}
+    }
+}
