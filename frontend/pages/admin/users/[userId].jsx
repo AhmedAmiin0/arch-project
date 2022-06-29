@@ -27,7 +27,7 @@ import axios from "../../../config/axios";
 import Errors from "../../../components/dashboard/Errors";
 import cookies from "next-cookies";
 
-const ShowUser = ({ user }) => {
+const ShowUser = ({ user, globalData }) => {
   const formRef = useRef(null);
   const router = useRouter();
   const { userId } = router.query;
@@ -51,106 +51,124 @@ const ShowUser = ({ user }) => {
   });
 
   return (
-    <ContentPageContainer>
-      <form onSubmit={formik.handleSubmit} ref={formRef}>
-        <Typography variant={"h4"} mb={3}>
-          Show user
-        </Typography>
+    <Layout data={globalData}>
+      <ContentPageContainer>
+        <form onSubmit={formik.handleSubmit} ref={formRef}>
+          <Typography variant={"h4"} mb={3}>
+            Show user
+          </Typography>
 
-        <ContentPageFlexBox>
-          <Stack
-            direction={"column"}
-            height={"100%"}
-            spacing={2}
-            flex={2}
-            my={2}
-          >
-            <Typography variant={"h6"}>Basic information</Typography>
-            <Errors formik={formik} />
-          </Stack>
-          <Stack
-            flex={3}
-            flexDirection={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            spacing={2}
-          >
-            <TextField
-              label="name"
-              name="name"
-              variant="outlined"
-              fullWidth
-              {...formik.getFieldProps("name")}
-              onBlur={formik.handleBlur}
-            />
-            <TextField
-              label="email"
-              name="email"
-              variant="outlined"
-              fullWidth
-              type="email"
-              {...formik.getFieldProps("email")}
-              onBlur={formik.handleBlur}
-            />
-            {formik.values.avatar && (
-              <img
-                src={URL.createObjectURL(formik.values.avatar) || ""}
-                alt=""
-                title=""
-                width="100%"
-                height="100%"
-                layout="responsive"
-                objectFit="contain"
-              />
-            )}
-          </Stack>
-        </ContentPageFlexBox>
-        <ContentPageFlexBox>
-          <Stack flex={2}>
-            <Typography variant={"h6"} my={2}>
-              Actions
-            </Typography>
-          </Stack>
-          <Stack
-            flex={3}
-            justifyContent={"center"}
-            direction={"row"}
-            alignItems={"center"}
-            spacing={2}
-          >
-            <Button
-              variant="outlined"
-              component={"a"}
-              color="error"
-              startIcon={<CloseIcon />}
-              onClick={async () => deleteItem(userId)}
+          <ContentPageFlexBox>
+            <Stack
+              direction={"column"}
+              height={"100%"}
+              spacing={2}
+              flex={2}
+              my={2}
             >
-              Delete
-            </Button>
-          </Stack>
-        </ContentPageFlexBox>
-      </form>
-    </ContentPageContainer>
+              <Typography variant={"h6"}>Basic information</Typography>
+              <Errors formik={formik} />
+            </Stack>
+            <Stack
+              flex={3}
+              flexDirection={"column"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              spacing={2}
+            >
+              <TextField
+                label="name"
+                name="name"
+                variant="outlined"
+                fullWidth
+                {...formik.getFieldProps("name")}
+                onBlur={formik.handleBlur}
+              />
+              <TextField
+                label="email"
+                name="email"
+                variant="outlined"
+                fullWidth
+                type="email"
+                {...formik.getFieldProps("email")}
+                onBlur={formik.handleBlur}
+              />
+              {formik.values.avatar && (
+                <img
+                  src={URL.createObjectURL(formik.values.avatar) || ""}
+                  alt=""
+                  title=""
+                  width="100%"
+                  height="100%"
+                  layout="responsive"
+                  objectFit="contain"
+                />
+              )}
+            </Stack>
+          </ContentPageFlexBox>
+          <ContentPageFlexBox>
+            <Stack flex={2}>
+              <Typography variant={"h6"} my={2}>
+                Actions
+              </Typography>
+            </Stack>
+            <Stack
+              flex={3}
+              justifyContent={"center"}
+              direction={"row"}
+              alignItems={"center"}
+              spacing={2}
+            >
+              <Button
+                variant="outlined"
+                component={"a"}
+                color="error"
+                startIcon={<CloseIcon />}
+                onClick={async () => deleteItem(userId)}
+              >
+                Delete
+              </Button>
+            </Stack>
+          </ContentPageFlexBox>
+        </form>
+      </ContentPageContainer>
+    </Layout>
   );
 };
 ShowUser.layout = "L3";
 export default ShowUser;
 export const getServerSideProps = async (ctx) => {
-  const { params, locale } = ctx;
+  const { locale, params } = ctx;
   const { token } = cookies(ctx);
   const { userId } = params;
-  const user =
-    (await axios
-      .get(`/users/${userId}`, {
-        headers: { "Accept-Language": locale },
-      })
-      .then((res) => res.data)) ?? {};
-  if (!token || token === "" || token === null)
-    return {
-      redirect: { destination: "/admin/login" },
-    };
 
+  if (!token) return { redirect: { destination: "/admin/login" } };
+  let user = {};
+  await axios
+    .get(`/users/${userId}`, {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => (user = res.data))
+    .catch((err) => {
+      if (err.response.status === 401)
+        return axios
+          .post("/logout", { headers: { Authorization: `Bearer ${token}` } })
+          .then(() => {
+            return { redirect: { destination: "/admin/login" } };
+          });
+    });
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
   return {
-    props: { user },
+    props: { user, globalData },
   };
 };

@@ -23,8 +23,10 @@ import Link from "next/link";
 import { useCreate } from "../../../hooks/useCRUD";
 import { UserSchemaCreate } from "../../../components/dashboard/schemas/UserSchema";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import cookies from "next-cookies";
+import Layout from "../../../components/dashboard/layout/Layout";
 
-const CreateUser = () => {
+const CreateUser = ({ globalData }) => {
   const formRef = useRef(null);
   const router = useRouter();
   const { createItem } = useCreate(router.locale, "users");
@@ -51,178 +53,193 @@ const CreateUser = () => {
     validationSchema: UserSchemaCreate,
   });
   return (
-    <ContentPageContainer>
-      <form onSubmit={formik.handleSubmit} ref={formRef}>
-        <Typography variant={"h4"} mb={3}>
-          Create a new user
-        </Typography>
+    <Layout data={globalData}>
+      <ContentPageContainer>
+        <form onSubmit={formik.handleSubmit} ref={formRef}>
+          <Typography variant={"h4"} mb={3}>
+            Create a new user
+          </Typography>
 
-        <ContentPageFlexBox>
-          <Stack
-            direction={"column"}
-            height={"100%"}
-            spacing={2}
-            flex={2}
-            my={2}
-          >
-            <Typography variant={"h6"}>Basic information</Typography>
-            {formik.errors && (
-              <ul style={{ color: "#f44336" }}>
-                {formik.errors && formik.touched
-                  ? Object.values(formik.errors).map((err) => {
-                      return <li>{err}</li>;
-                    })
-                  : ""}
-              </ul>
-            )}
-          </Stack>
-          <Stack
-            flex={3}
-            flexDirection={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            spacing={2}
-          >
-            <TextField
-              label="name"
-              name="name"
-              variant="outlined"
-              fullWidth
-              {...formik.getFieldProps("name")}
-              onBlur={formik.handleBlur}
-            />
-            <TextField
-              label="email"
-              name="email"
-              variant="outlined"
-              fullWidth
-              type="email"
-              {...formik.getFieldProps("email")}
-              onBlur={formik.handleBlur}
-            />
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? "text" : "password"}
-                {...formik.getFieldProps("password")}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password Confirmation visibility"
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-passwordConfirmation">
-                Password Confirmation
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-passwordConfirmation"
-                type={showConfirmPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password Confirmation visibility"
-                      onClick={handleClickShowConfirmPassword}
-                      edge="end"
-                    >
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                {...formik.getFieldProps("passwordConfirmation")}
-                label="Password Confirmation"
-              />
-            </FormControl>
-
-            <label htmlFor="contained-button-file">
-              <Input
-                accept="image/*"
-                id="contained-button-file"
-                type="file"
-                sx={{ display: "none" }}
-                name={"avatar"}
-                onChange={(e) =>
-                  formik.setFieldValue("avatar", e.target.files[0])
-                }
+          <ContentPageFlexBox>
+            <Stack
+              direction={"column"}
+              height={"100%"}
+              spacing={2}
+              flex={2}
+              my={2}
+            >
+              <Typography variant={"h6"}>Basic information</Typography>
+              {formik.errors && (
+                <ul style={{ color: "#f44336" }}>
+                  {formik.errors && formik.touched
+                    ? Object.values(formik.errors).map((err) => {
+                        return <li>{err}</li>;
+                      })
+                    : ""}
+                </ul>
+              )}
+            </Stack>
+            <Stack
+              flex={3}
+              flexDirection={"column"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              spacing={2}
+            >
+              <TextField
+                label="name"
+                name="name"
+                variant="outlined"
+                fullWidth
+                {...formik.getFieldProps("name")}
                 onBlur={formik.handleBlur}
               />
-              <Button variant="contained" component={"span"}>
-                {(formik.errors.avatar && (
-                  <span>{formik.errors.avatar}</span>
-                )) || <span>Upload Avatar</span>}
-              </Button>
-            </label>
-            {formik.values.avatar && (
-              <img
-                src={URL.createObjectURL(formik.values.avatar) || ""}
-                alt=""
-                title=""
-                width="100%"
-                height="100%"
-                layout="responsive"
-                objectFit="contain"
-              />
-            )}
-          </Stack>
-        </ContentPageFlexBox>
-        <ContentPageFlexBox>
-          <Stack flex={2}>
-            <Typography variant={"h6"} my={2}>
-              Actions
-            </Typography>
-          </Stack>
-          <Stack
-            flex={3}
-            justifyContent={"center"}
-            direction={"row"}
-            alignItems={"center"}
-            spacing={2}
-          >
-            <Link href={"/admin/users"}>
-              <Button
+              <TextField
+                label="email"
+                name="email"
                 variant="outlined"
-                component={"a"}
-                color="error"
-                startIcon={<CloseIcon />}
-              >
-                Cancel
-              </Button>
-            </Link>
-            <Button
-              type={"submit"}
-              variant="outlined"
-              color="primary"
-              startIcon={<DoneIcon />}
+                fullWidth
+                type="email"
+                {...formik.getFieldProps("email")}
+                onBlur={formik.handleBlur}
+              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  {...formik.getFieldProps("password")}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password Confirmation visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-passwordConfirmation">
+                  Password Confirmation
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-passwordConfirmation"
+                  type={showConfirmPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password Confirmation visibility"
+                        onClick={handleClickShowConfirmPassword}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  {...formik.getFieldProps("passwordConfirmation")}
+                  label="Password Confirmation"
+                />
+              </FormControl>
+
+              <label htmlFor="contained-button-file">
+                <Input
+                  accept="image/*"
+                  id="contained-button-file"
+                  type="file"
+                  sx={{ display: "none" }}
+                  name={"avatar"}
+                  onChange={(e) =>
+                    formik.setFieldValue("avatar", e.target.files[0])
+                  }
+                  onBlur={formik.handleBlur}
+                />
+                <Button variant="contained" component={"span"}>
+                  {(formik.errors.avatar && (
+                    <span>{formik.errors.avatar}</span>
+                  )) || <span>Upload Avatar</span>}
+                </Button>
+              </label>
+              {formik.values.avatar && (
+                <img
+                  src={URL.createObjectURL(formik.values.avatar) || ""}
+                  alt=""
+                  title=""
+                  width="100%"
+                  height="100%"
+                  layout="responsive"
+                  objectFit="contain"
+                />
+              )}
+            </Stack>
+          </ContentPageFlexBox>
+          <ContentPageFlexBox>
+            <Stack flex={2}>
+              <Typography variant={"h6"} my={2}>
+                Actions
+              </Typography>
+            </Stack>
+            <Stack
+              flex={3}
+              justifyContent={"center"}
+              direction={"row"}
+              alignItems={"center"}
+              spacing={2}
             >
-              Save
-            </Button>
-          </Stack>
-        </ContentPageFlexBox>
-      </form>
-    </ContentPageContainer>
+              <Link href={"/admin/users"}>
+                <Button
+                  variant="outlined"
+                  component={"a"}
+                  color="error"
+                  startIcon={<CloseIcon />}
+                >
+                  Cancel
+                </Button>
+              </Link>
+              <Button
+                type={"submit"}
+                variant="outlined"
+                color="primary"
+                startIcon={<DoneIcon />}
+              >
+                Save
+              </Button>
+            </Stack>
+          </ContentPageFlexBox>
+        </form>
+      </ContentPageContainer>
+    </Layout>
   );
 };
-CreateUser.layout = "L3";
 export default CreateUser;
 export const getServerSideProps = async (ctx) => {
   const { token } = cookies(ctx);
+  const { locale } = ctx;
   if (!token || token === "" || token === null)
     return {
       redirect: { destination: "/admin/login" },
     };
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
   return {
     props: {
+      globalData,
     },
   };
 };

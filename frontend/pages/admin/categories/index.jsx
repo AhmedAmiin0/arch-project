@@ -1,7 +1,30 @@
+import cookies from "next-cookies";
 import { useRouter } from "next/router";
-import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
+import Layout from "../../../components/dashboard/layout/Layout";
 
-const Category = () => {
+import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
+import axios from "../../../config/axios";
+export async function getServerSideProps(ctx) {
+  const { token } = cookies(ctx);
+  const { locale } = ctx;
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
+  return {
+    props: {  globalData },
+  };
+}
+
+const Category = ({ globalData }) => {
   const router = useRouter();
   const { locale } = router;
   const columns = [
@@ -15,14 +38,15 @@ const Category = () => {
     },
   ];
   return (
-    <ListingComponent
-      cols={columns}
-      locale={locale}
-      page_title_plural="categories"
-      page_title_single="category"
-      api_url="categories"
-    />
+    <Layout data={globalData}>
+      <ListingComponent
+        cols={columns}
+        locale={locale}
+        page_title_plural="categories"
+        page_title_single="category"
+        api_url="categories"
+      />
+    </Layout>
   );
 };
-Category.layout = "L3";
 export default Category;

@@ -2,8 +2,11 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
-const Testimonials = () => {
+import cookies from "next-cookies";
+import Layout from "../../../components/dashboard/layout/Layout";
+import axios from "../../../config/axios";
 
+const Testimonials = ({ globalData }) => {
   const router = useRouter();
   const { locale } = router;
   const columns = [
@@ -24,14 +27,15 @@ const Testimonials = () => {
             display: "flex",
           }}
         >
-         {params.value.src !=  ''
-          && <Image
-            src={params?.value?.src}
-            height={"100%"}
-            width={"100%"}
-            objectFit={"contain"}
-            alt={params?.value?.alt}
-          />}
+          {params.value.src != "" && (
+            <Image
+              src={params?.value?.src}
+              height={"100%"}
+              width={"100%"}
+              objectFit={"contain"}
+              alt={params?.value?.alt}
+            />
+          )}
         </Box>
       ),
     },
@@ -59,17 +63,37 @@ const Testimonials = () => {
     },
   ];
   return (
-    <ListingComponent
-      cols={columns}
-      locale={locale}
-      page_title_plural="feedbacks"
-      page_title_single="feedback"
-      api_url="feedbacks"
-    />
+    <Layout data={globalData}>
+      <ListingComponent
+        cols={columns}
+        locale={locale}
+        page_title_plural="feedbacks"
+        page_title_single="feedback"
+        api_url="feedbacks"
+      />
+    </Layout>
   );
 };
 
-
-
-Testimonials.layout = 'L3'
-export default Testimonials
+export default Testimonials;
+export async function getServerSideProps(ctx) {
+  const { token } = cookies(ctx);
+  const { locale } = ctx;
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
+  return {
+    props: {
+      globalData,
+    },
+  };
+}

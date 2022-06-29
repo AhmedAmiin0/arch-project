@@ -32,8 +32,10 @@ import {
 import { useRouter } from "next/router";
 import { LocaleSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import { GalleryModal } from "../../../components/dashboard/GalleryModel/GalleryModal";
+import cookies from "next-cookies";
+import Layout from "../../../components/dashboard/layout/Layout";
 
-const Edit = ({ service }) => {
+const Edit = ({ service, globalData }) => {
   const formRef = useRef(null);
   const [notify, dispatch] = useContext(notificationContext);
   const router = useRouter();
@@ -86,230 +88,256 @@ const Edit = ({ service }) => {
   console.log(service);
 
   return (
-    <ContentPageContainer>
-      <form onSubmit={formik.handleSubmit} ref={formRef}>
-        <Typography variant={"h4"} mb={3}>
-          Edit Service
-        </Typography>
-        <ContentPageFlexBox>
-          <Stack flex={2} direction={"column"} spacing={2}>
-            <Typography variant={"h6"}>Basic information</Typography>
-            {formik.errors && (
-              <ul style={{ color: "#f44336" }}>
-                {formik.errors && formik.touched
-                  ? Object.values(formik.errors).map((err) => {
-                      return <li>{err}</li>;
-                    })
-                  : ""}
-              </ul>
-            )}
-            <LocaleSwitch lang={locale} location={"services/" + id} />
-          </Stack>
-          <Box
-            flex={3}
-            display={"flex"}
-            flexDirection={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <TextField
-              label={"Title"}
-              fullWidth
-              sx={{ mb: 3 }}
-              name={"title"}
-              error={formik.touched.title && formik.errors.title ? true : false}
-              helperText={
-                formik.touched.title && formik.errors.title
-                  ? formik.errors.title
-                  : ""
-              }
-              {...formik.getFieldProps("title")}
-            />
-            <TextField
-              label={"Subtitle"}
-              fullWidth
-              sx={{ mb: 3 }}
-              name={"subtitle"}
-              {...formik.getFieldProps("subtitle")}
-              error={
-                formik.touched.subtitle && formik.errors.subtitle ? true : false
-              }
-              helperText={
-                formik.touched.subtitle && formik.errors.subtitle
-                  ? formik.errors.subtitle
-                  : ""
-              }
-            />
-            <TextField
-              label={"Excerpt"}
-              fullWidth
-              sx={{ mb: 3 }}
-              multiline={true}
-              rows={5}
-              name={"excerpt"}
-              {...formik.getFieldProps("excerpt")}
-              error={
-                formik.touched.excerpt && formik.errors.excerpt ? true : false
-              }
-              helperText={
-                formik.touched.excerpt && formik.errors.excerpt
-                  ? formik.errors.excerpt
-                  : ""
-              }
-            />
-
-            <TextField
-              label={"Description"}
-              fullWidth
-              sx={{ mb: 3 }}
-              multiline={true}
-              rows={10}
-              name={"description"}
-              {...formik.getFieldProps("description")}
-              error={
-                formik.touched.description && formik.errors.description
-                  ? true
-                  : false
-              }
-              helperText={
-                formik.touched.description && formik.errors.description
-                  ? formik.errors.description
-                  : ""
-              }
-            />
-            <Stack spacing={4} direction={"row"} mt={3} mb={3}>
-              <FormControl sx={{ minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-helper-label">
-                  Visibility
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  label="Visibility"
-                  name={"visible"}
-                  {...formik.getFieldProps("visible")}
-                >
-                  <MenuItem value="VISIBLE">Visible</MenuItem>
-                  <MenuItem value="HIDDEN">hidden</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl sx={{ minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-helper-label">
-                  Featured
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  label="Featured"
-                  name={"is_featured"}
-                  {...formik.getFieldProps("is_featured")}
-                >
-                  <MenuItem value="NOT_FEATURED">Not Featured</MenuItem>
-                  <MenuItem value="FEATURED">Featured</MenuItem>
-                </Select>
-              </FormControl>
+    <Layout data={globalData}>
+      <ContentPageContainer>
+        <form onSubmit={formik.handleSubmit} ref={formRef}>
+          <Typography variant={"h4"} mb={3}>
+            Edit Service
+          </Typography>
+          <ContentPageFlexBox>
+            <Stack flex={2} direction={"column"} spacing={2}>
+              <Typography variant={"h6"}>Basic information</Typography>
+              {formik.errors && (
+                <ul style={{ color: "#f44336" }}>
+                  {formik.errors && formik.touched
+                    ? Object.values(formik.errors).map((err) => {
+                        return <li>{err}</li>;
+                      })
+                    : ""}
+                </ul>
+              )}
+              <LocaleSwitch lang={locale} location={"services/" + id} />
             </Stack>
-            <label
-              htmlFor="contained-button-file"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
+            <Box
+              flex={3}
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"center"}
+              alignItems={"center"}
             >
-              <Input
-                accept="image/*"
-                id="contained-button-file"
-                type="file"
-                sx={{ display: "none" }}
-                name={"service_thumb"}
-                onChange={(e) =>
-                  formik.setFieldValue("service_thumb", e.target.files[0])
+              <TextField
+                label={"Title"}
+                fullWidth
+                sx={{ mb: 3 }}
+                name={"title"}
+                error={
+                  formik.touched.title && formik.errors.title ? true : false
+                }
+                helperText={
+                  formik.touched.title && formik.errors.title
+                    ? formik.errors.title
+                    : ""
+                }
+                {...formik.getFieldProps("title")}
+              />
+              <TextField
+                label={"Subtitle"}
+                fullWidth
+                sx={{ mb: 3 }}
+                name={"subtitle"}
+                {...formik.getFieldProps("subtitle")}
+                error={
+                  formik.touched.subtitle && formik.errors.subtitle
+                    ? true
+                    : false
+                }
+                helperText={
+                  formik.touched.subtitle && formik.errors.subtitle
+                    ? formik.errors.subtitle
+                    : ""
                 }
               />
-              <img
-                src={
-                  formik.values.service_thumb.src ||
-                  URL.createObjectURL(formik.values.service_thumb)
+              <TextField
+                label={"Excerpt"}
+                fullWidth
+                sx={{ mb: 3 }}
+                multiline={true}
+                rows={5}
+                name={"excerpt"}
+                {...formik.getFieldProps("excerpt")}
+                error={
+                  formik.touched.excerpt && formik.errors.excerpt ? true : false
                 }
-                alt={formik.values.service_thumb.alt}
+                helperText={
+                  formik.touched.excerpt && formik.errors.excerpt
+                    ? formik.errors.excerpt
+                    : ""
+                }
+              />
+
+              <TextField
+                label={"Description"}
+                fullWidth
+                sx={{ mb: 3 }}
+                multiline={true}
+                rows={10}
+                name={"description"}
+                {...formik.getFieldProps("description")}
+                error={
+                  formik.touched.description && formik.errors.description
+                    ? true
+                    : false
+                }
+                helperText={
+                  formik.touched.description && formik.errors.description
+                    ? formik.errors.description
+                    : ""
+                }
+              />
+              <Stack spacing={4} direction={"row"} mt={3} mb={3}>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <InputLabel id="demo-simple-select-helper-label">
+                    Visibility
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    label="Visibility"
+                    name={"visible"}
+                    {...formik.getFieldProps("visible")}
+                  >
+                    <MenuItem value="VISIBLE">Visible</MenuItem>
+                    <MenuItem value="HIDDEN">hidden</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <InputLabel id="demo-simple-select-helper-label">
+                    Featured
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    label="Featured"
+                    name={"is_featured"}
+                    {...formik.getFieldProps("is_featured")}
+                  >
+                    <MenuItem value="NOT_FEATURED">Not Featured</MenuItem>
+                    <MenuItem value="FEATURED">Featured</MenuItem>
+                  </Select>
+                </FormControl>
+              </Stack>
+              <label
+                htmlFor="contained-button-file"
                 style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "5px",
-                  marginBottom: "10px",
-                  marginTop: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
                 }}
-              />
-              <Button variant="contained" component="div" my={2}>
-                {formik.values.service_thumb ? (
-                  <span>Image was Chosen</span>
-                ) : (
-                  "Upload Thumbnail"
-                )}
+              >
+                <Input
+                  accept="image/*"
+                  id="contained-button-file"
+                  type="file"
+                  sx={{ display: "none" }}
+                  name={"service_thumb"}
+                  onChange={(e) =>
+                    formik.setFieldValue("service_thumb", e.target.files[0])
+                  }
+                />
+                <img
+                  src={
+                    formik.values.service_thumb.src ||
+                    URL.createObjectURL(formik.values.service_thumb)
+                  }
+                  alt={formik.values.service_thumb.alt}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "5px",
+                    marginBottom: "10px",
+                    marginTop: "10px",
+                  }}
+                />
+                <Button variant="contained" component="div" my={2}>
+                  {formik.values.service_thumb ? (
+                    <span>Image was Chosen</span>
+                  ) : (
+                    "Upload Thumbnail"
+                  )}
+                </Button>
+              </label>
+            </Box>
+          </ContentPageFlexBox>
+          <ContentPageFlexBox>
+            <Stack flex={2}>
+              <Typography variant={"h6"} my={2}>
+                Actions
+              </Typography>
+            </Stack>
+            <Stack
+              flex={3}
+              justifyContent={"center"}
+              direction={"row"}
+              alignItems={"center"}
+              spacing={2}
+            >
+              <Button
+                variant="outlined"
+                component={"a"}
+                color="error"
+                startIcon={<DeleteIcon />}
+                onClick={handleServiceDelete}
+              >
+                Delete Service
               </Button>
-            </label>
-          </Box>
-        </ContentPageFlexBox>
+              <Button
+                type={"submit"}
+                variant="outlined"
+                color="primary"
+                startIcon={<DoneIcon />}
+              >
+                Save
+              </Button>
+            </Stack>
+          </ContentPageFlexBox>
+        </form>
         <ContentPageFlexBox>
-          <Stack flex={2}>
-            <Typography variant={"h6"} my={2}>
-              Actions
-            </Typography>
-          </Stack>
-          <Stack
-            flex={3}
-            justifyContent={"center"}
-            direction={"row"}
-            alignItems={"center"}
-            spacing={2}
-          >
-            <Button
-              variant="outlined"
-              component={"a"}
-              color="error"
-              startIcon={<DeleteIcon />}
-              onClick={handleServiceDelete}
-            >
-              Delete Service
-            </Button>
-            <Button
-              type={"submit"}
-              variant="outlined"
-              color="primary"
-              startIcon={<DoneIcon />}
-            >
-              Save
-            </Button>
-          </Stack>
+          <GalleryModal
+            initial={service.service_images}
+            name={"service"}
+            id={id}
+          />
         </ContentPageFlexBox>
-      </form>
-      <ContentPageFlexBox>
-        <GalleryModal
-          initial={service.service_images}
-          name={"service"}
-          id={id}
-        />
-      </ContentPageFlexBox>
-    </ContentPageContainer>
+      </ContentPageContainer>
+    </Layout>
   );
 };
-Edit.layout = "L3";
 export default Edit;
 
-export async function getServerSideProps(ctx) {
-  const {locale,params} = ctx;
+export const getServerSideProps = async (ctx) => {
+  const { locale, params } = ctx;
+  const { token } = cookies(ctx);
   const { id } = params;
 
-  const service =
-    (await axios
-      .get("/services/" + id, {
-        headers: { "Accept-Language": locale },
-      })
-      .then((res) => res.data)) ?? {};
+  if (!token) return { redirect: { destination: "/admin/login" } };
+  let service = {};
+  await axios
+    .get(`/services/${id}`, {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => (service = res.data))
+    .catch((err) => {
+      if (err.response.status === 401)
+        return axios
+          .post("/logout", { headers: { Authorization: `Bearer ${token}` } })
+          .then(() => {
+            return { redirect: { destination: "/admin/login" } };
+          });
+    });
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
   return {
-    props: { service },
+    props: { service, globalData },
   };
-}
+};

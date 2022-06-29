@@ -5,6 +5,7 @@ import {
   notificationContext,
   successAlertAction,
 } from "../context/NotificationsContext";
+import useAuth from "./useAuth";
 
 export const useQuery = (url, page = 1, pageSize, locale) => {
   const [rowCount, setRowCount] = useState(undefined);
@@ -12,6 +13,8 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("");
   const [notify, dispatch] = useContext(notificationContext);
+  const { logout } = useAuth();
+
   // if(page == 0) page = 1;
   useEffect(() => {
     page++;
@@ -27,15 +30,16 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
           return;
         }
         setData(res.data.data);
-        console.log(res);
+        // console.log(res);
         setIsLoading(false);
-        console.log(res.data);
+        // console.log(res.data);
         setRowCount(res.data.meta.total);
       })
       .catch((err) => {
         if (!active) {
           return;
         }
+        if (e.response.status === 401) logout();
         setIsLoading(false);
         console.log(err);
       });
@@ -43,6 +47,7 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
       active = false;
     };
   }, [page, pageSize, query, locale]);
+
   const handleDelete = async (id) => {
     try {
       let rows = data;
@@ -51,7 +56,7 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
       setData(rows);
       dispatch(successAlertAction("Item deleted successfully"));
     } catch (e) {
-      console.log(e);
+      if (e.response.status === 401) logout();
       dispatch(errorAlertAction("Item could not be deleted"));
     }
   };

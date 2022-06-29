@@ -3,12 +3,24 @@ import {
   Avatar,
   Button,
   IconButton,
+  Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-
-export default function Navbar({ theme , sidebarVisible , setSidebarVisible}) {
+import LogoutIcon from "@mui/icons-material/Logout";
+import axios from "../../../../config/axios";
+import { useRouter } from "next/router";
+import {
+  errorAlertAction,
+  notificationContext,
+} from "../../../../context/NotificationsContext";
+import { useContext } from "react";
+import { GlobalContext } from "../Layout";
+import useAuth from "../../../../hooks/useAuth";
+export default function Navbar({ theme, setSidebarVisible }) {
+  const [globalData, setGlobalData] = useContext(GlobalContext);
+  const { logout,loading } = useAuth();
   return (
     <AppBar
       position="sticky"
@@ -29,7 +41,7 @@ export default function Navbar({ theme , sidebarVisible , setSidebarVisible}) {
         }}
       >
         <IconButton
-          size="large"
+          size="small"
           edge="start"
           color="inherit"
           aria-label="menu"
@@ -44,7 +56,18 @@ export default function Navbar({ theme , sidebarVisible , setSidebarVisible}) {
         >
           <MenuIcon />
         </IconButton>
-        <Avatar alt="Cindy Baker" src="/feedback1.webp" />
+        <Stack direction={"row"} spacing={2}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="logout"
+            onClick={logout}
+            disabled={loading}
+          >
+            <LogoutIcon fontSize={"small"} />
+          </IconButton>
+          <Avatar alt={globalData?.user?.avatar?.name} src={globalData?.user?.avatar?.src} />
+        </Stack>
       </Toolbar>
     </AppBar>
   );

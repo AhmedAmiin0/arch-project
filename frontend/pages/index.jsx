@@ -4,11 +4,12 @@ import {Services} from "../components/Home/service/Servcie";
 import {GridSection} from "../components/Home/GridSection/GridSection";
 import {ClientSection} from "../components/Home/ClientsSection/ClientSection";
 import {FeedbackSectionStyle1} from "../components/Home/feedbacks/FeedbackSection";
+import Layout from "../components/layout/Layout";
 
 export default function Home() {
     let aspect = {height: '100vh', width: '100vw'}
     return (
-        <div>
+      <Layout>
             <HeroSlider aspect={{...aspect, hasLetters: true}}/>
             <AboutUsHome/>
             <Services/>
@@ -16,7 +17,7 @@ export default function Home() {
             <GridSection/>
             <ClientSection/>
             <FeedbackSectionStyle1/>
-        </div>
+        </Layout>
     )
 }
 

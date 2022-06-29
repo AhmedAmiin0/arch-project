@@ -4,6 +4,7 @@ import LocationDetails from "../../components/projects/project_details/LocationD
 import ProjectGallery from "../../components/projects/project_details/ProjectGallery/ProjectGallery";
 import AttractiveSection from "../../components/projects/project_details/AttractiveSection/AttractiveSection";
 import React from "react";
+import Layout from "../../components/layout/Layout";
 
 export default function ProjectsDetails() {
 
@@ -18,7 +19,7 @@ export default function ProjectsDetails() {
     let i = false;
     let galleryPlace = Math.floor(myobject.myarray.length / 2)
     console.log(galleryPlace)
-    return <ProjectDetailsContainer>
+    return  <Layout><ProjectDetailsContainer>
         {myobject.myarray.length == 1 ? <>
                 <FirstSectionInAbout/>
                 <LocationDetails/>
@@ -43,4 +44,5 @@ export default function ProjectsDetails() {
         }
         {myobject.attractiveSection && <AttractiveSection data={myobject.attractiveSection} />}
     </ProjectDetailsContainer>
+    </Layout>
 }

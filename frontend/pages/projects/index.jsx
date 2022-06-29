@@ -1,4 +1,5 @@
 import Breadcrumb from "../../components/layout/breadcrumb/Breadcrumb";
+import Layout from "../../components/layout/Layout";
 import ProjectsGrid from "../../components/projects/grid/ProjectsGrid";
 import Pagination from "../../components/projects/pagination/Pagination";
 export default function projects() {
@@ -6,10 +7,10 @@ export default function projects() {
         title: "projects",
         subtitle: "Our projects"
     }
-    return (<>
+    return (<Layout>
             <Breadcrumb props={breadcrumb}/>
             <ProjectsGrid/>
             <Pagination/>
-        </>
+        </Layout>
     )
 }

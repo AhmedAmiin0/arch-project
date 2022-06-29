@@ -6,6 +6,7 @@ import ServiceSlider from "../../components/services/ServicesDetails/ServiceSlid
 import ServiceDetailsParagraphs
     from "../../components/services/ServicesDetails/ServiceDetailsParagraphs/ServiceDetailsParagraphs";
 import RelatedProjects from "../../components/services/ServicesDetails/RelatedProjects/RelatedProjects";
+import Layout from "../../components/layout/Layout";
 
 export default function ServiceDetails() {
     const data = {
@@ -41,10 +42,13 @@ export default function ServiceDetails() {
         nextArrow: <NavigationArrows isRigth={true}/>,
         prevArrow: <NavigationArrows isRigth={false}/>
     };
-    return <ServiceDetailsStyles>
+    return <Layout>
+
+    <ServiceDetailsStyles>
         <FirstSectionInServicesDetails props={data}/>
         <ServiceSlider/>
         <ServiceDetailsParagraphs/>
         <RelatedProjects/>
     </ServiceDetailsStyles>
+    </Layout>
 }

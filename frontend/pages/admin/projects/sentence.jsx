@@ -24,8 +24,9 @@ import { useCreate } from "../../../hooks/useCRUD";
 import { LangSwitch } from "../../../components/dashboard/layout/Buttons/LocaleSwitch/LocaleSwitch";
 import axios from "../../../config/axios";
 import cookies from "next-cookies";
+import Layout from "../../../components/dashboard/layout/Layout";
 
-const ProjectSentence = ({ sentence }) => {
+const ProjectSentence = ({ sentence,globalData }) => {
   const formRef = useRef(null);
   const router = useRouter();
   const { locale } = router;
@@ -51,6 +52,7 @@ const ProjectSentence = ({ sentence }) => {
     },
   });
   return (
+    <Layout data={globalData}>
     <ContentPageContainer>
       <form onSubmit={formik.handleSubmit} ref={formRef}>
         <Typography variant={"h4"} mb={3}>
@@ -249,21 +251,32 @@ const ProjectSentence = ({ sentence }) => {
         </ContentPageFlexBox>
       </form>
     </ContentPageContainer>
+    </Layout>
   );
 };
-ProjectSentence.layout = "L3";
 export default ProjectSentence;
 export async function getServerSideProps(ctx) {
   const { token } = cookies(ctx);
+  const {locale} = ctx
   const sentence =
     (await axios.get("project_sentence").then((res) => res.data)) ?? {};
+    const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
   if (!token || token === "" || token === null)
     return {
       redirect: { destination: "/admin/login" },
     };
+    
   return {
     props: {
       sentence,
+      globalData,
     },
   };
 }

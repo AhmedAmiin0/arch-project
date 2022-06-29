@@ -1,10 +1,13 @@
 import { Box } from "@mui/material";
+import cookies from "next-cookies";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
 import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
+import Layout from "../../../components/dashboard/layout/Layout";
+import axios from "../../../config/axios";
 
-const Banners = () => {
+const Banners = ({ globalData }) => {
   const router = useRouter();
   const lang = router.locale;
   const columns = [
@@ -44,16 +47,36 @@ const Banners = () => {
   ];
 
   return (
-    <ListingComponent
-      cols={columns}
-      locale={lang}
-      page_title_plural="banners"
-      page_title_single="banner"
-      api_url="banners"
-      rowHeight = {200}
-    />
+    <Layout data={globalData}>
+      <ListingComponent
+        cols={columns}
+        locale={lang}
+        page_title_plural="banners"
+        page_title_single="banner"
+        api_url="banners"
+        rowHeight={200}
+      />
+    </Layout>
   );
 };
-
-Banners.layout = "L3";
 export default Banners;
+export async function getServerSideProps(ctx) {
+  const { token } = cookies(ctx);
+  const { locale } = ctx;
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
+
+  return {
+    props: { globalData },
+  };
+}

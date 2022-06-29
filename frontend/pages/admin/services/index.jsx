@@ -3,9 +3,11 @@ import cookies from "next-cookies";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Layout from "../../../components/dashboard/layout/Layout";
 import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
+import axios from "../../../config/axios";
 
-const Services = () => {
+const Services = ({ globalData }) => {
   const router = useRouter();
   const lang = router.locale;
   const columns = [
@@ -65,50 +67,61 @@ const Services = () => {
         </Box>
       ),
     },
-   {
-     field: "is_featured",
-     headerName: "Featured",
-     width: 100,
-     renderCell: (params) => (
-       <Box
-         position={"relative"}
-         sx={{
-           width: "100%",
-           height: "100%",
-           display: "flex",
-           alignItems: "center",
-           justifyContent: "center",
-         }}
-       >
-         <Typography variant={"body2"}>
-           {params.value == "FEATURED" ? "Featured" : "Not Featured"}
-         </Typography>
-       </Box>
-     ),
-   },
+    {
+      field: "is_featured",
+      headerName: "Featured",
+      width: 100,
+      renderCell: (params) => (
+        <Box
+          position={"relative"}
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant={"body2"}>
+            {params.value == "FEATURED" ? "Featured" : "Not Featured"}
+          </Typography>
+        </Box>
+      ),
+    },
   ];
 
   return (
-    <ListingComponent
-      cols={columns}
-      locale={lang}
-      page_title_plural="services"
-      page_title_single="service"
-      api_url="services"
-    />
+    <Layout data={globalData}>
+      <ListingComponent
+        cols={columns}
+        locale={lang}
+        page_title_plural="services"
+        page_title_single="service"
+        api_url="services"
+      />
+    </Layout>
   );
 };
 
-Services.layout = "L3";
 export default Services;
 export const getServerSideProps = async (ctx) => {
   const { token } = cookies(ctx);
+  const { locale } = ctx;
   if (!token || token === "" || token === null)
     return {
       redirect: { destination: "/admin/login" },
     };
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
   return {
     props: {
+      globalData,
     },
   };
 };

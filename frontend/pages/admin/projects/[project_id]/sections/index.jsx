@@ -1,12 +1,15 @@
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import ListingComponent from "../../../../../components/dashboard/ListingPage/ListingPage";
-import Image from 'next/image';
+import Image from "next/image";
+import cookies from "next-cookies";
+import Layout from "../../../components/dashboard/layout/Layout";
+import axios from "../../../config/axios";
 
-const Sections = () => {
+const Sections = ({ globalData }) => {
   const router = useRouter();
   const { locale } = router;
-  const {project_id} = router.query;
+  const { project_id } = router.query;
   const columns = [
     {
       field: "section_photo",
@@ -43,30 +46,52 @@ const Sections = () => {
       sortable: true,
     },
     {
-      field:'subtitle',
-      headerName:'Subtitle',
-      width:200,
-      editable:false,
-      sortable:true,
+      field: "subtitle",
+      headerName: "Subtitle",
+      width: 200,
+      editable: false,
+      sortable: true,
     },
     {
-      field:"description",
-      headerName:"Description",
-      width:200,
-      editable:false,
-      sortable:true,
+      field: "description",
+      headerName: "Description",
+      width: 200,
+      editable: false,
+      sortable: true,
     },
   ];
   return (
-    <ListingComponent
-      cols={columns}
-      locale={locale}
-      page_title_plural="sections"
-      page_title_single="section"
-      api_url={`projects/${project_id}/sections`}
-      url={`/admin/projects/${project_id}/sections`}
-    />
+    <Layout data={globalData}>
+      <ListingComponent
+        cols={columns}
+        locale={locale}
+        page_title_plural="sections"
+        page_title_single="section"
+        api_url={`projects/${project_id}/sections`}
+        url={`/admin/projects/${project_id}/sections`}
+      />
+    </Layout>
   );
 };
-Sections.layout = "L3";
-export default Sections
+export default Sections;
+export async function getServerSideProps(ctx) {
+  const { locale, params } = ctx;
+  const { token } = cookies(ctx);
+  if (!token || token === "" || token === null)
+    return {
+      redirect: { destination: "/admin/login" },
+    };
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
+  return {
+    props: {
+      globalData,
+    },
+  };
+}

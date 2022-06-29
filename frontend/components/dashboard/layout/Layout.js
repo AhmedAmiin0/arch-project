@@ -6,18 +6,20 @@ import { SweetAlertProvider } from "../../../context/NotificationsContext";
 import NextNProgress from "nextjs-progressbar";
 import { createContext, useEffect, useState } from "react";
 import { UserProvider } from "../../../context/AuthContext";
-import useAuth from "../../../hooks/useAuth";
 import axios from "../../../config/axios";
 import { useRouter } from "next/router";
+import useAuth from "../../../hooks/useAuth";
 
 // export const SidebarContext = createContext(true)
+export const UserContext = createContext(null);
+export const GlobalContext = createContext(null);
 
-export default function Layout({ children }) {
+export default function Layout({ children, data }) {
   const theme = createTheme(theTheme);
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [user, setUser] = useState(null);
-  const { isLoggedIn, checkAuth } = useAuth();
-  const router = useRouter();
+  const [globalData, setGlobalData] = useState(data);
+  console.log(data);
+  const { logout } = useAuth();
   const DashBoardContainer = styled(Box)(({ theme }) => ({
     flex: 6,
     [theme.breakpoints.up("md")]: {
@@ -25,17 +27,30 @@ export default function Layout({ children }) {
       paddingTop: "100px",
     },
   }));
-  useEffect(() => {
-    axios
-      .get("/user", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-      .then((res) => setUser(res.data));
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   axios
+  //     .get("/user")
+  //     .then((res) => {
+  //       setUser(res.data);
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //         console.log(err);
+  //         if (err.status === 401) logout();
+  //       });
+  //   }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("/global")
+  //     .then((res) => {
+  //       setGlobalData(res?.data?.data);
+  //       // console.log(res)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       if (err.status === 401) logout();
+  //     });
+  // }, []);
   return (
     <ThemeProvider theme={theme}>
       <NextNProgress
@@ -46,41 +61,39 @@ export default function Layout({ children }) {
         showOnShallow={true}
         options={{ showSpinner: false }}
       />
-      {/* <SidebarContext.Provider value={[sidebarVisable, setSidebarVisable]}> */}
       <SweetAlertProvider>
-        <Box bgcolor={"background.default"} color={"text.main"}>
-          <Navbar
-            theme={theme}
-            setSidebarVisible={setSidebarVisible}
-            sidebarVisible={sidebarVisible}
-          />
-          <Stack
-            direction="row"
-            display={"flex"}
-            justifyContent="space-between"
-            sx={{ height: "100vh" }}
-            // sx={{ height: "100%", }}
-          >
-            <Sidebar
-              setSidebarVisible={setSidebarVisible}
-              sidebarVisible={sidebarVisible}
-            />
-            <DashBoardContainer>
-              <Box
-                sx={{
-                  padding: "0 24px",
-                  backgroundColor: "background.default",
-                  margin: "0 auto",
-                }}
+          <GlobalContext.Provider value={[ globalData, setGlobalData ]}>
+            <Box bgcolor={"background.default"} color={"text.main"}>
+              <Navbar
+                theme={theme}
+                setSidebarVisible={setSidebarVisible}
+                sidebarVisible={sidebarVisible}
+              />
+              <Stack
+                direction="row"
+                display={"flex"}
+                justifyContent="space-between"
+                sx={{ height: "100vh" }}
               >
-                {children}
-              </Box>
-            </DashBoardContainer>
-          </Stack>
-        </Box>
+                <Sidebar
+                  setSidebarVisible={setSidebarVisible}
+                  sidebarVisible={sidebarVisible}
+                />
+                <DashBoardContainer>
+                  <Box
+                    sx={{
+                      padding: "0 24px",
+                      backgroundColor: "background.default",
+                      margin: "0 auto",
+                    }}
+                  >
+                    {children}
+                  </Box>
+                </DashBoardContainer>
+              </Stack>
+            </Box>
+          </GlobalContext.Provider>
       </SweetAlertProvider>
-      {/* </SidebarContext.Provider> */}
     </ThemeProvider>
-    // </UserProvider>
   );
 }

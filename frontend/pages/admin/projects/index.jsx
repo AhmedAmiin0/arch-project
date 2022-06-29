@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
 import cookies from "next-cookies";
+import Layout from "../../../components/dashboard/layout/Layout";
+import axios from "../../../config/axios";
 
-const ProjectList = () => {
+const ProjectList = ({ globalData }) => {
   const router = useRouter();
   const { locale } = router;
   const columns = [
@@ -60,25 +62,37 @@ const ProjectList = () => {
     },
   ];
   return (
-    <ListingComponent
-      cols={columns}
-      locale={locale}
-      page_title_plural="projects"
-      page_title_single="project"
-      api_url="projects"
-      HasSentence={true}
-    />
+    <Layout data={globalData}>
+      <ListingComponent
+        cols={columns}
+        locale={locale}
+        page_title_plural="projects"
+        page_title_single="project"
+        api_url="projects"
+        HasSentence={true}
+      />
+    </Layout>
   );
 };
-ProjectList.layout = "L3";
 export default ProjectList;
 export async function getServerSideProps(ctx) {
   const { token } = cookies(ctx);
+  const { locale } = ctx;
   if (!token || token === "" || token === null)
     return {
       redirect: { destination: "/admin/login" },
     };
+  const globalData = await axios
+    .get("/global", {
+      headers: {
+        "Accept-Language": locale,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data.data ?? {});
   return {
-    props: {},
+    props: {
+      globalData,
+    },
   };
 }
