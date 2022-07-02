@@ -28,13 +28,14 @@ import {
   successAlertAction,
 } from "../../../context/NotificationsContext";
 import cookies from "next-cookies";
+import Layout from "../../../components/dashboard/layout/Layout";
+import { useCreate } from "../../../hooks/useCRUD";
 
 const Create = ({ globalData }) => {
-  const [notify, dispatch] = useContext(notificationContext);
-
   const formRef = useRef(null);
   const router = useRouter();
   const [lang, setLang] = useState("AR");
+  const { createItem } = useCreate(lang.toLowerCase(), `services`);
   const formik = useFormik({
     initialValues: {
       title_ar: "",
@@ -62,21 +63,7 @@ const Create = ({ globalData }) => {
       formData.append("excerpt_en", values.excerpt_en);
       formData.append("service_thumb", values.service_thumb);
       formData.append("service_images", values.service_images);
-      axios
-        .post("services", formData)
-        .then((res) => {
-          dispatch(successAlertAction("Service created successfully"));
-          console.log(res);
-          router.push(`/admin/services/${res.data.service_id}`);
-        })
-        .catch((err) => {
-          console.log(err);
-          dispatch(
-            errorAlertAction(
-              "Failed to create service make sure all fields are filled correctly and try again"
-            )
-          );
-        });
+      createItem(formData);
     },
     validationSchema: ServicesSchemaCreate,
   });
@@ -99,8 +86,8 @@ const Create = ({ globalData }) => {
               {formik.errors && (
                 <ul style={{ color: "#f44336" }}>
                   {formik.errors && formik.touched
-                    ? Object.values(formik.errors).map((err) => {
-                        return <li>{err}</li>;
+                    ? Object.values(formik.errors).map((err,i) => {
+                        return <li key={i}>{err}</li>;
                       })
                     : ""}
                 </ul>

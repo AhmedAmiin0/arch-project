@@ -30,7 +30,7 @@ import { useCreate, useDelete } from "../../../../hooks/useCRUD";
 import { ProjectSchemaEdit } from "../../../../components/dashboard/schemas/ProjectSchema";
 import Delete from "@mui/icons-material/Delete";
 import cookies from "next-cookies";
-import Layout from "../../../components/dashboard/layout/Layout";
+import Layout from "../../../../components/dashboard/layout/Layout";
 
 const EditProject = ({ categories_and_services, project, globalData }) => {
   const formRef = useRef(null);
@@ -209,7 +209,7 @@ const EditProject = ({ categories_and_services, project, globalData }) => {
                     onChange={(e) =>
                       formik.setFieldValue("category", e.target.value)
                     }
-                    // {...formik.getFieldProps("category")}
+                    // {...formik.getFieldProps("categories")}
                   >
                     <MenuItem value={""}>NONE</MenuItem>
                     {categories.map((category) => (

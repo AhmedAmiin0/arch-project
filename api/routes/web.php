@@ -13,6 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-  dd('Hello World');
-});
+Route::get('/global', [\App\Http\Controllers\GlobalDataController::class,'show']);

@@ -56,6 +56,7 @@ export const useCreate = (locale, url) => {
       let res = await axios.post(`${url}`, data, {
         headers: { "Accept-Language": locale },
       });
+      console.log(res)
       dispatch(successAlertAction("Item created successfully"));
       setIsLoading(false);
       return res;

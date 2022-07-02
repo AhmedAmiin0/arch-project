@@ -20,10 +20,22 @@ class GlobalDataController extends Controller
     {
         $globalData = GlobalData::first();
         if($globalData != null)
-            $globalData->logo = [
+            {$globalData->logo = [
                 'src' => $globalData->getFirstMediaUrl('logo') ?? '',
                 'alt' => $globalData->getFirstMedia('logo')->name ?? '',
+            ];}
+        if(auth()->check()){
+            $globalData->user = [
+                'id' => auth()->user()->id,
+                'name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'avatar' => [
+                    'src' => auth()->user()->getFirstMedia('avatar')->url ?? asset('download.png'),
+                    'alt' => auth()->user()->getFirstMedia('avatar')->name ?? 'avatar',
+                ],
             ];
+        }
+
         return GlobalDataResource::make($globalData);
     }
 

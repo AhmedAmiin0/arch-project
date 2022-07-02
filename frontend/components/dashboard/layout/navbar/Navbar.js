@@ -2,7 +2,11 @@ import {
   AppBar,
   Avatar,
   Button,
+  Divider,
   IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
   Stack,
   Toolbar,
   Typography,
@@ -15,12 +19,23 @@ import {
   errorAlertAction,
   notificationContext,
 } from "../../../../context/NotificationsContext";
-import { useContext } from "react";
-import { GlobalContext } from "../Layout";
+import { useState } from "react";
 import useAuth from "../../../../hooks/useAuth";
-export default function Navbar({ theme, setSidebarVisible }) {
-  const [globalData, setGlobalData] = useContext(GlobalContext);
-  const { logout,loading } = useAuth();
+import { Logout, PersonAdd } from "@mui/icons-material";
+import SettingsIcon from '@mui/icons-material/Settings';
+export default function Navbar({ theme, setSidebarVisible,user }) {
+  const { logout, loading } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleLogout = () => {
+    if (!loading) logout();
+  };
   return (
     <AppBar
       position="sticky"
@@ -57,16 +72,69 @@ export default function Navbar({ theme, setSidebarVisible }) {
           <MenuIcon />
         </IconButton>
         <Stack direction={"row"} spacing={2}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="logout"
-            onClick={logout}
-            disabled={loading}
+          <Avatar
+            alt={user?.avatar?.name}
+            src={user?.avatar?.src}
+            onClick={handleClick}
+            sx={{ cursor: "pointer" }}
+          />
+          <Menu
+            anchorEl={anchorEl}
+            id="account-menu"
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&:before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <LogoutIcon fontSize={"small"} />
-          </IconButton>
-          <Avatar alt={globalData?.user?.avatar?.name} src={globalData?.user?.avatar?.src} />
+            <MenuItem>
+              <Typography variant={"body2"}
+              >
+                {user?.name}
+              </Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem >
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            
+
+            <MenuItem onClick={handleLogout}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
         </Stack>
       </Toolbar>
     </AppBar>

@@ -39,7 +39,7 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
         if (!active) {
           return;
         }
-        if (e.response.status === 401) logout();
+        if (err.response.status === 401) logout();
         setIsLoading(false);
         console.log(err);
       });

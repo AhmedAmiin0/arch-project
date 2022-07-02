@@ -34,7 +34,6 @@ const useAuth = () => {
       setLoading(false);
       router.push("/admin/login");
     } catch (err) {
-      dispatch(errorAlertAction("Logout failed"));
       setLoading(false);
       console.log(err);
     }

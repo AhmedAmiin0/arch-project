@@ -26,6 +26,7 @@ class GlobalDataResource extends JsonResource
             'message' => $this->message ?? '',
             'name' => $this->name ?? '',
             'logo' => $this->logo ?? '',
+            'user' => $this->user ?? null,
         ];
     }
 }

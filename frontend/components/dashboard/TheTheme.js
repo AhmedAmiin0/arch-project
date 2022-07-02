@@ -20,6 +20,7 @@ export const theTheme = {
       main: 'rgb(255, 255, 255)',
       secondary: 'rgb(255, 255, 255)',
     },
+    
   },
   components: {
     // Use `MuiDataGrid` on both DataGrid and DataGridPro

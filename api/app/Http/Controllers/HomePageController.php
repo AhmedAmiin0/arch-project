@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\HomeResource;
 use App\Http\Services\CollectionService;
 use App\Http\Traits\AttachImagesTrait;
 use App\Models\Home;
@@ -26,7 +27,7 @@ class HomePageController extends Controller
             });
             unset($home->media);
         }
-        return $home;
+        return HomeResource::make($home);
     }
 
     public function show()
@@ -45,39 +46,21 @@ class HomePageController extends Controller
         $home->corporates = $collectionService->corporateCollection();
         $home->banners = $collectionService->bannerCollection();
         unset($home['media']);
-        return $home;
+        return HomeResource::make($home);
     }
 
     public function store(Request $request)
     {
         try {
             $data = [
-                'title' => [
-                    'en' => $request->title['en'] ?? '',
-                    'ar' => $request->title['ar']  ?? '',
-                ],
-                'subtitle' => [
-                    'en' => $request->subtitle['en'] ?? '',
-                    'ar' => $request->subtitle['ar'] ?? '',
-                ],
-                'description' => [
-                    'en' => $request->description['en'] ?? '',
-                    'ar' => $request->description['ar']  ?? '',
-                ],
+                'title' =>$request->title,
+                'subtitle' => $request->subtitle,
+                'description' =>$request->description,
                 'keywords' => $request->keywords,
-                'slug' => ['en' => Str::slug($request->title['en']  ?? ''), 'ar' => Str::slug($request->title['ar'] ?? '')],
-                'sentence_title' => [
-                    'en' => $request->sentence_title['en'] ?? '',
-                    'ar' => $request->sentence_title['ar']  ?? '',
-                ],
-                'sentence_subtitle' => [
-                    'en' => $request->sentence_subtitle['en'] ?? '',
-                    'ar' => $request->sentence_subtitle['ar'] ?? '',
-                ],
-                'sentence_description' => [
-                    'en' => $request->sentence_description['en'] ?? '',
-                    'ar' => $request->sentence_description['ar'] ?? '',
-                ],
+                'slug' =>  Str::slug($request->title  ?? ''),
+                'sentence_title' =>  $request->sentence_title ?? '',
+                'sentence_subtitle' => $request->sentence_subtitle ?? '' ,
+                'sentence_description' => $request->sentence_description ?? '',
             ];
             $homePage = Home::first();
             $homePage == null ? $homePage = Home::create($data) : $homePage->update($data);
