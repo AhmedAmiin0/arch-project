@@ -53,9 +53,9 @@ const CreateBannerForm = () =>{
               my={2}
             >
               <Typography variant={"h6"}>Basic information</Typography>
-                <Errors formik={formik} />
+              <Errors formik={formik}/>
               <Stack direction={"row"} spacing={2}>
-                <LangSwitch lang={lang} setLang={setLang} />
+                <LangSwitch lang={lang} setLang={setLang}/>
               </Stack>
             </Stack>
             <Stack

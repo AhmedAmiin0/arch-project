@@ -24,10 +24,11 @@ use Illuminate\Support\Facades\Route;
 
 // Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware(['auth:sanctum','LocaleMiddleware']) ->group(function () {
-Route::post('/logout', [AuthController::class, 'logout']);
-Route::get('/me', [AuthController::class, 'me']);
-    Route::apiResource('/users', UserController::class);
+Route::middleware(['auth:sanctum', 'LocaleMiddleware'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::apiResource('/users', UserController::class)->except('update');
+    Route::put('user', [UserController::class, 'update']);
     Route::apiResource('/categories', \App\Http\Controllers\CategoryController::class);
     Route::apiResource('/services', \App\Http\Controllers\ServiceController::class);
     Route::resource('/projects', \App\Http\Controllers\ProjectController::class)
@@ -81,6 +82,4 @@ Route::get('/me', [AuthController::class, 'me']);
         Route::post('/project/{project}', [\App\Http\Controllers\ProjectController::class, 'attachImage']);
         Route::post('/home', [\App\Http\Controllers\HomePageController::class, 'attachImage']);
     });
-
-
 });

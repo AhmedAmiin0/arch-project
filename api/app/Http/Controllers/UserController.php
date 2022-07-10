@@ -31,13 +31,20 @@ class UserController extends Controller
     }
     public function show(User $user)
     {
-        return response()->json($user);
+        return response()->json(UserResource::make($user));
     }
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
+        $user = User::find(auth()->user()->id);
+
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'nullable|min:6',
+        ]);
         $user->update($request->all());
         if ($request->hasFile('avatar')) $user->addMediaFromRequest('avatar')->toMediaCollection('avatar');
-        return response()->json($user);
+        return response()->json(['message' => 'updated successfully', 'user' => UserResource::make($user)], 200);
     }
     public function destroy(User $user)
     {

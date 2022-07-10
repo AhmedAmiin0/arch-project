@@ -18,14 +18,9 @@ class GlobalDataController extends Controller
      */
     public function show()
     {
-        $globalData = GlobalData::first();
-        if($globalData != null)
-            {$globalData->logo = [
-                'src' => $globalData->getFirstMediaUrl('logo') ?? '',
-                'alt' => $globalData->getFirstMedia('logo')->name ?? '',
-            ];}
+        $globalData = $this->getGlobalData();
         if(auth()->check()){
-            $globalData->user = [
+            $globalData['user'] = [
                 'id' => auth()->user()->id,
                 'name' => auth()->user()->name,
                 'email' => auth()->user()->email,
@@ -33,12 +28,21 @@ class GlobalDataController extends Controller
                     'src' => auth()->user()->getFirstMedia('avatar')->url ?? asset('download.png'),
                     'alt' => auth()->user()->getFirstMedia('avatar')->name ?? 'avatar',
                 ],
-            ];
+            ] ;
         }
-
         return GlobalDataResource::make($globalData);
     }
 
+    private function getGlobalData()
+    {
+        $globalData = GlobalData::first();
+        if($globalData != null)
+            {$globalData->logo = [
+                'src' => $globalData->getFirstMediaUrl('logo') ?? '',
+                'alt' => $globalData->getFirstMedia('logo')->name ?? '',
+            ];}
+            return $globalData;
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -67,7 +71,7 @@ class GlobalDataController extends Controller
             if ($request->hasFile('logo')) {
                 $globalData->addMediaFromRequest('logo')->toMediaCollection('logo');
             }
-            return response()->json(['success' => true], 200);
+            return response()->json(['success' => true,'data'=> GlobalDataResource::make($this->getGlobalData())], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

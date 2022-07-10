@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import ListingComponent from "../../../../../components/dashboard/ListingPage/ListingPage";
 import Image from "next/image";
 import cookies from "next-cookies";
-import Layout from "../../../components/dashboard/layout/Layout";
-import axios from "../../../config/axios";
+import axios from "../../../../../config/axios";
+import Layout from "../../../../../components/dashboard/layout/Layout";
 
 const Sections = ({ globalData }) => {
   const router = useRouter();

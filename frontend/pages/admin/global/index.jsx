@@ -6,7 +6,7 @@ import EditGlobalDataForm from "../../../components/dashboard/forms/global/EditG
 const GlobalData = ({data}) => {
   return (
     <Layout data={data}>
-      <EditGlobalDataForm data={data}/>
+      <EditGlobalDataForm />
     </Layout>
   );
 };

@@ -12,7 +12,7 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,6 +26,7 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import GroupIcon from "@mui/icons-material/Group";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import { GlobalContext } from "../Layout";
 
 export const Hr = styled("hr")(({theme}) => ({
   margin: "24px 0px",
@@ -34,11 +35,10 @@ export const Hr = styled("hr")(({theme}) => ({
   borderStyle: "solid",
   borderColor: theme.palette.secondary.main,
 }));
-export default function Sidebar({
-                                  agency,
-                                  sidebarVisible,
-                                  setSidebarVisible,
-                                }) {
+export default function Sidebar({  sidebarVisible, setSidebarVisible, }) {
+
+
+
   const SideBarBox = styled(Box)(({theme}) => ({
     transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
     boxShadow: "none",
@@ -72,6 +72,8 @@ export default function Sidebar({
     borderRadius: "8px",
   }));
   const [open, setOpen] = useState(false);
+  const [globalData, setGlobalData] = useContext(GlobalContext);
+  console.log(globalData)
   return (
     <Box
       sx={{
@@ -89,7 +91,7 @@ export default function Sidebar({
                   cursor: "pointer",
                 }}
               >
-                <img src={agency?.logo?.src ?? "/logo.png"} width="100%" height={"100%"} alt={'logo'}/>
+                <img src={globalData?.global?.logo?.src ?? "/logo.png"} width="100%" height={"100%"} alt={'logo'}/>
               </div>
             </Box>
             <Box
@@ -107,7 +109,7 @@ export default function Sidebar({
                     variant={"h6"}
                     onClick={() => setSidebarVisible(false)}
                   >
-                    <SideBarAgencyNameBox>{agency?.name ?? 'Hojrat'}</SideBarAgencyNameBox>
+                    <SideBarAgencyNameBox>{globalData?.global?.name  &&  globalData?.global?.name != '' ? globalData?.global?.name: 'Hojrat'}</SideBarAgencyNameBox>
                   </Typography>
                 </Link>
               </div>

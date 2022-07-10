@@ -1,33 +1,33 @@
-import axios from "../../../config/axios";
 import cookies from "next-cookies";
-import Layout from "../../../components/dashboard/layout/Layout";
-import EditServicesForm from "../../../components/dashboard/forms/services/EditServiceForm";
+import ShowUsersForm from "../../components/dashboard/forms/user/ShowUsersForm";
+import Layout from "../../components/dashboard/layout/Layout";
+import axios from "../../config/axios";
 
-const Edit = ({ service, globalData }) => {
- 
+const UserProfile = ({ user, globalData,  }) => {
+
   return (
     <Layout data={globalData}>
-      <EditServicesForm service={service} />
+      <ShowUsersForm user={user} />
     </Layout>
   );
 };
-export default Edit;
-
+export default UserProfile;
 export const getServerSideProps = async (ctx) => {
-  const { locale, params } = ctx;
+  const { locale } = ctx;
   const { token } = cookies(ctx);
-  const { id } = params;
-
   if (!token) return { redirect: { destination: "/admin/login" } };
-  let service = {};
+  let user = {};
   await axios
-    .get(`/services/${id}`, {
+    .get(`/me`, {
       headers: {
         "Accept-Language": locale,
         Authorization: `Bearer ${token}`,
       },
     })
-    .then((res) => (service = res.data))
+    .then((res) => {
+      user = res.data;
+      console.log(res);
+    })
     .catch((err) => {
       if (err.response.status === 401)
         return axios
@@ -45,6 +45,6 @@ export const getServerSideProps = async (ctx) => {
     })
     .then((res) => res.data.data ?? {});
   return {
-    props: { service, globalData },
+    props: { user, globalData },
   };
 };

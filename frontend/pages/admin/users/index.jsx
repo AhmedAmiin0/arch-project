@@ -11,31 +11,32 @@ const Users = ({ globalData }) => {
   const router = useRouter();
   const lang = router.locale;
   const columns = [
-    // {
-    //   field: "avatar",
-    //   headerName: "image",
-    //   width: 200,
-    //   renderCell: (params) => (
-    //     <Box
-    //       position={"relative"}
-    //       sx={{
-    //         width: "100%",
-    //         height: "100%",
-    //         display: "flex",
-    //         alignItems: "center",
-    //         justifyContent: "center",
-    //       }}
-    //     >
-    //       <Image
-    //         src={params.value.src}
-    //         height={"100%"}
-    //         width={"100%"}
-    //         objectFit={"contain"}
-    //         alt={params.value.alt}
-    //       />
-    //     </Box>
-    //   ),
-    // },
+    {
+      field: "avatar",
+      headerName: "image",
+      width: 200,
+      renderCell: (params) => (
+        <Box
+          position={"relative"}
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+
+         {params.value.src != "" && params.value.src != null && <Image
+            src={params.value.src}
+            height={"100%"}
+            width={"100%"}
+            objectFit={"contain"}
+            alt={params.value.alt}
+          />}
+        </Box>
+      ),
+    },
     {
       field: "name",
       width: 140,

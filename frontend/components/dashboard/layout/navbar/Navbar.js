@@ -15,17 +15,21 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import axios from "../../../../config/axios";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
 import {
   errorAlertAction,
   notificationContext,
 } from "../../../../context/NotificationsContext";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useAuth from "../../../../hooks/useAuth";
 import { Logout, PersonAdd } from "@mui/icons-material";
-import SettingsIcon from '@mui/icons-material/Settings';
-export default function Navbar({ theme, setSidebarVisible,user }) {
+import SettingsIcon from "@mui/icons-material/Settings";
+import { GlobalContext } from "../Layout";
+export default function Navbar({ theme, setSidebarVisible, user }) {
   const { logout, loading } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [globalData, setGlobalData] = useContext(GlobalContext);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -73,8 +77,8 @@ export default function Navbar({ theme, setSidebarVisible,user }) {
         </IconButton>
         <Stack direction={"row"} spacing={2}>
           <Avatar
-            alt={user?.avatar?.name}
-            src={user?.avatar?.src}
+            alt={globalData?.user?.avatar?.name}
+            src={globalData?.user?.avatar?.src}
             onClick={handleClick}
             sx={{ cursor: "pointer" }}
           />
@@ -113,21 +117,22 @@ export default function Navbar({ theme, setSidebarVisible,user }) {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem>
-              <Typography variant={"body2"}
-              >
-                {user?.name}
-              </Typography>
-            </MenuItem>
+            <Link href="/admin/profile">
+              <MenuItem>
+                <Typography variant={"body2"}>
+                  {globalData?.user?.name}
+                </Typography>
+              </MenuItem>
+            </Link>
             <Divider />
-            <MenuItem >
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              Settings
-            </MenuItem>
-            
-
+            <Link href="/admin/global">
+              <MenuItem>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                Settings
+              </MenuItem>
+            </Link>
             <MenuItem onClick={handleLogout}>
               <ListItemIcon>
                 <Logout fontSize="small" />
