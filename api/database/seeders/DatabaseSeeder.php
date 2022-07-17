@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Email;
 use App\Models\Project;
 use Database\Factories\CategoryFactory;
 //use Database\Factories\HasAttractiveSentenceFactory;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(10)->create();
+        Email::factory(10000)->create();
         // ProjectFactory::new()->count(10)->create();
 //        HasAttractiveSentenceFactory::new()->count(10)->create();
 //        HasSectionFactory::new()->count(10)->create();

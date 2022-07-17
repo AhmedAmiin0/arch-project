@@ -11,5 +11,6 @@ class ThanksForContactingMessage extends Model
     protected $fillable = [
         'title',
         'message',
+        'subject'
     ];
 }

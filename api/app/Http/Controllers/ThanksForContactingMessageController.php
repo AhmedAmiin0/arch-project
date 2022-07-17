@@ -19,6 +19,7 @@ class ThanksForContactingMessageController extends Controller
             [
                 'title' => $thanksForContactingMessage->title ?? '',
                 'message' => $thanksForContactingMessage->message ?? '',
+                'subject' => $thanksForContactingMessage->subject ?? '',
             ],
             200
         );
@@ -35,11 +36,13 @@ class ThanksForContactingMessageController extends Controller
         $thanksForContactingMessage = ThanksForContactingMessage::first();
         $thanksForContactingMessage->title = $request->title;
         $thanksForContactingMessage->message = $request->message;
+        $thanksForContactingMessage->subject = $request->subject;
         $thanksForContactingMessage->save();
         return response()->json(
             [
                 'title' => $thanksForContactingMessage->title ?? '',
                 'message' => $thanksForContactingMessage->message ?? '',
+                'subject' => $thanksForContactingMessage->subject ?? '',
             ],
             200
         );

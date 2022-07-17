@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('message');
+            $table->string('subject');
             $table->timestamps();
         });
     }

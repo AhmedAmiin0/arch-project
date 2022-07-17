@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProjectSentenceController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\CorporateResource;
@@ -114,6 +115,6 @@ Route::middleware(['auth:sanctum', 'LocaleMiddleware'])->group(function () {
 Route::post('/password/email', [AuthController::class, 'forget']);
 Route::post('/password/reset', [AuthController::class, 'reset']);
 
-Route::post('test', function (Request $request) {
-    SendContactMailsJob::dispatch( $request->email );
-});
+Route::post('contact-us', [MailController::class, 'sendContactMail']);
+Route::post('send-advertisement-emails', [MailController::class, 'sendAdvertisementMails']);
+
