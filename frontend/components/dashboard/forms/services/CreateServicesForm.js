@@ -20,6 +20,7 @@ import { useCreate } from "../../../../hooks/useCRUD";
 import { ServicesSchemaCreate } from "../../schemas/ServicesSchema";
 import { ContentPageContainer, ContentPageFlexBox } from "../../layout/ContentPage/ContentPageContainer";
 import Errors from "../../Errors";
+import {LangSwitch} from "../../layout/Buttons/LocaleSwitch/LocaleSwitch";
 
 const CreateServicesForm = () => {
   const formRef = useRef(null);
@@ -71,57 +72,12 @@ const CreateServicesForm = () => {
           my={2}
         >
           <Typography variant={"h6"}>Basic information</Typography>
-          <Errors formik={formik}  />
           <Stack direction={"row"} spacing={2}>
-            <Button
-              variant={"text"}
-              color={"primary"}
-              onClick={() => setLang("AR")}
-              sx={{
-                border: "none",
-                borderBottom:
-                  lang === "AR"
-                    ? "1px solid rgb(80, 72, 229)"
-                    : "1px solid rgb(255, 255, 255, 0.4)",
-                color:
-                  lang === "AR"
-                    ? "rgb(80, 72, 229)"
-                    : "rgb(255, 255, 255, 0.4)",
-                "&:hover": {
-                  border: "none",
-                  outline: "none",
-                  borderBottom:
-                    lang === "AR"
-                      ? "1px solid rgb(80, 72, 229)"
-                      : "1px solid rgb(255, 255, 255, 0.4)",
-                  color:
-                    lang === "AR"
-                      ? "rgb(80, 72, 229)"
-                      : "rgb(255, 255, 255, 0.4)",
-                },
-              }}
-            >
-              Ar
-            </Button>
-            <Button
-              variant={"text"}
-              color={"primary"}
-              onClick={() => setLang("EN")}
-              sx={{
-                border: "none",
-                borderBottom:
-                  lang === "EN"
-                    ? "1px solid rgb(80, 72, 229)"
-                    : "1px solid rgb(255, 255, 255, 0.4)",
-                color:
-                  lang === "EN"
-                    ? "rgb(80, 72, 229)"
-                    : "rgb(255, 255, 255, 0.4)",
-              }}
-            >
-              En
-            </Button>
+            <LangSwitch lang={lang} setLang={setLang}/>
           </Stack>
+          
+                    <Errors formik={formik}  />
+
         </Stack>
         <Box
           flex={3}

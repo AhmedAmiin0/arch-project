@@ -24,8 +24,8 @@ class GlobalDataResource extends JsonResource
             'email' => $this->email ?? null,
             'email_app_secret' => $this->email_app_secret ?? null,
             'message' => $this->message ?? '',
-            'name' => $this->name ?? '',
-            'logo' => $this->logo ?? '',
+            'name' => $this->name ?? 'hojrat',
+            'logo' => $this['logo'],
             'user' => $this['user'] ?? null,
         ];
     }

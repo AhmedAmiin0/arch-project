@@ -25,6 +25,7 @@ import {useCreate, useDelete} from "../../../../hooks/useCRUD";
 import {ProjectSchemaEdit} from "../../schemas/ProjectSchema";
 import {GalleryModal} from "../../GalleryModel/GalleryModal";
 import {HighlightedSectionStyles} from "../../projects/HighlightedSectionStyles";
+import Errors from "../../Errors";
 
 const EditProjectsForm = ({
                             categories_and_services,
@@ -143,6 +144,7 @@ const EditProjectsForm = ({
               Related Sections
             </Button>
           </Link>
+          <Errors formik={formik}/>
         </Stack>
         <Box
           flex={3}

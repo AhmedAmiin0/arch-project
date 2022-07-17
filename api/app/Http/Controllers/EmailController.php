@@ -15,7 +15,7 @@ class EmailController extends Controller
     public function index()
     {
         $limit = request()->get('limit', 15);
-        return Email::paginate($limit);
+        return Email::search(request()->get('q'))->paginate($limit);
     }
 
     /**
@@ -53,37 +53,9 @@ class EmailController extends Controller
      */
     public function update(Request $request, Email $email)
     {
-        $email->update($request->all());
+        $email->update($request->email);
         return response()->json($email, 200);
     }
-
-    public function archived()
-    {
-        $limit = request()->get('limit', 10);
-        return Email::onlyTrashed()
-            ->paginate($limit);
-
-    }
-
-
-    public function restoreFromArchive(Request $request)
-    {
-        try {
-            $email = Email::onlyTrashed()->find($request->get('id'));
-            $email->restore();
-            return response()->json(['message' => 'success'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 400);
-        }
-    }
-
-    public function removePermanently($id)
-    {
-        $email = Email::onlyTrashed()->find($id);
-        $email->forceDelete();
-        return response()->json(['message' => 'success'], 200);
-    }
-
     /**
      * Remove the specified resource from storage.
      *

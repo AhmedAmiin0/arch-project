@@ -25,11 +25,11 @@ class AboutPageController extends Controller
                 'alt' => $about->getFirstMedia('first_section_image')->name,
                 'id' => $about->getFirstMedia('first_section_image')->id,
             ];
-            // $about->video_background = [
-            //     'src' => $about->getFirstMediaUrl('video_background'),
-            //     'alt' => $about->getFirstMedia('video_background')->name ?? '',
-            //     'id' => $about->getFirstMedia('video_background')->id,
-            // ];
+            $about->video_background = [
+                'src' => $about->getFirstMediaUrl('video_background'),
+                'alt' => $about->getFirstMedia('video_background')->name ?? '',
+                'id' => $about->getFirstMedia('video_background')->id,
+            ];
         }
         return new AboutPageResource($about);
     }

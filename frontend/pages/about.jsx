@@ -5,6 +5,7 @@ import VideoSection from "../components/about/videosection/VideoSection";
 import {Services} from "../components/Home/service/Servcie";
 import {ClientSection} from "../components/Home/ClientsSection/ClientSection";
 import FeedbackStyle2 from "../components/about/Feedback/FeedbackStyle2";
+import Layout from "../components/layout/Layout";
 
 export default function about() {
     const props = {
@@ -58,7 +59,7 @@ export default function about() {
         background: "#3b0f62",
         color: "#fff",
     }
-    return <>
+    return <Layout>
         <Breadcrumb props={props}/>
         <FirstSectionInAbout/>
         <SecondSectionInAbout props={props.secondSection}/>
@@ -67,5 +68,5 @@ export default function about() {
         <ClientSection background="#3b0f62" textColor="#fff"/>
         <FeedbackStyle2/>
 
-    </>
+    </Layout>
 }

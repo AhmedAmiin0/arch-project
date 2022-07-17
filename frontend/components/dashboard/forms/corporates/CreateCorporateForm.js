@@ -46,8 +46,6 @@ const CreateCorporateForm = () => {
         >
           <Typography variant={"h6"}>Basic information</Typography>
           <Errors formik={formik}/>
-          {/* <Stack direction={'row'} spacing={2}>
-          </Stack> */}
         </Stack>
         <Box
           flex={3}

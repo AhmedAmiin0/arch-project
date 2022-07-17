@@ -19,6 +19,7 @@ import {useRouter} from "next/router";
 import {useCreate, useDelete} from "../../../../hooks/useCRUD";
 import {useFormik} from "formik";
 import {FeedbackSchemaEdit} from "../../schemas/FeedbackSchema";
+import Errors from "../../Errors";
 
 const EditFeedbackForm = ({feedback}) => {
   const formRef = useRef(null);
@@ -63,6 +64,7 @@ const EditFeedbackForm = ({feedback}) => {
         <Stack flex={2} direction={"column"} spacing={2} my={2}>
           <Typography variant={"h6"}>Basic information</Typography>
           <LocaleSwitch lang={locale}/>
+          <Errors formik={formik}/>
         </Stack>
         <Box
           flex={3}

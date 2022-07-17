@@ -18,7 +18,6 @@ const EditGlobalDataForm = () => {
   const router = useRouter();
   const { locale } = router;
   const [globalData, setGlobalData] = useContext(GlobalContext);
-  console.log(2);
   const { createItem } = useCreate(locale, "global");
   const formik = useFormik({
     initialValues: {
@@ -41,7 +40,6 @@ const EditGlobalDataForm = () => {
       setGlobalData( SetGlobalData(res?.data?.data) );
     },
   });
-  console.log(globalData);
   return (
     <ContentPageContainer>
       <form onSubmit={formik.handleSubmit} ref={formRef}>

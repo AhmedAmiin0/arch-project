@@ -1,6 +1,5 @@
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import { theTheme } from "../../TheTheme";
-import Navbar from "../../layout/navbar/Navbar";
 import styled from "@emotion/styled";
 export default function Layout({ children }) {
   const theme = createTheme(theTheme);

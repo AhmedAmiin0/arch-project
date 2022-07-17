@@ -14,7 +14,7 @@ import {
   Stack,
   TextField,
   Typography,
-  Box
+  Box,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,31 +24,23 @@ import { useRouter } from "next/router";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Link from "next/link";
 import { UserSchemaCreate } from "../../schemas/UserSchema";
-import { useCreate, useDelete } from "../../../../hooks/useCRUD";
-const CreateUsersForm = ({ canEdit = false, userData = {} }) => {
+import { useCreate } from "../../../../hooks/useCRUD";
+const CreateUsersForm = () => {
   const formRef = useRef(null);
   const router = useRouter();
   const { createItem } = useCreate(router.locale, "users");
-  const { deleteItem } = useDelete(router.locale);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const HandleClick = () => {
-    if (canEdit) {
-      deleteItem("users");
-    } else {
-      router.push("/users");
-    }
-  };
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
   const formik = useFormik({
     initialValues: {
-      name: canEdit ? userData?.name : "",
-      email: canEdit ? userData?.email : "",
+      name: "",
+      email: "",
       password: "",
       passwordConfirmation: "",
-      avatar: canEdit ? userData?.avatar : "",
+      avatar: '',
     },
     onSubmit: async (values) => {
       const formData = new FormData(formRef.current);
@@ -65,7 +57,6 @@ const CreateUsersForm = ({ canEdit = false, userData = {} }) => {
         <Typography variant={"h4"} mb={3}>
           Create a new user
         </Typography>
-
         <ContentPageFlexBox>
           <Stack
             direction={"column"}
@@ -145,7 +136,6 @@ const CreateUsersForm = ({ canEdit = false, userData = {} }) => {
                 label={"Password Confirmation"}
               />
             </FormControl>
-
             <label htmlFor="contained-button-file">
               <Input
                 accept="image/*"
@@ -164,12 +154,10 @@ const CreateUsersForm = ({ canEdit = false, userData = {} }) => {
                 )) || <span>Upload Avatar</span>}
               </Button>
             </label>
-
             <Box position={"relative"} width={"100%"} height={"100%"}>
-              {formik.values.avatar && (
+              {formik.values.avatar.length != 0 && (
                 <img
                   src={
-                    formik.values.avatar?.src ??
                     URL.createObjectURL(formik.values.avatar)
                   }
                   alt=""
@@ -196,15 +184,16 @@ const CreateUsersForm = ({ canEdit = false, userData = {} }) => {
             alignItems={"center"}
             spacing={2}
           >
-            <Button
-              variant="outlined"
-              component={"a"}
-              color="error"
-              startIcon={<CloseIcon />}
-              onClick={HandleClick}
-            >
-              {canEdit ? "Delete" : "Cancel"}
-            </Button>
+            <Link href="/admin/users">
+              <Button
+                variant="outlined"
+                component={"a"}
+                color="error"
+                startIcon={<CloseIcon />}
+              >
+                Cancel
+              </Button>
+            </Link>
             <Button
               type={"submit"}
               variant="outlined"

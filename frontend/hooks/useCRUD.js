@@ -50,13 +50,13 @@ export const useCreate = (locale, url) => {
   const [notify, dispatch] = useContext(notificationContext);
   const [isLoading, setIsLoading] = useState(false);
   const { logout } = useAuth();
-  const createItem = async (data, error = false) => {
+  const createItem = async (data) => {
     try {
       setIsLoading(true);
       let res = await axios.post(`${url}`, data, {
         headers: { "Accept-Language": locale },
       });
-      console.log(res)
+      console.log(res);
       dispatch(successAlertAction("Item created successfully"));
       setIsLoading(false);
       return res;
@@ -64,9 +64,9 @@ export const useCreate = (locale, url) => {
       console.log(e);
       if (e.response.status === 401) logout();
       setIsLoading(false);
-      error
-        ? dispatch(errorAlertAction(e.response.data.message))
-        : dispatch(errorAlertAction("Item could not be created"));
+      typeof e.response.message === "string" && e.response.message.length > 0
+        ? dispatch(errorAlertAction(e.response.message))
+        : dispatch(errorAlertAction("Action could not be completed"));
     }
   };
   return { createItem, isLoading };

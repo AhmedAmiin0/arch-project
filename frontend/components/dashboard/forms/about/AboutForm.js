@@ -46,8 +46,8 @@ const AboutForm = ({ about }) => {
       ) {
         formData.append("video_background", values.video_background);
       }
-      // let res = await createItem(formData);
-      console.log(values);
+      let res = await createItem(formData);
+      // console.log(values);
     },
   });
   console.log(formik.values);
@@ -196,7 +196,7 @@ const AboutForm = ({ about }) => {
               multiline={true}
               rows={6}
             />
-            {/* {formik.values.first_section_image != "" && (
+            {formik.values.first_section_image != "" && (
               <Box position={"relative"} p={2}>
                 <img
                   src={
@@ -212,7 +212,7 @@ const AboutForm = ({ about }) => {
                   height={"100%"}
                 />
               </Box>
-            )} */}
+            )}
             <label
               htmlFor="contained-button-file"
               style={{
@@ -229,7 +229,6 @@ const AboutForm = ({ about }) => {
                 style={{ display: "none" }}
                 name={"first_section_image"}
                 onChange={(e) => {
-                  console.log(e.target.files);
                   return formik.setFieldValue(
                     "first_section_image",
                     e.target.files[0]
@@ -262,18 +261,25 @@ const AboutForm = ({ about }) => {
               fullWidth
               sx={{ my: 2 }}
             />
-            {/* {formik.values.video_background && (
-              <img
-                src={
-                  formik.values.video_background.src ??
-                  URL.createObjectURL(formik.values.video_background)
-                }
-                alt={"video_background"}
-                width={"100%"}
-              />
-            )} */}
+            {formik.values.video_background != "" && (
+              <Box position={"relative"} p={2}>
+                <img
+                  src={
+                    formik.values.video_background?.src
+                      ? formik.values.video_background?.src
+                      : formik.values.video_background == ""
+                      ? ""
+                      : URL.createObjectURL(formik.values.video_background)
+                  }
+                  alt=""
+                  title=""
+                  width={"100%"}
+                  height={"100%"}
+                />
+              </Box>
+            )}
             <label
-              htmlFor="contained-button-file"
+              htmlFor="video_background"
               style={{
                 display: "flex",
                 justifyContent: "center",
@@ -283,13 +289,15 @@ const AboutForm = ({ about }) => {
             >
               <input
                 accept="image/*"
-                id="contained-button-file"
+                id="video_background"
                 type="file"
                 style={{ display: "none" }}
                 name={"video_background"}
                 onChange={(e) => {
-                  console.log(e.target.files);
-                  return formik.setFieldValue("video_background", e.target.files[0]);
+                  return formik.setFieldValue(
+                    "video_background",
+                    e.target.files[0]
+                  );
                 }}
               />
               <Button variant="contained" component="div" my={2}>

@@ -20,6 +20,7 @@ import {useRef, useState} from "react";
 import {useCreate} from "../../../../hooks/useCRUD";
 import {useFormik} from "formik";
 import {FeedbackSchemaCreate} from "../../schemas/FeedbackSchema";
+import Errors from "../../Errors";
 
 const CreateFeedbackForm = () => {
    const formRef = useRef(null);
@@ -70,6 +71,7 @@ const CreateFeedbackForm = () => {
           <Stack direction={"row"} spacing={2}>
             <LangSwitch lang={lang} setLang={setLang}/>
           </Stack>
+          <Errors formik={formik}/>
         </Stack>
         <Box
           flex={3}

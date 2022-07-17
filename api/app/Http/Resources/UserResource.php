@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'avatar' => [
-                'src' => $this->getFirstMediaUrl('avatar') == '' ? asset('download.png') : $this->getFirstMediaUrl('avatar'),
+                'src' => $this->getFirstMedia('avatar') ? $this->getFirstMediaUrl('avatar') :  asset('download.png'),
                 'alt' => $this->getFirstMedia('avatar')->name ?? 'avatar',
                 'id' => $this->getFirstMedia('avatar')->id ?? '',
             ],

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\ThanksForContactingMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendMailsJob implements ShouldQueue
+class SendContactMailsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -19,8 +20,8 @@ class SendMailsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public $mailModel, public $details)
-    {
+    public function __construct( public $email ) {
+
     }
 
 
@@ -31,10 +32,9 @@ class SendMailsJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->details['email'])->send(new $this->mailModel(
-            $this->details['name'],
-            $this->details['subject'],
-            $this->details['message']
-        ));
+
+        Mail::to($this->email)
+
+        ->send(new ThanksForContactingMail());
     }
 }

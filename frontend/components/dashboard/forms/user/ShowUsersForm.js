@@ -71,12 +71,11 @@ const ShowUsersForm = ({ user }) => {
                 title=""
                 width="100%"
                 height="100%"
-                layout="responsive"
-                objectFit="contain"
               />
             )}
           </Stack>
         </ContentPageFlexBox>
+      </form>
         <ContentPageFlexBox>
           <Stack flex={2}>
             <Typography variant={"h6"} my={2}>
@@ -101,7 +100,6 @@ const ShowUsersForm = ({ user }) => {
             </Button>
           </Stack>
         </ContentPageFlexBox>
-      </form>
     </ContentPageContainer>
   );
 };

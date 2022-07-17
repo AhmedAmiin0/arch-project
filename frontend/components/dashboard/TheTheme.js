@@ -9,7 +9,26 @@ export const theTheme = {
     },
     therdary: {
       main: 'rgb(117, 130, 235)',
-
+    },
+    error: {
+      light: '#e57373',
+      main: '#f44336',
+      dark: '#d32f2f',
+    },
+    success: {
+      light: '#81c784',
+      main: '#66bb6a',
+      dark: '#388e3c',
+    },
+    warning: {
+      light: '#ffb74d',
+      main: '#ffa726',
+      dark: '#f57c00',
+    },
+    info: {
+      light: '#4fc3f7',
+      main: '#29b6f6',
+      dark: '#0288d1',
     },
     background: {
       default: 'rgb(11, 15, 25)',

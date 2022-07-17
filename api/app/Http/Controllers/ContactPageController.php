@@ -36,7 +36,6 @@ class ContactPageController extends Controller
             $data = $request->only('title','subtitle','contact_details','location');
             $contactPage = ContactPage::find(1);
             $contactPage == null ? ContactPage::create($data) : $contactPage->update($data);
-
             // if ($request->has('contact_page_image')) {
             //     $contactPage->addMediaFromRequest('contact_page_image')->each(fn ($media) => $media->toMediaCollection('contact_page_image'));
             // }
@@ -46,22 +45,4 @@ class ContactPageController extends Controller
         }
     }
 
-    public function sendMessage(Request $request)
-    {
-        try {
-            $request->validate([
-                'name' => 'required|string',
-                'email' => 'required|email',
-                'phone' => 'nullable|numeric',
-                'message' => 'nullable',
-            ]);
-            Mail::to('ahmedamin1925@gmail.com')->send(new NotifiMail());
-            //            SendMailsJob::dispatch($mailModel, $request->all());
-            // check if email is already in the database
-            Email::where('email', $request->email)->first() ?? Email::create($request->only('email'));
-            return response()->json(['message' => 'Message sent successfully.'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
 }

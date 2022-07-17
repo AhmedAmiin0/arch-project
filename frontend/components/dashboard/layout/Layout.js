@@ -4,11 +4,8 @@ import Navbar from "./navbar/Navbar";
 import Sidebar from "./sidebar/Sidebar";
 import { SweetAlertProvider } from "../../../context/NotificationsContext";
 import NextNProgress from "nextjs-progressbar";
-import { createContext, useEffect, useMemo, useReducer, useState } from "react";
-import { UserProvider } from "../../../context/AuthContext";
-import axios from "../../../config/axios";
+import { createContext, useEffect, useReducer, useState } from "react";
 import { useRouter } from "next/router";
-import useAuth from "../../../hooks/useAuth";
 
 export const GlobalContext = createContext(null);
 export const SET_ALL_GLOBALS = "SET_ALL_GLOBALS";
@@ -54,7 +51,6 @@ export default function Layout({ children, data }) {
   const theme = createTheme(theTheme);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [globalData, setGlobalData] = useReducer(reducer, {});
-  const { logout } = useAuth();
   const router = useRouter();
   const {locale} = router; 
   const DashBoardContainer = styled(Box)(({ theme }) => ({
