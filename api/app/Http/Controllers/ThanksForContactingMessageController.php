@@ -33,8 +33,8 @@ class ThanksForContactingMessageController extends Controller
      */
     public function store(Request $request)
     {
-        $thanksForContactingMessage = ThanksForContactingMessage::first();
-        $thanksForContactingMessage->title = $request->title;
+        $thanksForContactingMessage = ThanksForContactingMessage::first() ? ThanksForContactingMessage::first() : new ThanksForContactingMessage();
+        $thanksForContactingMessage->title  = $request->title;
         $thanksForContactingMessage->message = $request->message;
         $thanksForContactingMessage->subject = $request->subject;
         $thanksForContactingMessage->save();
@@ -47,6 +47,4 @@ class ThanksForContactingMessageController extends Controller
             200
         );
     }
-
-
 }

@@ -62,6 +62,7 @@ Route::middleware(['auth:sanctum', 'LocaleMiddleware'])->group(function () {
 
     Route::apiResource('/messages', \App\Http\Controllers\MessageController::class)->except(['update', 'store']);
 
+
     Route::post('/contact', [\App\Http\Controllers\ContactPageController::class, 'sendMessage']);
     Route::prefix('/page')
         ->group(function () {
@@ -118,3 +119,4 @@ Route::post('/password/reset', [AuthController::class, 'reset']);
 Route::post('contact-us', [MailController::class, 'sendContactMail']);
 Route::post('send-advertisement-emails', [MailController::class, 'sendAdvertisementMails']);
 
+Route::apiResource('/thanks-for-contacting', \App\Http\Controllers\ThanksForContactingMessageController::class)->only(['index', 'store']);

@@ -29,7 +29,7 @@ class EmailController extends Controller
         $this->validate($request, [
             'email' => 'required|email|unique:emails',
         ]);
-        $email = Email::create($request->all());
+        $email = Email::create($request->email);
         return response()->json($email, 201);
     }
 
