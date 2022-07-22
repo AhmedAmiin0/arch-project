@@ -26,11 +26,16 @@ class EmailController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email|unique:emails',
-        ]);
-        $email = Email::create($request->email);
-        return response()->json($email, 201);
+        try {
+
+            $this->validate($request, [
+                'email' => 'required|email|unique:emails',
+            ]);
+            $email = Email::create($request->all());
+            return response()->json($email, 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,7 +58,7 @@ class EmailController extends Controller
      */
     public function update(Request $request, Email $email)
     {
-        $email->update($request->email);
+        $email->update($request->all());
         return response()->json($email, 200);
     }
     /**

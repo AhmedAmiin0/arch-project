@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/global', [\App\Http\Controllers\GlobalDataController::class, 'show']);
 Route::get('/reset-password/{token}', [AuthController::class,'forgetPage'])->name('password.reset');
+Route::get('/home', [\App\Http\Controllers\HomePageController::class, 'index']);

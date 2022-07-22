@@ -4,7 +4,7 @@
 ])
 # {{ $mailTitle }}
 
-{{ $mailMessage }}
+{!! $mailMessage !!}
 
 Thanks,<br>
 {{ config('app.name') }}

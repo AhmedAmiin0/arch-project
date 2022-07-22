@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('email');
             $table->text('message');
             $table->string('subject');
-            $table->enum('status', ['SENT', 'RECEIVED']);
             $table->timestamps();
         });
     }

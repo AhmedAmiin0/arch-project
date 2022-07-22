@@ -16,7 +16,7 @@ class MessageController extends Controller
     public function index()
     {
         $limit = request()->get('limit', 15);
-        return MessageResource::collection(Message::search(request()->get('q'))->sortby(request()->get('status'), 'desc')->paginate($limit));
+        return MessageResource::collection(Message::search(request()->get('q'))->paginate($limit));
     }
 
     public function show(Message $message)

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(10)->create();
-        Email::factory(10000)->create();
+        Email::factory(100)->create();
         // ProjectFactory::new()->count(10)->create();
 //        HasAttractiveSentenceFactory::new()->count(10)->create();
 //        HasSectionFactory::new()->count(10)->create();

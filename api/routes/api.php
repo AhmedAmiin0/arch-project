@@ -28,9 +28,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('overview', [DashboardController::class, 'index']);
 
 Route::middleware(['auth:sanctum', 'LocaleMiddleware'])->group(function () {
+    Route::get('overview', [DashboardController::class, 'index']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -54,16 +54,11 @@ Route::middleware(['auth:sanctum', 'LocaleMiddleware'])->group(function () {
 
     Route::apiResource('/corporates', \App\Http\Controllers\CorporateController::class);
 
-    Route::apiResource('/emails', \App\Http\Controllers\EmailController::class);
 
     Route::apiResource('/banners', \App\Http\Controllers\BannerController::class);
 
-    Route::apiResource('/email', \App\Http\Controllers\EmailController::class);
-
-    Route::apiResource('/messages', \App\Http\Controllers\MessageController::class)->except(['update', 'store']);
 
 
-    Route::post('/contact', [\App\Http\Controllers\ContactPageController::class, 'sendMessage']);
     Route::prefix('/page')
         ->group(function () {
             Route::controller(\App\Http\Controllers\HomePageController::class)->prefix('/home')->group(function () {
@@ -111,12 +106,13 @@ Route::middleware(['auth:sanctum', 'LocaleMiddleware'])->group(function () {
         Route::post('/project/{project}', [\App\Http\Controllers\ProjectController::class, 'attachImage']);
         Route::post('/home', [\App\Http\Controllers\HomePageController::class, 'attachImage']);
     });
+    Route::apiResource('/thanks-for-contacting', \App\Http\Controllers\ThanksForContactingMessageController::class)->only(['index', 'store']);
+    Route::apiResource('/messages', \App\Http\Controllers\MessageController::class)->except(['update', 'store']);
+    Route::apiResource('/advertisements', \App\Http\Controllers\AdvertisementController::class)->except(['update']);
 });
 
 Route::post('/password/email', [AuthController::class, 'forget']);
 Route::post('/password/reset', [AuthController::class, 'reset']);
-
 Route::post('contact-us', [MailController::class, 'sendContactMail']);
-Route::post('send-advertisement-emails', [MailController::class, 'sendAdvertisementMails']);
+Route::apiResource('/emails', \App\Http\Controllers\EmailController::class);
 
-Route::apiResource('/thanks-for-contacting', \App\Http\Controllers\ThanksForContactingMessageController::class)->only(['index', 'store']);

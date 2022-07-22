@@ -34,7 +34,7 @@ class HomePageController extends Controller
     {
         $collectionService = new CollectionService();
         $home = Home::first();
-        $home->home_gallery = $home->getMedia('home_images')->map(function ($item) {
+        $home->home_gallery = $home?->getMedia('home_images')->map(function ($item) {
             $item->src = $item->getFullUrl();
             $item->alt = $item->name;
             unset($item['media']);

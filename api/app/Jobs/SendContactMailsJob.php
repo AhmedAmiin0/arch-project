@@ -26,7 +26,7 @@ class SendContactMailsJob implements ShouldQueue
      */
     public $appLogo, $appName, $mailTitle, $mailMessage, $mailSubject, $appMail;
 
-    public function __construct(public $email, public $clientName, public $clientMessage, public $clientSubject, public $clientStatus)
+    public function __construct(public $email, public $clientName, public $clientMessage, public $clientSubject)
     {
         $globalData = GlobalData::first();
         $ThanksForContactingMessage = ThanksForContactingMessage::first();
@@ -36,7 +36,7 @@ class SendContactMailsJob implements ShouldQueue
         ];
         $this->appName = $globalData->name ?? config('app.name');
         $this->appMail = $globalData->email ?? env("TEMP_MAIL");
-        $this->mailTitle = $ThanksForContactingMessage->title ?? 'A7a';
+        $this->mailTitle = $ThanksForContactingMessage->title ?? 'Thanks for contacting us';
         $this->mailMessage = $ThanksForContactingMessage->message ?? 'Thanks for contacting us';
         $this->mailSubject = $ThanksForContactingMessage->subject ?? 'Thanks for contacting us';
     }
@@ -63,7 +63,6 @@ class SendContactMailsJob implements ShouldQueue
             'name' => $this->clientName,
             'message' => $this->clientMessage,
             'subject' => $this->clientSubject,
-            'status' => $this->clientStatus,
         ]);
         Email::firstOrCreate(['email' => $this->email]);
         Mail::to($this->appMail)->send(new ThanksForContactingMail(
