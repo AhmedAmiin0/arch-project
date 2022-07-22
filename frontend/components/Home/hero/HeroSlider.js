@@ -1,19 +1,20 @@
 import Slider from "react-slick";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { SliderContent } from "./SliderContent";
-import { HeroImage, SliderBox } from "./Slider.styles";
+import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import {SliderContent} from "./SliderContent";
+import {HeroImage, SliderBox} from "./Slider.styles";
+import Image from 'next/image';
 
-export const HeroSlider = ({ aspect }) => {
+export const HeroSlider = ({banners}) => {
   function NavigationArrows(props) {
-    const { className, onClick, isRigth } = props;
+    const {className, onClick, isRigth} = props;
     return (
       <div className={className} onClick={onClick}>
-        {isRigth ? <FaArrowRight /> : <FaArrowLeft />}
+        {isRigth ? <FaArrowRight/> : <FaArrowLeft/>}
       </div>
     );
   }
 
-  const Images = ["1.jpg", "2.jpg", "3.jpg", "4.jpg"];
+
   const settings = {
     dots: false,
     infinite: true,
@@ -23,27 +24,28 @@ export const HeroSlider = ({ aspect }) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
-    nextArrow: <NavigationArrows isRigth={true} />,
-    prevArrow: <NavigationArrows isRigth={false} />,
+    nextArrow: <NavigationArrows isRigth={true}/>,
+    prevArrow: <NavigationArrows isRigth={false}/>,
   };
+
   return (
     <SliderBox>
       <Slider {...settings}>
-        {Images.map((image, index) => (
-          <div
-            key={index}
-            style={{
-              height: aspect.height,
-            }}
-          >
-            <HeroImage
-              image={image}
-              aspectWidth={aspect.width}
-              aspectHeight={aspect.height}
-            >
-              {aspect.hasLetters && <SliderContent />}
-            </HeroImage>
-          </div>
+        {banners?.map((banner, index) => (
+          <HeroImage key={index}>
+            <Image
+              src={`${banner.image}`}
+              alt="Hero"
+              layout={'fill'}
+              objectFit={'cover'}
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+            <SliderContent
+              title={banner.title}
+              subtitle={banner.subtitle}
+              slug={banner.link}
+            />
+          </HeroImage>
         ))}
       </Slider>
     </SliderBox>

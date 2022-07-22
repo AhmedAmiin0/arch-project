@@ -24,7 +24,7 @@ export const SideBar = (props) => {
     return (
         <SideBarContainer isOpen={props.sideBarStatus}>
             <SideBarTopIcons>
-                <a onClick={() => dispatchSearch(true)}><FaSearch/></a>
+                {/*<a onClick={() => dispatchSearch(true)}><FaSearch/></a>*/}
                 <a onClick={props.closeSideBar}><GrClose/></a>
             </SideBarTopIcons>
             <SideBarMenu>

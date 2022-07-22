@@ -7,7 +7,6 @@ const items = [
 		image: "/4.jpg",
 		title: "Fantastic Life Hotel & Spa",
 		desc: "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco.",
-		comments_count: 5,
 		date: "May 3, 2018",
 	},
 	{
@@ -15,7 +14,6 @@ const items = [
 		image: "/logo.png",
 		title: "Fantastic Life Hotel & Spa",
 		desc: "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco.",
-		comments_count: 5,
 		date: "May 3, 2018",
 	},
 ];
@@ -42,7 +40,6 @@ export function SearchItems() {
 				<Styles.Desc>{item.desc}</Styles.Desc>
 				<Styles.InfoDetails>
 					<Styles.CommentsCount>
-						{item.comments_count} comments
 					</Styles.CommentsCount>
 					<Styles.Date>{item.date}</Styles.Date>
 				</Styles.InfoDetails>

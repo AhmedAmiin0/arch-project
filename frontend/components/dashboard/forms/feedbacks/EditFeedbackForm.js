@@ -206,7 +206,7 @@ const EditFeedbackForm = ({feedback}) => {
             startIcon={<DeleteIcon/>}
             onClick={handleServiceDelete}
           >
-            Delete Service
+            Delete 
           </Button>
           <Button
             type={"submit"}

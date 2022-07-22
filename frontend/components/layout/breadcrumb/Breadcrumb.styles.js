@@ -27,7 +27,7 @@ export const Subtitle = styled.h2`
   text-transform: uppercase;
   font-size: .9rem;
   font-weight: 600;
-  letter-spacing: 8px;
+  letter-spacing: ${props => props.locale == 'en' ? '8px' : '1px'};
   margin: 0;
   margin-bottom: 16px;
   margin-right: -8px;

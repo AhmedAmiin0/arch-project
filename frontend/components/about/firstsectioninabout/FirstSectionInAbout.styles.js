@@ -30,9 +30,7 @@ export const FirstSectionInAboutImageContainer = styled.div`
       right: auto;
     `}
   `
-  }
-
-  @media ${devices.laptop} {
+  } @media ${devices.laptop} {
     width: 40%;
     height: 100%;
     position: absolute;
@@ -59,7 +57,7 @@ export const Subtitle = styled.h2`
   color: ${props => props.theme.text};
   font-size: .9rem;
   font-weight: 600;
-  letter-spacing: 8px;
+  letter-spacing: ${props => props.locale == 'en' ? '8px' : '1px'};
   margin-bottom: 16px;
 `
 export const Title = styled.h1`

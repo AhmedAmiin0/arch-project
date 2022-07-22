@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import cookies from "next-cookies";
-
 import Image from "next/image";
 import { useRouter } from "next/router";
 import ListingComponent from "../../../components/dashboard/ListingPage/ListingPage";
@@ -12,40 +11,18 @@ const Users = ({ globalData }) => {
   const lang = router.locale;
   const columns = [
     {
-      field: "avatar",
-      headerName: "image",
-      width: 200,
-      renderCell: (params) => (
-        <Box
-          position={"relative"}
-          sx={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {params.value.src != "" && params.value.src != null && (
-            <Image
-              src={params.value.src}
-              height={"100%"}
-              width={"100%"}
-              objectFit={"contain"}
-              alt={params.value.alt}
-            />
-          )}
-        </Box>
-      ),
-    },
-    {
-      field: "name",
-      width: 140,
+      field: "title",
+      width: 300,
       headerAlign: "start",
     },
     {
-      field: "email",
-      width: 140,
+      field: "subject",
+      width: 300,
+      headerAlign: "start",
+    },
+    {
+      field: "created_at",
+      width: 300,
       headerAlign: "start",
     },
   ];
@@ -54,9 +31,9 @@ const Users = ({ globalData }) => {
       <ListingComponent
         cols={columns}
         locale={lang}
-        page_title_plural="users"
-        page_title_single="user"
-        api_url="users"
+        page_title_plural="advertisements"
+        page_title_single="advertisement"
+        api_url="advertisements"
         readOnlyList={true}
       />
     </Layout>

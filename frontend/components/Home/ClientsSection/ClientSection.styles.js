@@ -4,11 +4,11 @@ import {Raw} from "../service/Service.style";
 import {devices} from "../../layout/GlobalStyle ";
 
 export const ClientSectionContainer = styled.section`
-  background: ${props => props.background ?? '#f8f6f9'};
+  background: #f8f6f9;
   padding-left: 15px;
   padding-bottom: 120px;
   padding-right: 15px;
-  color: ${props => props.textColor ?? '#000'} ;
+  color: #000 ;
 `;
 export const ClientSectionHeader = styled(SectionHeader)`
   margin: 0;

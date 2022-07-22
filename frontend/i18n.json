@@ -6,6 +6,6 @@
   "defaultLocale": "en",
   "pages": {
     "*": ["common"],
-    "/about": ["common", "about"]
+    "/about" : ["common", "about"]
   }
 }

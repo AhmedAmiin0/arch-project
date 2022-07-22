@@ -30,7 +30,7 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
           return;
         }
         setData(res.data.data);
-        // console.log(res);
+        console.log(res);
         setIsLoading(false);
         // console.log(res.data);
         setRowCount(res.data.meta.total);
@@ -39,7 +39,7 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
         if (!active) {
           return;
         }
-        if (err.response.status === 401) logout();
+        if (err?.response?.status === 401) logout();
         setIsLoading(false);
         console.log(err);
       });
@@ -56,7 +56,7 @@ export const useQuery = (url, page = 1, pageSize, locale) => {
       setData(rows);
       dispatch(successAlertAction("Item deleted successfully"));
     } catch (e) {
-      if (e.response.status === 401) logout();
+      if (e?.response?.status === 401) logout();
       dispatch(errorAlertAction("Item could not be deleted"));
     }
   };

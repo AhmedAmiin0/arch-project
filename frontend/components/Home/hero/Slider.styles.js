@@ -15,7 +15,7 @@ export const SliderContentContainer = styled.section`
   flex-direction: column;
   margin-left: 20px;
   margin-right: 20px;
-
+  height: 100%;
   text-align: center;
   color: rgb(${props => props.theme.bg});
 
@@ -72,14 +72,14 @@ export const SliderContentContainer = styled.section`
 
 `
 export const HeroImage = styled.div`
-  background-image: url(${props => props.image});
-  width: ${props => props.aspectWidth ?? '100%'};
-  height: ${props => props.aspectHeight ?? '100%'};
+  width: ${props => props.aspectWidth ?? '100vw'};
+  height: ${props => props.aspectHeight ?? '100vh'};
   background-size: cover;
   background-position: center;
   display: flex;
   justify-content: center;
-
+  position: relative;
+  margin: 0 auto;
   &:before {
     content: "";
     width: 100%;

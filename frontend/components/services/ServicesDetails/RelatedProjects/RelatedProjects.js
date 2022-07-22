@@ -61,7 +61,7 @@ export default function RelatedProjects() {
                     return <RelatedProjectBox key={index} className="project"
                                               onMouseEnter={() => setRelatedProjects(index)}>
                         <Link href={'/'}><RelatedProjectDate>{project.date}</RelatedProjectDate></Link>
-                        <h3>{project.title}</h3>
+                        <Link href={'/'}><h3>{project.title}</h3></Link>
                         <p>{project.place}</p>
                         <Link href={'/'}><h4>{project.category}</h4></Link>
                     </RelatedProjectBox>

@@ -10,12 +10,9 @@ import {
 import {BsPlay} from "react-icons/bs";
 import {useState} from "react";
 
-const video = {
-    src: "https://www.youtube.com/embed/vt5Lu_ltPkU",
-    thumbnail: "/videobackground.webp"
-
-}
-export default function VideoSection() {
+export default function VideoSection({
+    video
+                                     }) {
     const [isPlaying, setIsPlaying] = useState(false);
     return <VideoSectionStyles>
         <VideoThumbnail background={video.thumbnail}/>

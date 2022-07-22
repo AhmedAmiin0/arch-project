@@ -8,11 +8,10 @@ import {
 import Link from "next/link";
 import {FaFacebookF, FaSearch, FaSun, FaTwitter, FaYoutube} from 'react-icons/fa';
 import {IoLogoInstagram} from "react-icons/io";
-import {NavbarItems} from "./NavbarItems";
 import React, {useContext, useState} from "react";
 import {StateContext} from "../Layout";
 import {useRouter} from "next/router";
-
+import useTranslation from "next-translate/useTranslation";
 const NavbarContent = () => {
     const [currentHover, setCurrentHover] = useState(null);
     const handleMouseEnter = (i) => setCurrentHover(i + 1);
@@ -20,6 +19,25 @@ const NavbarContent = () => {
     const [searchState,dispatchSearch] = useContext(StateContext);
     const router = useRouter();
     const {locale} = router
+    const {t} = useTranslation()
+    const NavbarItems = [
+        {
+            link: '/projects',
+            name: t('common:projects'),
+        },
+        {
+            link: '/services',
+            name: t('common:services'),
+        },
+        {
+            link: '/about',
+            name: t('common:about'),
+        },
+        {
+            link: '/contact',
+            name: t('common:contact'),
+        },
+    ]
     return (
         <React.Fragment>
             <NavbarSection>
@@ -42,9 +60,9 @@ const NavbarContent = () => {
             <NavbarSection>
                 <NavbarRightSection>
                     {/*<Link href='search'>*/}
-                    <NavbarItem>
-                        <a onClick={() => dispatchSearch(true)}><FaSearch/></a>
-                    </NavbarItem>
+                    {/*<NavbarItem>*/}
+                    {/*    <a onClick={() => dispatchSearch(true)}><FaSearch/></a>*/}
+                    {/*</NavbarItem>*/}
                     {/*</Link>*/}
                     {locale === 'ar' ?
                         <Link href={router.asPath} locale={'en'}>

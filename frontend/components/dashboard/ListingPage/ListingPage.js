@@ -23,6 +23,7 @@ const ListingComponent = ({
   HasSentence = false,
   rowHeight = 100,
   readOnlyList = false,
+  canAdd = true,
 
   // sentence_url = null
 }) => {
@@ -131,7 +132,7 @@ const ListingComponent = ({
               </Button>
             </Link>
           )}
-          <Link href={"/admin/" + api_url + "/create"}>
+          {canAdd && <Link href={"/admin/" + api_url + "/create"}>
             <Button
               color={"therdary"}
               variant={"contained"}
@@ -140,7 +141,7 @@ const ListingComponent = ({
               Add{" "}
               {page_title_single[0].toUpperCase() + page_title_single.slice(1)}
             </Button>
-          </Link>
+          </Link>}
         </Stack>
       </Stack>
       <Box bgcolor="background.paper">

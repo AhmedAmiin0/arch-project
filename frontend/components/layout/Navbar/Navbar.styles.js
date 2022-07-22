@@ -213,6 +213,7 @@ export const LangButton = styled.a`
 	background-color: ${(props) => props.theme.text};
 	color: rgb(${(props) => props.theme.bg}) !important;
 	margin-bottom: 32px;
+	cursor: pointer;
 `;
 // export const SideBarMenuContainer = styled.div`
 //   position: relative;

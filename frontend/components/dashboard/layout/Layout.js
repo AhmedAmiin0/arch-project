@@ -52,7 +52,7 @@ export default function Layout({ children, data }) {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [globalData, setGlobalData] = useReducer(reducer, {});
   const router = useRouter();
-  const {locale} = router; 
+  const { locale } = router;
   const DashBoardContainer = styled(Box)(({ theme }) => ({
     flex: 6,
     [theme.breakpoints.up("md")]: {
@@ -88,6 +88,7 @@ export default function Layout({ children, data }) {
               sx={{ height: "100vh" }}
             >
               <Sidebar
+                theme={theme}
                 setSidebarVisible={setSidebarVisible}
                 sidebarVisible={sidebarVisible}
               />

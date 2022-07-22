@@ -1,3 +1,7 @@
 {
-  "name": "ar"
+  "main": "الرئيسية",
+  "projects": "المشاريع",
+  "about": "عنا",
+  "contact": "اتصل بنا",
+  "services": "الخدمات"
 }

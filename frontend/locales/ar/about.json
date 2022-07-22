@@ -1,7 +1,5 @@
 {
-  "name": "$name$",
-  "version": "$version$",
-  "dependencies": {
-    $END$
-  }
+  "story": "قصتنا",
+  "title": "من نحن ؟"
+
 }

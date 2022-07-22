@@ -1,15 +1,15 @@
 import {IconicBar, SliderContentContainer} from "./Slider.styles";
 import Link from 'next/link';
-export const SliderContent = () => {
+export const SliderContent = ({title,slug,subtitle}) => {
     return <SliderContentContainer>
         <IconicBar/>
         <span>
-            Cultural
+            {  title }
         </span>
         <h1>
-            The Edition Bookstore, Library and Cafe in Berlin
+            { subtitle }
         </h1>
-        <Link href='/projects/project_overview_page'>
+        <Link href={`${slug}`}>
             <a >View Project</a>
         </Link>
     </SliderContentContainer>

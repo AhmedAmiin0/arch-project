@@ -1,8 +1,4 @@
-import Head from "next/head";
-import Layout from "../components/layout/Layout";
-import { Search } from "../components/search";
 
-// todo: If no items found
 
 export default function search() {
   return (

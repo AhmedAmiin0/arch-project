@@ -19,8 +19,8 @@ export const useDelete = (locale) => {
       await axios.delete(`${url}/${id}`, {
         headers: { "Accept-Language": locale },
       });
-      setIsLoading(false);
       dispatch(successAlertAction("Item deleted successfully"));
+      setIsLoading(false);
       router.push("/admin/" + url);
     } catch (e) {
       console.log(e);
@@ -64,8 +64,8 @@ export const useCreate = (locale, url) => {
       console.log(e);
       if (e.response.status === 401) logout();
       setIsLoading(false);
-      typeof e.response.message === "string" && e.response.message.length > 0
-        ? dispatch(errorAlertAction(e.response.message))
+      typeof e.response.data.message === "string" && e.response.data.message.length > 0
+        ? dispatch(errorAlertAction(e.response.data.message))
         : dispatch(errorAlertAction("Action could not be completed"));
     }
   };
